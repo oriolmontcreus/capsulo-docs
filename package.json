@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "build": "next build",
+    "build:static": "next build",
     "dev": "next dev",
     "start": "next start",
+    "preview": "npx serve out",
     "postinstall": "fumadocs-mdx",
     "lint": "eslint"
   },
