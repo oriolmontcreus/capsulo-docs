@@ -5,6 +5,7 @@ description: Components
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { ComponentPreview } from "@/components/component-preview"
 
 ## Code Block
 
@@ -23,12 +24,36 @@ console.log('Hello World');
 
 Here's an example of the shadcn/ui Input component working in your Fumadocs project:
 
-<div className="space-y-2 max-w-sm">
-  <Label htmlFor="email">Email</Label>
-  <Input id="email" type="email" placeholder="Enter your email" />
-</div>
+<ComponentPreview code={`import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
-<div className="space-y-2 max-w-sm mt-4">
-  <Label htmlFor="name">Name</Label>
-  <Input id="name" type="text" placeholder="Enter your name" />
-</div>
+export function InputDemo() {
+  return (
+    <div className="space-y-2 max-w-sm">
+      <Label htmlFor="email">Email</Label>
+      <Input id="email" type="email" placeholder="Enter your email" />
+    </div>
+  )
+}`}>
+  <div className="space-y-2 max-w-sm">
+    <Label htmlFor="email">Email</Label>
+    <Input id="email" type="email" placeholder="Enter your email" />
+  </div>
+</ComponentPreview>
+
+<ComponentPreview code={`import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+
+export function InputDemo() {
+  return (
+    <div className="space-y-2 max-w-sm">
+      <Label htmlFor="name">Name</Label>
+      <Input id="name" type="text" placeholder="Enter your name" />
+    </div>
+  )
+}`}>
+  <div className="space-y-2 max-w-sm">
+    <Label htmlFor="name">Name</Label>
+    <Input id="name" type="text" placeholder="Enter your name" />
+  </div>
+</ComponentPreview>
