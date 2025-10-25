@@ -1,11 +1,24 @@
 import { source } from '@/lib/source';
-import { DocsLayout } from 'fumadocs-ui/layouts/docs';
+import { DocsLayout, type DocsLayoutProps } from 'fumadocs-ui/layouts/docs';
 import { baseOptions } from '@/lib/layout.shared';
+import { GitHub } from '@/components/github-icon';
+import type { ReactNode } from 'react';
 
-export default function Layout({ children }: LayoutProps<'/docs'>) {
-  return (
-    <DocsLayout tree={source.pageTree} {...baseOptions()}>
-      {children}
-    </DocsLayout>
-  );
+function docsOptions(): DocsLayoutProps {
+  return {
+    ...baseOptions(),
+    tree: source.pageTree,
+    links: [
+      {
+        type: 'icon',
+        url: 'https://github.com/oriolmontcreus/capsulo',
+        icon: <GitHub />,
+        text: 'GitHub',
+      },
+    ],
+  };
+}
+
+export default function Layout({ children }: { children: ReactNode }) {
+  return <DocsLayout {...docsOptions()}>{children}</DocsLayout>;
 }
