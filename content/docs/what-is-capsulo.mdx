@@ -1,0 +1,69 @@
+---
+title: What is Capsulo
+description: Introducing Capsulo, a CMS framework that helps you create amazing websites without having to reinvent the wheel.
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Hey! I'm Oriol M, the creator of Capsulo.
+Everything started because I was tired of:
+- Having to reinvent the wheel every time I wanted to build a content-driven website.
+- The hassle of deploying the project when it was all done
+- Those platforms who force you into their way of doing things, with little flexibility, or that even worse, you have to pay a fortune for basic features.
+
+Capsulo aims to solve these problems by providing a flexible, type-safe, and repository-native CMS framework that makes your life easier by already handling the common tasks for you.
+
+Never configure a translations system again, dont worry about databases or "where I will host this". Dont worry about performance, or scaling. **Just focus on building your website.**
+
+## Philosophy
+
+### Schema-First Architecture
+
+While most CMS platforms force you to configure content types through their UI or configuration files, they usually lack flexibility when you need to control how content is structured and validated.
+You can't control the exact shape of your data or integrate it seamlessly with your components.
+
+Capsulo expects you to write schemas as code using React/TSX components with a Fluent API. It shows you how your content works and is fully customizable, instead of hiding it behind a configuration UI.
+
+### Type Safety at Core
+
+Capsulo integrates tightly with TypeScript and Zod, bringing automatic type inference and runtime validation.
+
+For TypeScript developers, you get **full type safety** from your schema definitions to your component props. There is nothing magical — just `SchemaProps<T>` inference that gives you autocomplete and compile-time checks.
+
+### GitHub-Native Workflow
+
+The only thing Capsulo requires for storage is **GitHub**. You dont need a database or a server. Your content lives in your repository, versioned and backed up automatically.
+
+<Callout type="info">
+Note that you need somewhere to host your images. In this case Capsulo its powered using Cloudflare R2 by default but can be configured
+</Callout>
+
+Instead of vendor-specific databases, we follow a more flexible approach — content is stored as JSON files in your repo, with a dual storage system: local files for development and GitHub API for production with user-specific draft branches.
+
+### Static-First Approach
+
+Traditionally, CMS platforms are **server-dependent**.
+
+However, Capsulo introduces a static-first approach powered by modern static site generators.
+With perfect build-time data fetching, your entire site becomes a collection of static files.
+
+You can deploy to any static host for free, with no database or server costs. It is always blazing fast and easy to scale.
+
+## When to use Capsulo
+
+Capsulo is designed with flexibility in mind, it is not limited to certain usages.
+
+* **Schema-based content** where you define structure as code
+* **Type-safe projects** where TypeScript integration matters
+* **Static websites** that need to be fast and free to host
+
+For most modern web applications, a traditional CMS is overkill.
+Nowadays, we wish to have editable landing pages, manageable blog content, updatable portfolios, etc. In these cases, Capsulo can help you build these easier, with less vendor lock-in.
+
+### Content-Driven Websites
+
+Capsulo focuses on **developer experience and end-user simplicity**, it provides a beautiful admin interface built with shadcn/ui components.
+
+<Callout>
+  **Perfect for**: Landing pages, blogs, portfolios, marketing websites, product pages, agency websites, component libraries, and open source showcases.
+</Callout>
