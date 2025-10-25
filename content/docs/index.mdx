@@ -1,13 +1,234 @@
 ---
-title: Hello World
-description: Your first document
+title: Introduction
+description: Capsulo is a type-safe, GitHub-native content management system. Its principles are simplicity, and control.
 ---
 
-Welcome to the docs! You can start writing documents in `/content/docs`.
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
+import { Code, Zap, Settings, MessageSquare, Bug, GitPullRequest, Briefcase, FileText, User, BookOpen, Globe, Package, Users, Lightbulb } from 'lucide-react';
+import { GithubInfo } from '@/components/github-info';
+import { GitHub } from '@/components/github-icon';
 
-## What is Next?
+<GithubInfo
+  owner="oriolmontcreus"
+  repo="capsulo"
+/>
+
+## Perfect For
+
+Capsulo is fully static and super performant, making it ideal for:
 
 <Cards>
-  <Card title="Learn more about Next.js" href="https://nextjs.org/docs" />
-  <Card title="Learn more about Fumadocs" href="https://fumadocs.dev" />
+  <Card 
+    icon={<Zap />}
+    title="Landing Pages"
+  >
+    Fast, conversion-focused pages with editable content
+  </Card>
+  <Card 
+    icon={<FileText />}
+    title="Blogs"
+  >
+    Personal or company blogs with easy content management
+  </Card>
+  <Card 
+    icon={<User />}
+    title="Portfolios"
+  >
+    Showcase your work with a beautiful, manageable interface
+  </Card>
+  <Card 
+    icon={<Globe />}
+    title="Marketing Websites"
+  >
+    Multi-page sites with frequently updated content
+  </Card>
+  <Card 
+    icon={<Package />}
+    title="Product Pages"
+  >
+    SaaS product sites with dynamic content sections
+  </Card>
+  <Card 
+    icon={<Briefcase />}
+    title="Agency Websites"
+  >
+    Client projects requiring non-technical content updates
+  </Card>
+  <Card 
+    icon={<Code />}
+    title="Component Libraries"
+  >
+    Showcase your React, Vue, or web components with live demos
+  </Card>
+  <Card 
+    icon={<Lightbulb />}
+    title="Open Source Showcases"
+  >
+    Create beautiful project pages with instant and free hosting
+  </Card>
 </Cards>
+
+<Callout>
+  Built with Astro, Capsulo generates fully static output that can be instantly hosted for free on GitHub Pages, Vercel, Cloudflare Pages, Netlify, and more.
+</Callout>
+
+<Callout type="info">
+  If your project needs a database, user authentication, or server-side logic you can still use Capsulo for content management while integrating with your backend of choice.
+</Callout>
+
+## Why Capsulo?
+
+Capsulo is designed with both developers and end-users in mind, providing a seamless experience for creating and managing content-driven websites. Here are some of the key features that make Capsulo stand out:
+
+<Cards>
+  <Card 
+    icon={<Code />}
+    title="Schema-Based Architecture" 
+    href="/docs/schemas"
+  >
+    Define content structures as code using React/TSX components with a Fluent API. Automatic discovery, no registration needed.
+  </Card>
+  <Card 
+    icon={<Zap />}
+    title="Type-Safe & Validated" 
+    href="/docs/features"
+  >
+    Full type safety with SchemaProps inference and runtime validation using Zod
+  </Card>
+  <Card 
+    icon={<Settings />}
+    title="Host Anywhere for Free" 
+    href="/docs/deployment"
+  >
+    Fully static output with no database or server needed. Deploy to Cloudflare Pages, Vercel, Netlify, or any static host.
+  </Card>
+  <Card 
+    icon={<GitHub />}
+    title="GitHub-Native" 
+    href="https://github.com/oriolmontcreus/capsulo"
+  >
+    Dual storage: local files for development and GitHub API for production with user-specific draft branches
+  </Card>
+</Cards>
+
+## What are Schemas?
+
+Schemas are the core of Capsulo. They define the structure of your content components using code, creating a type-safe bridge between your CMS interface and your website components.
+
+<Steps>
+
+<Step>
+
+### Define Your Schema
+
+Create a schema using React/TSX and the Fluent API:
+
+```typescript
+export const HeroSchema = createSchema(
+  'Hero',
+  [
+    Input('title')
+      .label('Hero Title')
+      .required()
+      .defaultValue('Welcome'),
+    
+    Grid({ base: 1, md: 2 })
+      .contains([
+        Input('ctaButton').label('CTA Button'),
+        Input('ctaLink').label('CTA Link')
+      ])
+  ],
+  'Hero section with title and CTA',
+  'hero'
+);
+```
+
+This single schema automatically:
+- Creates an editable form in the CMS interface
+- Generates TypeScript types for your components
+- Provides runtime validation with Zod
+- Sets default values for all fields
+
+</Step>
+
+<Step>
+
+### Use in Your Component
+
+Use the schema data in your Astro components with full type safety:
+
+```astro
+---
+import { getSchemaProps } from '@/lib/schema-props';
+import { HeroSchema } from '@/lib/form-builder/schemas/hero.schema';
+import type { SchemaProps } from '@/lib/schema-props';
+
+export type Props = SchemaProps<typeof HeroSchema>;
+const props = getSchemaProps(HeroSchema, Astro.props);
+const { title, ctaButton, ctaLink } = props;
+---
+
+<section>
+  <h1>{title}</h1>
+  <a href={ctaLink}>{ctaButton}</a>
+</section>
+```
+
+</Step>
+
+<Step>
+
+### Edit in the CMS
+
+Content creators can now edit the Hero component directly in the CMS interface at `/admin` with a beautiful, auto-generated form. No code required!
+
+</Step>
+
+</Steps>
+
+### Key Benefits
+
+<Accordions type="single" collapsible>
+
+<Accordion title="Schema-Driven Development">
+
+- Single source of truth for content structure
+- Automatic type inference with `SchemaProps<T>`
+- No duplicate prop definitions needed
+- Fields and layouts compose elegantly
+- Runtime validation with Zod
+
+</Accordion>
+
+<Accordion title="For Content Creators">
+
+- Beautiful shadcn/ui components for intuitive content management
+- No code required - just fill out forms
+- Draft and publish workflow
+- Multi-device support via GitHub
+- Real-time preview of changes
+
+</Accordion>
+
+<Accordion title="Static & Hostable Anywhere">
+
+- Fully static output - no database or server required
+- Package CMS with your website as a single static build
+- Deploy for free on Cloudflare Pages, Vercel, Netlify, GitHub Pages
+- No hosting costs, no vendor lock-in
+- Blazing fast performance
+
+</Accordion>
+
+</Accordions>
+
+<Callout type="warn">
+  Capsulo is currently in active development. Some features may change before the stable release.
+</Callout>
+
+## Next Steps
+
+Ready to get started? Check out the [Getting Started](/docs/getting-started) guide to set up Capsulo.
