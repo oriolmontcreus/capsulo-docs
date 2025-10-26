@@ -120,3 +120,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom styling for code word highlights */
+code .highlighted-word {
+  background-color: transparent !important;
+  color: rgb(255, 115, 0) !important;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.dark code .highlighted-word {
+  color: rgb(251 146 60) !important;
+}
