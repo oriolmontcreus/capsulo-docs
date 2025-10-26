@@ -4,6 +4,10 @@ description: A deep dive into Capsulo's philosophy, architecture, and the proble
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
+import { ComponentPreview } from "@/components/component-preview";
+import { InputField } from "@/components/fields/Input/input.field.tsx";
+import { TextareaField } from "@/components/fields/Textarea/textarea.field.tsx";
+import { SwitchField } from "@/components/fields/Switch/switch.field.tsx";
 
 ## The story
 
@@ -26,6 +30,49 @@ Capsulo is built on three core principles that guide every design decision:
 Building content-driven websites shouldn't require complex configuration or learning proprietary systems. Capsulo embraces simplicity by:
 
 - **Schema-as-Code**: Write your content schemas using familiar React/TSX components with a Fluent API. No configuration files, no UI builders — just code that clearly shows how your content is structured.
+
+<ComponentPreview code={`
+Input('title')
+  .label('Title')
+  .required()
+  .placeholder('Enter the article title')
+
+Textarea('subtitle')
+  .label('Subtitle')
+  .maxLength(100)
+  .placeholder('Enter the article subtitle')
+  .defaultValue('A content management system for developers'),
+    
+  Switch('published')
+  .label('Published')
+  .description('Is the article published?')
+  `}>
+  <div className="space-y-8 max-w-sm w-full">
+    <InputField 
+      field={{ 
+        name: "title", 
+        label: "Title",
+        required: true,
+        inputType: "text",
+        placeholder: "Enter the article title"
+      }} 
+    />
+    <TextareaField
+      field={{ 
+        name: "subtitle", 
+        label: "Subtitle",
+        placeholder: "Enter the article subtitle",
+        maxLength: 100
+      }} />
+    <SwitchField
+      field={{ 
+        name: "published", 
+        label: "Published",
+        description: "Is the article published?"
+      }} />
+  </div>
+</ComponentPreview>
+
 - **GitHub-Native**: Your content lives in your repository, versioned and backed up automatically. No databases to configure, no external services to set up. Just GitHub.
 - **Zero Infrastructure**: Deploy to any static host for free. No servers to maintain, no databases to manage, no scaling concerns.
 
