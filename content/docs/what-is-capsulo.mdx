@@ -29,7 +29,7 @@ Capsulo is built on three core principles that guide every design decision:
 
 Building content-driven websites shouldn't require complex configuration or learning proprietary systems. Capsulo embraces simplicity by:
 
-- **Schema-as-Code**: Write your content schemas using familiar React/TSX components with a Fluent API. No configuration files, no UI builders — just code that clearly shows how your content is structured.
+- **Schema-as-Code**: Write your content schemas using familiar React/TSX components with a Fluent API.
 
 <Preview>
   <div className="space-y-8 max-w-sm w-full">
@@ -57,10 +57,11 @@ Building content-driven websites shouldn't require complex configuration or lear
       }} />
   </div>
 
-  <include>./snippets/schema-example.mdx</include>
+  <include>../snippets/schema-example.mdx</include>
 </Preview>
 
-- **GitHub-Native**: Your content lives in your repository, versioned and backed up automatically. No databases to configure, no external services to set up. Just GitHub.
+- **GitHub-Native**: Your content lives in your repository, versioned and backed up automatically with Git.
+Dont stress about databases, servers, or content versioning ever again.
 - **Zero Infrastructure**: Deploy to any static host for free. No servers to maintain, no databases to manage, no scaling concerns.
 
 ### 2. Control
@@ -79,6 +80,6 @@ Note that you need somewhere to host your images. Capsulo is powered by Cloudfla
 
 Speed matters for both developers and end users. Capsulo delivers performance through:
 
-- **Static-First Architecture**: Unlike traditional server-dependent CMS platforms, Capsulo uses a static-first approach powered by modern static site generators.
-- **Build-Time Optimization**: With build-time data fetching, your entire site becomes a collection of pre-rendered static files.
-- **Blazing Fast**: No database queries, no server processing. Your site is always fast and scales effortlessly to any traffic level.
+- **Static-First Architecture**: Unlike traditional server-dependent CMS platforms, Capsulo uses a static-first approach powered by [Astro](https://astro.build/). This also translates into better SEO.
+- **Build-Time Optimization**: Your data gets injected directly into your pages, so at the end you just have a bunch of static HTML and CSS. By default we dont ship any JS to the client unless you explicitly want to. <br/> <span className='text-fd-muted-foreground'>Learn more here:</span> [Astro feature: Zero JS by default](https://docs.astro.build/en/concepts/why-astro/#features)
+- **Blazing Fast**: No database queries, no server processing. Capsulo will already handle stuff like image optimization, caching, and CDN distribution for you.
