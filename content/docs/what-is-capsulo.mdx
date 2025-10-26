@@ -1,69 +1,50 @@
 ---
 title: What is Capsulo
-description: Introducing Capsulo, a CMS framework that helps you create amazing websites without having to reinvent the wheel.
+description: A deep dive into Capsulo's philosophy, architecture, and the problems it solves.
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
 
+## The story
+
 Hey! I'm Oriol M, the creator of Capsulo.
 Everything started because I was tired of:
-- Having to reinvent the wheel every time I wanted to build a content-driven website.
+- Having to [reinvent the wheel](https://en.wikipedia.org/wiki/Reinventing_the_wheel) every time I wanted to build a content-driven website.
 - The hassle of deploying the project when it was all done
 - Those platforms who force you into their way of doing things, with little flexibility, or that even worse, you have to pay a fortune for basic features.
 
 Capsulo aims to solve these problems by providing a flexible, type-safe, and repository-native CMS framework that makes your life easier by already handling the common tasks for you.
 
-Never configure a translations system again, dont worry about databases or "where I will host this". Dont worry about performance, or scaling. **Just focus on building your website.**
+Never configure a translations system again, don't worry about databases or "where I will host this". Don't worry about performance, or scaling. **Just focus on building your website.**
 
 ## Philosophy
 
-### Schema-First Architecture
+Capsulo is built on three core principles that guide every design decision:
 
-While most CMS platforms force you to configure content types through their UI or configuration files, they usually lack flexibility when you need to control how content is structured and validated.
-You can't control the exact shape of your data or integrate it seamlessly with your components.
+### 1. Simplicity
 
-Capsulo expects you to write schemas as code using React/TSX components with a Fluent API. It shows you how your content works and is fully customizable, instead of hiding it behind a configuration UI.
+Building content-driven websites shouldn't require complex configuration or learning proprietary systems. Capsulo embraces simplicity by:
 
-### Type Safety at Core
+- **Schema-as-Code**: Write your content schemas using familiar React/TSX components with a Fluent API. No configuration files, no UI builders — just code that clearly shows how your content is structured.
+- **GitHub-Native**: Your content lives in your repository, versioned and backed up automatically. No databases to configure, no external services to set up. Just GitHub.
+- **Zero Infrastructure**: Deploy to any static host for free. No servers to maintain, no databases to manage, no scaling concerns.
 
-Capsulo integrates tightly with TypeScript and Zod, bringing automatic type inference and runtime validation.
+### 2. Control
 
-For TypeScript developers, you get **full type safety** from your schema definitions to your component props. There is nothing magical — just `SchemaProps<T>` inference that gives you autocomplete and compile-time checks.
+You own your content and control every aspect of how it works. Capsulo gives you:
 
-### GitHub-Native Workflow
-
-The only thing Capsulo requires for storage is **GitHub**. You dont need a database or a server. Your content lives in your repository, versioned and backed up automatically.
+- **Full Customization**: Write schemas as code, not through restrictive UIs. You decide the exact shape of your data and how it integrates with your components.
+- **Type Safety**: Built with TypeScript and Zod for automatic type inference and runtime validation. Get full type safety from schema definitions to component props with `SchemaProps<T>` inference, autocomplete, and compile-time checks.
+- **No Lock-in**: Your content is stored in your repository as markdown and JSON. Switch frameworks or platforms anytime without losing your work.
 
 <Callout type="info">
-Note that you need somewhere to host your images. In this case Capsulo its powered using Cloudflare R2 by default but can be configured
+Note that you need somewhere to host your images. Capsulo is powered by Cloudflare R2 by default but can be switched to any other storage provider.
 </Callout>
 
-Instead of vendor-specific databases, we follow a more flexible approach — content is stored as JSON files in your repo, with a dual storage system: local files for development and GitHub API for production with user-specific draft branches.
+### 3. Performance
 
-### Static-First Approach
+Speed matters for both developers and end users. Capsulo delivers performance through:
 
-Traditionally, CMS platforms are **server-dependent**.
-
-However, Capsulo introduces a static-first approach powered by modern static site generators.
-With perfect build-time data fetching, your entire site becomes a collection of static files.
-
-You can deploy to any static host for free, with no database or server costs. It is always blazing fast and easy to scale.
-
-## When to use Capsulo
-
-Capsulo is designed with flexibility in mind, it is not limited to certain usages.
-
-* **Schema-based content** where you define structure as code
-* **Type-safe projects** where TypeScript integration matters
-* **Static websites** that need to be fast and free to host
-
-For most modern web applications, a traditional CMS is overkill.
-Nowadays, we wish to have editable landing pages, manageable blog content, updatable portfolios, etc. In these cases, Capsulo can help you build these easier, with less vendor lock-in.
-
-### Content-Driven Websites
-
-Capsulo focuses on **developer experience and end-user simplicity**, it provides a beautiful admin interface built with shadcn/ui components.
-
-<Callout>
-  **Perfect for**: Landing pages, blogs, portfolios, marketing websites, product pages, agency websites, component libraries, and open source showcases.
-</Callout>
+- **Static-First Architecture**: Unlike traditional server-dependent CMS platforms, Capsulo uses a static-first approach powered by modern static site generators.
+- **Build-Time Optimization**: With build-time data fetching, your entire site becomes a collection of pre-rendered static files.
+- **Blazing Fast**: No database queries, no server processing. Your site is always fast and scales effortlessly to any traffic level.

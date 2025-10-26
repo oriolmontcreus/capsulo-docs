@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: Capsulo is a type-safe, GitHub-native content management system. Its principles are simplicity, and control.
+description: Capsulo is a type-safe, GitHub-native content management system. Its principles are simplicity, control and performance.
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
@@ -16,9 +16,116 @@ import { GitHub } from '@/components/github-icon';
   repo="capsulo"
 />
 
-## Perfect For
+## What is Capsulo?
 
-Capsulo is fully static and super performant, making it ideal for:
+Capsulo is a **CMS framework** <span className='text-fd-muted-foreground text-sm'>(Also known as a [CMF](https://es.wikipedia.org/wiki/Content_Management_Framework))</span> that lets you define content structures as code and manage them through a beautiful interface. Built for developers who want full control without sacrificing ease of use.
+
+## Key Features
+
+
+<Cards>
+  <Card 
+    icon={<Code />}
+    title="Schema-Based Architecture" 
+    href="/docs/what-is-capsulo#schema-first-architecture"
+  >
+    Define content structures as code using React/TSX components with a Fluent API. Automatic discovery, no registration needed.
+  </Card>
+  <Card 
+    icon={<Zap />}
+    title="Type-Safe & Validated" 
+    href="/docs/what-is-capsulo#type-safety-at-core"
+  >
+    Full type safety with SchemaProps inference and runtime validation using Zod
+  </Card>
+  <Card 
+    icon={<Settings />}
+    title="Fully Static & Free to Host" 
+    href="/docs/what-is-capsulo#static-first-approach"
+  >
+    No database or server needed. Deploy to Cloudflare Pages, Vercel, Netlify, or any static host for free.
+  </Card>
+  <Card 
+    icon={<GitHub />}
+    title="GitHub-Native Storage" 
+    href="/docs/what-is-capsulo#github-native-workflow"
+  >
+    Dual storage: local files for development and GitHub API for production with user-specific draft branches
+  </Card>
+</Cards>
+
+<Callout>
+  Want to understand the philosophy behind Capsulo? Check out [What is Capsulo](/docs/what-is-capsulo) for a deep dive into our approach.
+</Callout>
+
+## Quick Start: Understanding Schemas
+
+Schemas are the core of Capsulo. They define the structure of your content components using code, creating a type-safe bridge between your CMS interface and your website components.
+
+<Steps>
+
+<Step>
+
+### Define Your Schema
+
+Create a schema using React/TSX and the Fluent API:
+
+```typescript
+export const HeroSchema = createSchema(
+  'Hero',
+  [
+    Input('title')
+      .label('Hero Title')
+      .required()
+      .defaultValue('Welcome'),
+    
+    Grid({ base: 1, md: 2 })
+      .contains([
+        Input('ctaButton').label('CTA Button'),
+        Input('ctaLink').label('CTA Link')
+      ])
+  ],
+  'Hero section with title and CTA',
+  'hero'
+);
+```
+
+</Step>
+
+<Step>
+
+### Use in Your Component
+
+Use the schema data in your components with full type safety:
+
+```astro
+---
+import type { SchemaProps } from '@/lib/schema-props';
+import { HeroSchema } from '@/lib/form-builder/schemas/hero.schema';
+
+export type Props = SchemaProps<typeof HeroSchema>;
+const { title, ctaButton, ctaLink } = Astro.props;
+---
+
+<section>
+  <h1>{title}</h1>
+  <a href={ctaLink}>{ctaButton}</a>
+</section>
+```
+
+</Step>
+
+<Step>
+
+### Edit in the CMS
+
+Content creators can now edit the Hero component directly in the CMS interface at `/admin` with a beautiful, auto-generated form. No code required!
+
+</Step>
+
+</Steps>
+
+## Perfect For
 
 <InfoCards>
   <InfoCard 
@@ -71,156 +178,10 @@ Capsulo is fully static and super performant, making it ideal for:
   </InfoCard>
 </InfoCards>
 
+
 <Callout>
-  **Free Hosting**: Built with Astro, Capsulo generates fully static output that can be instantly hosted for free on GitHub Pages, Vercel, Cloudflare Pages, Netlify, and more.
+  **Free Hosting**: Capsulo generates fully static output that can be instantly hosted for free on GitHub Pages, Vercel, Cloudflare Pages, Netlify, and more.
 </Callout>
-
-
-## Why Capsulo?
-
-Capsulo is designed with both developers and end-users in mind, providing a seamless experience for creating and managing content-driven websites. Here are some of the key features that make Capsulo stand out:
-
-<Cards>
-  <Card 
-    icon={<Code />}
-    title="Schema-Based Architecture" 
-    href="/docs/schemas"
-  >
-    Define content structures as code using React/TSX components with a Fluent API. Automatic discovery, no registration needed.
-  </Card>
-  <Card 
-    icon={<Zap />}
-    title="Type-Safe & Validated" 
-    href="/docs/features"
-  >
-    Full type safety with SchemaProps inference and runtime validation using Zod
-  </Card>
-  <Card 
-    icon={<Settings />}
-    title="Host Anywhere for Free" 
-    href="/docs/deployment"
-  >
-    Fully static output with no database or server needed. Deploy to Cloudflare Pages, Vercel, Netlify, or any static host.
-  </Card>
-  <Card 
-    icon={<GitHub />}
-    title="GitHub-Native" 
-    href="https://github.com/oriolmontcreus/capsulo"
-  >
-    Dual storage: local files for development and GitHub API for production with user-specific draft branches
-  </Card>
-</Cards>
-
-## What are Schemas?
-
-Schemas are the core of Capsulo. They define the structure of your content components using code, creating a type-safe bridge between your CMS interface and your website components.
-
-<Steps>
-
-<Step>
-
-### Define Your Schema
-
-Create a schema using React/TSX and the Fluent API:
-
-```typescript
-export const HeroSchema = createSchema(
-  'Hero',
-  [
-    Input('title')
-      .label('Hero Title')
-      .required()
-      .defaultValue('Welcome'),
-    
-    Grid({ base: 1, md: 2 })
-      .contains([
-        Input('ctaButton').label('CTA Button'),
-        Input('ctaLink').label('CTA Link')
-      ])
-  ],
-  'Hero section with title and CTA',
-  'hero'
-);
-```
-
-This single schema automatically:
-- Creates an editable form in the CMS interface
-- Generates TypeScript types for your components
-- Provides runtime validation with Zod
-- Sets default values for all fields
-
-</Step>
-
-<Step>
-
-### Use in Your Component
-
-Use the schema data in your Astro components with full type safety:
-
-```astro
----
-import { getSchemaProps } from '@/lib/schema-props';
-import { HeroSchema } from '@/lib/form-builder/schemas/hero.schema';
-import type { SchemaProps } from '@/lib/schema-props';
-
-export type Props = SchemaProps<typeof HeroSchema>;
-const props = getSchemaProps(HeroSchema, Astro.props);
-const { title, ctaButton, ctaLink } = props;
----
-
-<section>
-  <h1>{title}</h1>
-  <a href={ctaLink}>{ctaButton}</a>
-</section>
-```
-
-</Step>
-
-<Step>
-
-### Edit in the CMS
-
-Content creators can now edit the Hero component directly in the CMS interface at `/admin` with a beautiful, auto-generated form. No code required!
-
-</Step>
-
-</Steps>
-
-### Key Benefits
-
-<Accordions type="single" collapsible>
-
-<Accordion title="Schema-Driven Development">
-
-- Single source of truth for content structure
-- Automatic type inference with `SchemaProps<T>`
-- No duplicate prop definitions needed
-- Fields and layouts compose elegantly
-- Runtime validation with Zod
-
-</Accordion>
-
-<Accordion title="For Content Creators">
-
-- Beautiful shadcn/ui components for intuitive content management
-- No code required - just fill out forms
-- Draft and publish workflow
-- Multi-device support via GitHub
-- Real-time preview of changes
-
-</Accordion>
-
-<Accordion title="Static & Hostable Anywhere">
-
-- Fully static output - no database or server required
-- Package CMS with your website as a single static build
-- Deploy for free on Cloudflare Pages, Vercel, Netlify, GitHub Pages
-- No hosting costs, no vendor lock-in
-- Blazing fast performance
-
-</Accordion>
-
-</Accordions>
 
 <Callout type="warn">
   Capsulo is currently in active development. Some features may change before the stable release.
@@ -228,4 +189,4 @@ Content creators can now edit the Hero component directly in the CMS interface a
 
 ## Next Steps
 
-Ready to get started? Check out the [Getting Started](/docs/getting-started) guide to set up Capsulo.
+Ready to get started? Check out the [Getting Started](/docs/getting-started) guide to set up Capsulo, or read [What is Capsulo](/docs/what-is-capsulo) to learn more about the philosophy and design decisions.

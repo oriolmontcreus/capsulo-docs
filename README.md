@@ -43,3 +43,7 @@ resources:
   features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 - [Fumadocs](https://fumadocs.dev) - learn about Fumadocs
+
+
+
+Nowadays, we need editable landing pages, manageable blog content, updatable portfolios, and more. Capsulo helps you build these easier, with less vendor lock-in.
