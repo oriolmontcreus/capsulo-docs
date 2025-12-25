@@ -62,7 +62,8 @@ Building content-driven websites shouldn't require complex configuration or lear
 
 - **GitHub-Native**: Your content lives in your repository, versioned and backed up automatically with Git.
 Dont stress about databases, servers, or content versioning ever again.
-- **Zero Infrastructure**: Deploy to any static host for free. No servers to maintain, no databases to manage.
+- **Zero Infrastructure**: Deploy to any static host for free. No servers to maintain, no databases to manage. By default, Capsulo is **100% static**, which is why it can be hosted anywhere—even at zero cost—using providers that offer free hosting for static content.
+- **100% Open Source**: Capsulo is fully open source. Anyone can fork it and use it as a template to build a custom CMS that perfectly fits their specific requirements.
 
 ### 2. Control
 
@@ -81,5 +82,6 @@ Note that you need somewhere to host your images. Capsulo is powered by Cloudfla
 Speed matters for both developers and end users. Capsulo delivers performance through:
 
 - **Static-First Architecture**: Unlike traditional server-dependent CMS platforms, Capsulo uses a static-first approach powered by [Astro](https://astro.build/). This also translates into better SEO.
+- **Flexibility**: <span className='underline underline-offset-2 dark:decoration-neutral-600 decoration-neutral-400'>While it's 100% static by default, you aren't locked in.</span> You can opt out of a full static setup and connect your own backend, APIs, or other services if your project grows beyond static needs.
 - **Build-Time Optimization**: Your data gets injected directly into your pages, so at the end you just have a bunch of static HTML and CSS. By default we dont ship any JS to the client unless you explicitly want to. <br/> <span className='text-fd-muted-foreground'>Learn more here:</span> [Astro feature: Zero JS by default](https://docs.astro.build/en/concepts/why-astro/#features)
 - **Blazing Fast**: No database queries, no server processing. Capsulo will already handle stuff like image optimization, caching, and CDN distribution for you.
