@@ -25,6 +25,9 @@
       ],
       "@/.source": [
         ".source"
+      ],
+      "@/capsulo.config": [
+        "./capsulo.config.ts"
       ]
     },
     "plugins": [
