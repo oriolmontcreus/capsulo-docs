@@ -54,14 +54,6 @@ export const InputField: React.FC<InputFieldProps> = React.memo(({ field, value,
     }
   };
 
-  const handleVariableSelect = (key: string) => {
-    // Append the selected variable key and closing brace
-    // We assume the user just typed "{{" so we append "key}}" 
-    // Result: "{{key}}"
-    onChange(textValue + key + '}}');
-    setShowGlobalSelect(false);
-  };
-
   // Get the step value
   const getStep = () => {
     if (field.step !== undefined) return field.step;

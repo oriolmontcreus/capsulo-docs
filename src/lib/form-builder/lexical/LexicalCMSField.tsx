@@ -282,7 +282,7 @@ function KeyboardNavigationPlugin({
 const LEXICAL_INITIAL_CONFIG = {
     namespace: 'CMSField',
     theme: {
-        paragraph: 'mb-1',
+        paragraph: 'm-0',
         text: {
             bold: 'font-bold',
             italic: 'italic',
@@ -296,7 +296,7 @@ const LEXICAL_INITIAL_CONFIG = {
 const LEXICAL_DIFF_CONFIG = {
     namespace: 'CMSFieldDiff',
     theme: {
-        paragraph: 'mb-1',
+        paragraph: 'm-0',
         text: {
             bold: 'font-bold',
             italic: 'italic',
@@ -496,10 +496,10 @@ const EditorInner: React.FC<LexicalCMSFieldProps & { value: string }> = ({
                             contentEditable={
                                 <ContentEditable
                                     className={cn(
-                                        "absolute inset-0 w-full h-full px-3 py-1 text-sm outline-none selection:bg-primary selection:text-primary-foreground",
+                                        "w-full h-full px-3 py-2 text-sm outline-none selection:bg-primary selection:text-primary-foreground",
                                         unstyled && "relative h-auto px-0 py-0 inset-auto",
                                         multiline
-                                            ? "align-top relative"
+                                            ? "relative min-h-[inherit]"
                                             : "overflow-x-auto overflow-y-hidden whitespace-nowrap! scrollbar-hide [&_p]:inline! [&_p]:m-0! [&_p]:whitespace-nowrap! [&_span]:whitespace-nowrap! flex items-center",
                                         inputClassName
                                     )}
