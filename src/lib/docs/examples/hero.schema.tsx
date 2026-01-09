@@ -33,13 +33,6 @@ export const HeroSchema = createSchema(
                     .type('email')
                     .placeholder('Enter a valid email')
                     .defaultValue('test@example.com'),
-
-                RichEditor('test_rich')
-                    .label('Rich editor')
-                    .description('Supporting text that provides more context about your offering')
-                    .translatable()
-                    .placeholder('Supporting text')
-                    .defaultValue('A content management system for developers'),
             ])
             .tab('Call to Action', [
                 Input('ctaButton')

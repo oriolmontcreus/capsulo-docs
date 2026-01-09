@@ -155,7 +155,7 @@ export const SchemaRenderer: React.FC<SchemaRendererProps> = ({
 
   return (
     <DocsProvider>
-      <div className={cn("rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden", className)}>
+      <div className={cn("w-full rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden", className)}>
         {/* Header */}
         <div className="flex items-center gap-3 px-6 py-5 border-b bg-muted/50">
           {styledIcon && (
