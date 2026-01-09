@@ -5,9 +5,6 @@ description: A deep dive into Capsulo's philosophy, architecture, and the proble
 
 import { Callout } from 'fumadocs-ui/components/callout';
 import { Preview } from "@/components/preview.mdx";
-import { InputField } from "@/components/fields/Input/input.field.tsx";
-import { TextareaField } from "@/components/fields/Textarea/textarea.field.tsx";
-import { SwitchField } from "@/components/fields/Switch/switch.field.tsx";
 
 ## The story
 
@@ -31,34 +28,7 @@ Building content-driven websites shouldn't require complex configuration or lear
 
 - **Schema-as-Code**: Write your content schemas using familiar React/TSX components with a Fluent API.
 
-<Preview>
-  <div className="space-y-8 max-w-sm w-full">
-    <InputField 
-      field={{ 
-        name: "title", 
-        label: "Title",
-        required: true,
-        inputType: "text",
-        placeholder: "Enter the article title"
-      }} 
-    />
-    <TextareaField
-      field={{ 
-        name: "subtitle", 
-        label: "Subtitle",
-        placeholder: "Enter the article subtitle",
-        maxLength: 100
-      }} />
-    <SwitchField
-      field={{ 
-        name: "published", 
-        label: "Published",
-        description: "Is the article published?"
-      }} />
-  </div>
-
-  <include>../snippets/schema-example.mdx</include>
-</Preview>
+TODO: SHOW PREVIEW HERE
 
 - **GitHub-Native**: Your content lives in your repository, versioned and backed up automatically with Git.
 Dont stress about databases, servers, or content versioning ever again.
