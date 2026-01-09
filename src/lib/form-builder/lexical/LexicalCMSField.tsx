@@ -172,18 +172,21 @@ function AutocompletePlugin({ onTrigger }: { onTrigger: (query: string | null, r
                 const match = textBefore.match(/\{\{([a-zA-Z0-9_]*)$/);
 
                 if (match) {
-                    let rect: DOMRect | null = null;
-                    try {
-                        const domSelection = window.getSelection();
-                        if (domSelection && domSelection.rangeCount > 0) {
-                            const domRange = domSelection.getRangeAt(0);
-                            rect = domRange.getBoundingClientRect();
+                    // Use requestAnimationFrame to ensure the DOM is updated and selection is accurate
+                    requestAnimationFrame(() => {
+                        let rect: DOMRect | null = null;
+                        try {
+                            const domSelection = window.getSelection();
+                            if (domSelection && domSelection.rangeCount > 0) {
+                                const domRange = domSelection.getRangeAt(0);
+                                rect = domRange.getBoundingClientRect();
+                            }
+                        } catch (e) {
+                            // Fallback if selection API fails
                         }
-                    } catch (error) {
-                        // Silently handle any selection-related errors
-                        console.warn('Error getting selection range:', error);
-                    }
-                    onTrigger(match[1], rect);
+
+                        onTrigger(match[1], rect);
+                    });
                 } else {
                     onTrigger(null, null);
                 }

@@ -38,10 +38,13 @@ export const GlobalVariableSelect: React.FC<GlobalVariableSelectProps> = ({
     const lastAnchorRectRef = useRef<DOMRect | null>(null);
 
     // Cache the last valid anchorRect to prevent jumping when closing
-    if (anchorRect) {
+    // A valid rect should have at least some non-zero coordinate or dimension
+    const isValidRect = anchorRect && (anchorRect.top !== 0 || anchorRect.left !== 0 || anchorRect.width !== 0 || anchorRect.height !== 0);
+
+    if (isValidRect) {
         lastAnchorRectRef.current = anchorRect;
     }
-    const effectiveAnchorRect = anchorRect || lastAnchorRectRef.current;
+    const effectiveAnchorRect = (isValidRect ? anchorRect : null) || lastAnchorRectRef.current;
 
     // Create a virtual ref for the anchor
     const virtualRef = useRef({
