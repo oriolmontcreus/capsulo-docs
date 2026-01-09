@@ -172,18 +172,18 @@ function AutocompletePlugin({ onTrigger }: { onTrigger: (query: string | null, r
                 if (match) {
                     // Use requestAnimationFrame to ensure the DOM is updated and selection is accurate
                     requestAnimationFrame(() => {
-                    let rect: DOMRect | null = null;
-                    try {
-                        const domSelection = window.getSelection();
-                        if (domSelection && domSelection.rangeCount > 0) {
-                            const domRange = domSelection.getRangeAt(0);
-                            rect = domRange.getBoundingClientRect();
-                        }
+                        let rect: DOMRect | null = null;
+                        try {
+                            const domSelection = window.getSelection();
+                            if (domSelection && domSelection.rangeCount > 0) {
+                                const domRange = domSelection.getRangeAt(0);
+                                rect = domRange.getBoundingClientRect();
+                            }
                         } catch (e) {
                             // Fallback if selection API fails
-                    }
+                        }
 
-                    onTrigger(match[1], rect);
+                        onTrigger(match[1], rect);
                     });
                 } else {
                     onTrigger(null, null);
@@ -494,11 +494,12 @@ const EditorInner: React.FC<LexicalCMSFieldProps & { value: string }> = ({
                             contentEditable={
                                 <ContentEditable
                                     className={cn(
-                                        "absolute inset-0 w-full h-full px-3 py-1 text-sm outline-none selection:bg-primary selection:text-primary-foreground",
+                                        "not-prose w-full px-3 py-2 text-sm outline-none selection:bg-primary selection:text-primary-foreground",
+                                        !multiline && "absolute inset-0 h-full",
                                         unstyled && "relative h-auto px-0 py-0 inset-auto",
                                         multiline
-                                            ? "align-top relative"
-                                            : "overflow-x-auto overflow-y-hidden !whitespace-nowrap scrollbar-hide [&_p]:!inline [&_p]:!m-0 [&_p]:!whitespace-nowrap [&_span]:!whitespace-nowrap flex items-center",
+                                            ? "relative block min-h-[inherit]"
+                                            : "overflow-x-auto overflow-y-hidden whitespace-nowrap! scrollbar-hide [&_p]:inline! [&_p]:m-0! [&_p]:whitespace-nowrap! [&_span]:whitespace-nowrap! flex items-center",
                                         inputClassName
                                     )}
                                     style={{
