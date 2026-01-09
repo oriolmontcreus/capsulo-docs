@@ -118,7 +118,7 @@ function FieldLabel({
       className={cn(
         "group/field-label peer/field-label flex w-fit gap-1 leading-snug group-data-[disabled=true]/field:opacity-50",
         "has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col has-[>[data-slot=field]]:rounded-md has-[>[data-slot=field]]:border [&>*]:data-[slot=field]:p-4",
-        "has-data-[state=checked]:bg-primary/5 has-data-[state=checked]:border-primary dark:has-data-[state=checked]:bg-primary/10",
+        "has-data-[state=checked]:bg-primary/5 has-data-[state=checked]:border-primary dark:has-data-[state=checked]:bg-primary/10 min-h-[24px]",
         className
       )}
       {...props}
@@ -229,7 +229,7 @@ function FieldError({
       className={cn("flex items-center gap-2 text-destructive text-sm font-normal", className)}
       {...props}
     >
-      <AlertCircle className="h-4 w-4 shrink-0" />
+      <AlertCircle className="size-4 shrink-0" />
       {content}
     </div>
   )
