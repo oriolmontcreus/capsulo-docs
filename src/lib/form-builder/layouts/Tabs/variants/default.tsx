@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useCallback, useState, useEffect } from 'react';
 import type { TabsLayout } from '../tabs.types';
 import { ErrorCountBadge } from '../components/ErrorCountBadge';

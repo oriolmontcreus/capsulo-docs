@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * SchemaRenderer - A lightweight component for rendering CMS schemas in documentation.
  *
@@ -16,6 +18,8 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import type { Field, Schema, DataField } from '@/lib/form-builder/core/types';
 import { DocsFieldRenderer } from './DocsFieldRenderer';
+import { DocsProvider } from './DocsProvider';
+import '@/lib/form-builder/fields/FieldRegistry';
 
 // ============================================================================
 // TYPES
@@ -149,73 +153,75 @@ export const SchemaRenderer: React.FC<SchemaRendererProps> = ({
   }, [schema.fields]);
 
   return (
-    <div className={className}>
-      <div className="rounded-xl border border-border/50 bg-gradient-to-br from-zinc-800/80 to-zinc-900/90 overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center gap-3 px-6 py-5 border-b border-border/50 bg-zinc-900/50">
-          {styledIcon && (
-            <div className="flex items-center justify-center size-9 rounded-lg bg-primary/10 text-primary">
-              {styledIcon}
-            </div>
-          )}
-          <div>
-            <h3 className="text-lg font-semibold text-foreground">
-              {schema.name}
-            </h3>
-            {schema.description && (
-              <p className="text-sm text-muted-foreground mt-0.5">
-                {schema.description}
-              </p>
+    <DocsProvider>
+      <div className={className}>
+        <div className="rounded-xl border border-border/50 bg-gradient-to-br from-zinc-800/80 to-zinc-900/90 overflow-hidden">
+          {/* Header */}
+          <div className="flex items-center gap-3 px-6 py-5 border-b border-border/50 bg-zinc-900/50">
+            {styledIcon && (
+              <div className="flex items-center justify-center size-9 rounded-lg bg-primary/10 text-primary">
+                {styledIcon}
+              </div>
             )}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground">
+                {schema.name}
+              </h3>
+              {schema.description && (
+                <p className="text-sm text-muted-foreground mt-0.5">
+                  {schema.description}
+                </p>
+              )}
+            </div>
           </div>
-        </div>
 
-        {/* Body with fields */}
-        <div className="p-6">
-          <div className="space-y-5">
-            {schema.fields.map((field, index) => {
-              // Handle layouts (Grid, Tabs)
-              if (field.type === 'grid' || field.type === 'tabs') {
-                const layoutKey = `layout-${index}`;
-                const nestedDataFields = layoutFieldsMap[layoutKey] || [];
+          {/* Body with fields */}
+          <div className="p-6">
+            <div className="space-y-5">
+              {schema.fields.map((field, index) => {
+                // Handle layouts (Grid, Tabs)
+                if (field.type === 'grid' || field.type === 'tabs') {
+                  const layoutKey = `layout-${index}`;
+                  const nestedDataFields = layoutFieldsMap[layoutKey] || [];
 
-                // Map field names to their current values
-                const layoutValue: Record<string, unknown> = {};
-                nestedDataFields.forEach((dataField) => {
-                  layoutValue[dataField.name] = formData[dataField.name];
-                });
+                  // Map field names to their current values
+                  const layoutValue: Record<string, unknown> = {};
+                  nestedDataFields.forEach((dataField) => {
+                    layoutValue[dataField.name] = formData[dataField.name];
+                  });
 
-                return (
-                  <DocsFieldRenderer
-                    key={layoutKey}
-                    field={field}
-                    value={layoutValue}
-                    onChange={handleLayoutChange}
-                    formData={formData as Record<string, any>}
-                  />
-                );
-              }
+                  return (
+                    <DocsFieldRenderer
+                      key={layoutKey}
+                      field={field}
+                      value={layoutValue}
+                      onChange={handleLayoutChange}
+                      formData={formData as Record<string, any>}
+                    />
+                  );
+                }
 
-              // Handle data fields
-              if ('name' in field) {
-                const dataField = field as DataField;
-                return (
-                  <DocsFieldRenderer
-                    key={dataField.name}
-                    field={field}
-                    value={formData[dataField.name]}
-                    onChange={(value: unknown) => handleFieldChange(dataField.name, value)}
-                    formData={formData as Record<string, any>}
-                  />
-                );
-              }
+                // Handle data fields
+                if ('name' in field) {
+                  const dataField = field as DataField;
+                  return (
+                    <DocsFieldRenderer
+                      key={dataField.name}
+                      field={field}
+                      value={formData[dataField.name]}
+                      onChange={(value: unknown) => handleFieldChange(dataField.name, value)}
+                      formData={formData as Record<string, any>}
+                    />
+                  );
+                }
 
-              return null;
-            })}
+                return null;
+              })}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </DocsProvider>
   );
 };
 

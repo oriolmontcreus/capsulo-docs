@@ -1,3 +1,5 @@
+'use client';
+
 import React, { createContext, useContext, useCallback, useSyncExternalStore } from 'react';
 import { useTranslation } from './TranslationContext';
 import * as translationStore from './translation-store';

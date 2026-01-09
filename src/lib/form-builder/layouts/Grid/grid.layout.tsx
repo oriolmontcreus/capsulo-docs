@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useCallback } from 'react';
 import type { GridLayout } from './grid.types';
 import { FieldRenderer } from '../../core/FieldRenderer';
@@ -213,7 +215,7 @@ export const GridFieldComponent: React.FC<GridFieldProps> = ({ field, value, onC
 
             <div
                 data-grid-id={gridId}
-                className="grid [&>[role=group]]:w-auto [&>[role=group]>*]:w-full"
+                className="grid *:[[role=group]]:w-auto *:[[role=group]>*]:w-full"
                 style={getGridStyles()}
             >
                 {field.fields.map((childField, index) => {

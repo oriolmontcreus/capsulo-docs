@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useCallback } from 'react';
 import type { RepeaterField as RepeaterFieldType } from '../repeater.types';
 import { FieldRenderer } from '../../../core/FieldRenderer';

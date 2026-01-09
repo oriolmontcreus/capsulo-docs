@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import type { RepeaterField as RepeaterFieldType } from '../repeater.types';
 import { FieldLabel } from '../../../components/FieldLabel';

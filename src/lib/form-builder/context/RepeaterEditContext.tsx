@@ -1,3 +1,5 @@
+'use client';
+
 import React, { createContext, useContext, useState, useCallback, useMemo } from 'react';
 import type { RepeaterField } from '../fields/Repeater/repeater.types';
 

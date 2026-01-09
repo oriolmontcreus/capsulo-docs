@@ -1,6 +1,9 @@
+'use client';
+
 import React, { useCallback, useState, useRef, useEffect } from 'react';
 import type { FileUploadField as FileUploadFieldType, FileUploadValue, QueuedFile } from './fileUpload.types';
-import { Field, FieldLabel, FieldDescription, FieldError } from '@/components/ui/field';
+import { Field, FieldDescription, FieldError } from '@/components/ui/field';
+import { FieldLabel } from '../../components/FieldLabel';
 import { useUploadManager } from './uploadManager';
 import { validateFiles, getValidationErrorMessage, createSanitizedFile, checkUploadSupport, createGracefulDegradationMessage } from './fileUpload.utils';
 import { FileUploadDropZone, FileUploadError, FileUploadList, SvgEditorModal } from './components';
@@ -18,6 +21,7 @@ interface FileUploadFieldProps {
     onChange: (value: FileUploadValue) => void;
     error?: string;
     componentData?: ComponentData;
+    formData?: Record<string, any>;
 }
 
 export const FileUploadField: React.FC<FileUploadFieldProps> = React.memo(({
@@ -25,7 +29,8 @@ export const FileUploadField: React.FC<FileUploadFieldProps> = React.memo(({
     value,
     onChange,
     error,
-    componentData
+    componentData,
+    formData
 }) => {
     const [isDragOver, setIsDragOver] = useState(false);
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
@@ -539,7 +544,12 @@ export const FileUploadField: React.FC<FileUploadFieldProps> = React.memo(({
 
     return (
         <Field data-invalid={!!displayError}>
-            <FieldLabel htmlFor={field.name} required={field.required}>
+            <FieldLabel
+                htmlFor={field.name}
+                required={field.required}
+                formData={formData}
+                componentData={componentData}
+            >
                 {field.label || field.name}
             </FieldLabel>
 

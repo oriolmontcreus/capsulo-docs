@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin';
@@ -495,7 +497,7 @@ const EditorInner: React.FC<LexicalCMSFieldProps & { value: string }> = ({
                                         unstyled && "relative h-auto px-0 py-0 inset-auto",
                                         multiline
                                             ? "align-top relative"
-                                            : "overflow-x-auto overflow-y-hidden !whitespace-nowrap scrollbar-hide [&_p]:!inline [&_p]:!m-0 [&_p]:!whitespace-nowrap [&_span]:!whitespace-nowrap flex items-center",
+                                            : "overflow-x-auto overflow-y-hidden whitespace-nowrap! scrollbar-hide [&_p]:inline! [&_p]:m-0! [&_p]:whitespace-nowrap! [&_span]:whitespace-nowrap! flex items-center",
                                         inputClassName
                                     )}
                                     style={{

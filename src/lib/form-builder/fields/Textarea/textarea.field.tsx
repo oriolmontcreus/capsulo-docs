@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import type { TextareaField as TextareaFieldType } from './textarea.types';
 import { Field, FieldDescription, FieldError } from '@/components/ui/field';

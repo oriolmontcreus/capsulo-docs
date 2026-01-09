@@ -1,4 +1,4 @@
-
+'use client';
 
 import React, { useEffect, useRef } from 'react';
 import type { VariableItem } from '../types';
@@ -102,7 +102,7 @@ export const GlobalVariableSelect: React.FC<GlobalVariableSelectProps> = ({
                                             onClick={() => onSelect(item)}
                                         >
                                             <div className="flex items-center gap-2 w-full overflow-hidden">
-                                                <span className="flex-shrink-0 flex items-center justify-center w-5 h-5 rounded text-xs font-bold bg-blue-200 text-blue-700 dark:bg-blue-800/40 dark:text-blue-300">
+                                                <span className="shrink-0 flex items-center justify-center w-5 h-5 rounded text-xs font-bold bg-blue-200 text-blue-700 dark:bg-blue-800/40 dark:text-blue-300">
                                                     G
                                                 </span>
                                                 <span className="font-medium truncate">{item.key}</span>

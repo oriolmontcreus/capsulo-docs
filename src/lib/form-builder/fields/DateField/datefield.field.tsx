@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import type { DateField as DateFieldType } from './datefield.types';
 import type { ComponentData } from '../../core/types';
@@ -321,7 +323,7 @@ export const DateFieldComponent: React.FC<DateFieldProps> = React.memo(({
                         variant="outline"
                         id={field.name}
                         className={cn(
-                            "w-full justify-between font-normal bg-input hover:!bg-input dark:bg-input dark:hover:!bg-input"
+                            "w-full justify-between font-normal bg-input hover:bg-input! dark:bg-input dark:hover:bg-input!"
                         )}
                     >
                         {formatDate(dateValue)}

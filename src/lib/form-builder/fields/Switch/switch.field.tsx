@@ -1,7 +1,10 @@
+'use client';
+
 import React from 'react';
 import type { SwitchField as SwitchFieldType } from './switch.types';
 import { Switch as SwitchUI } from '@/components/ui/switch';
-import { Field, FieldLabel, FieldDescription, FieldError } from '@/components/ui/field';
+import { Field, FieldDescription, FieldError } from '@/components/ui/field';
+import { FieldLabel } from '../../components/FieldLabel';
 
 interface SwitchFieldProps {
     field: SwitchFieldType;
@@ -30,7 +33,7 @@ export const SwitchField: React.FC<SwitchFieldProps> = React.memo(({ field, valu
                             aria-invalid={!!error}
                         />
 
-                        <FieldLabel htmlFor={field.name} required={field.required}>
+                        <FieldLabel htmlFor={field.name} required={field.required} formData={value}>
                             {field.label || field.name}
                         </FieldLabel>
                     </div>

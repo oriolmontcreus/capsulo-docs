@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * DocsFieldRenderer - A simplified field renderer for documentation purposes.
  * 
@@ -7,6 +9,7 @@
 
 import React from 'react';
 import type { Field } from '@/lib/form-builder/core/types';
+import '@/lib/form-builder/fields/FieldRegistry';
 
 // Import field components directly
 import { InputField } from '@/lib/form-builder/fields/Input/input.field';
@@ -16,6 +19,8 @@ import { SwitchField } from '@/lib/form-builder/fields/Switch/switch.field';
 import { ColorPickerField } from '@/lib/form-builder/fields/ColorPicker/colorpicker.field';
 import { DateFieldComponent } from '@/lib/form-builder/fields/DateField/datefield.field';
 import { RepeaterField } from '@/lib/form-builder/fields/Repeater/repeater.field';
+import { RichEditorField } from '@/lib/form-builder/fields/RichEditor/richeditor.field';
+import { FileUploadField } from '@/lib/form-builder/fields/FileUpload/fileUpload.field';
 import { GridFieldComponent } from '@/lib/form-builder/layouts/Grid/grid.layout';
 import { TabsFieldComponent } from '@/lib/form-builder/layouts/Tabs/tabs.layout';
 
@@ -34,6 +39,8 @@ const fieldComponentMap: Record<string, React.ComponentType<any>> = {
   colorpicker: ColorPickerField,
   datefield: DateFieldComponent,
   repeater: RepeaterField,
+  richeditor: RichEditorField,
+  fileUpload: FileUploadField,
   grid: GridFieldComponent,
   tabs: TabsFieldComponent,
 };

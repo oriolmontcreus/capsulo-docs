@@ -1,6 +1,9 @@
+'use client';
+
 import React from 'react';
 import type { SelectField as SelectFieldType } from './select.types';
-import { Field, FieldLabel, FieldDescription, FieldError } from '@/components/ui/field';
+import { Field, FieldDescription, FieldError } from '@/components/ui/field';
+import { FieldLabel } from '../../components/FieldLabel';
 import {
   Select,
   SelectContent,
@@ -102,9 +105,9 @@ export const SelectField: React.FC<SelectFieldProps> = React.memo(({ field, valu
         aria-expanded={open}
         aria-invalid={!!error}
         className={cn(
-          "w-full justify-between font-normal h-9 !border-border/60 !bg-input hover:!bg-input",
+          "w-full justify-between font-normal h-9 border-border/60! bg-input! hover:bg-input!",
           !value && "text-muted-foreground",
-          hasAddon ? "!shadow-none focus-visible:!ring-0 focus-visible:!ring-offset-0 !px-0" : "bg-input"
+          hasAddon ? "shadow-none! focus-visible:ring-0! focus-visible:ring-offset-0! px-0!" : "bg-input"
         )}
       >
         <span className="flex items-center gap-2 flex-1 overflow-hidden">
@@ -125,7 +128,7 @@ export const SelectField: React.FC<SelectFieldProps> = React.memo(({ field, valu
 
     return (
       <Field data-invalid={!!error}>
-        <FieldLabel htmlFor={field.name} required={isRequired}>
+        <FieldLabel htmlFor={field.name} required={isRequired} formData={formData}>
           {field.label || field.name}
         </FieldLabel>
         {hasAddon ? (
@@ -307,7 +310,7 @@ export const SelectField: React.FC<SelectFieldProps> = React.memo(({ field, valu
   // Render regular select
   return (
     <Field data-invalid={!!error}>
-      <FieldLabel htmlFor={field.name} required={isRequired}>
+      <FieldLabel htmlFor={field.name} required={isRequired} formData={formData}>
         {field.label || field.name}
       </FieldLabel>
       {hasAddon ? (

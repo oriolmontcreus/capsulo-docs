@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import type { InputField as InputFieldType } from './input.types';
 import { Input as InputUI } from '@/components/ui/input';

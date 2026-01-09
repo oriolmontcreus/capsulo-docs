@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import type { Field } from '../core/types';
 import { useTranslationOptional } from '../context/TranslationContext';

@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import type { TabsLayout } from './tabs.types';
 import { DefaultTabsVariant } from './variants/default';
