@@ -54,11 +54,9 @@ export function ComponentPreview({
           </div>
         </TabsContent>
         <TabsContent value="code" className="mt-0">
-          <div className="flex flex-col space-y-4">
-             <ScrollArea className="h-[350px] w-full rounded-md border bg-muted/50 [&_pre]:my-0 [&_pre]:h-full [&_pre]:overflow-visible">
-               {code}
-             </ScrollArea>
-          </div>
+          <ScrollArea className="h-[350px] w-full [&_pre]:my-0 [&_pre]:h-full [&_pre]:overflow-visible">
+            {code}
+          </ScrollArea>
         </TabsContent>
       </Tabs>
     </div>
