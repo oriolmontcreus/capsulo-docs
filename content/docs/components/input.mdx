@@ -12,7 +12,7 @@ import {
   PrefixSuffixInputSchema,
   ValidationInputSchema
 } from "@/lib/docs/examples/input.examples";
-import { Preview } from "@/components/preview.mdx";
+import { ComponentPreview } from "@/components/component-preview";
 
 The `Input` field is used to capture text, numbers, emails, passwords, and other single-line values. It supports various configurations including validation, prefixes, suffixes, and different input types.
 
@@ -54,7 +54,7 @@ The `Input` builder provides a fluent API to configure the field.
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-<Preview>
+<ComponentPreview>
   <SchemaRenderer schema={BasicInputSchema} />
 
   ```typescript
@@ -62,9 +62,9 @@ The `Input` builder provides a fluent API to configure the field.
     .label('Username')
     .placeholder('Enter your username')
   ```
-</Preview>
+</ComponentPreview>
 
-<Preview>
+<ComponentPreview>
   <SchemaRenderer schema={EmailInputSchema} />
 
   ```tsx
@@ -76,9 +76,9 @@ The `Input` builder provides a fluent API to configure the field.
     .placeholder('john@example.com')
     .prefix(<Mail className="size-4" />)
   ```
-</Preview>
+</ComponentPreview>
 
-<Preview>
+<ComponentPreview>
   <SchemaRenderer schema={PasswordInputSchema} />
 
   ```tsx
@@ -90,9 +90,9 @@ The `Input` builder provides a fluent API to configure the field.
     .placeholder('Enter your password')
     .prefix(<Lock className="size-4" />)
   ```
-</Preview>
+</ComponentPreview>
 
-<Preview>
+<ComponentPreview>
   <SchemaRenderer schema={NumberInputSchema} />
 
   ```typescript
@@ -103,9 +103,9 @@ The `Input` builder provides a fluent API to configure the field.
     .max(100)
     .defaultValue('1')
   ```
-</Preview>
+</ComponentPreview>
 
-<Preview>
+<ComponentPreview>
   <SchemaRenderer schema={PrefixSuffixInputSchema} />
 
   ```tsx
@@ -119,9 +119,9 @@ The `Input` builder provides a fluent API to configure the field.
     .allowDecimals(true)
     .step(0.01)
   ```
-</Preview>
+</ComponentPreview>
 
-<Preview>
+<ComponentPreview>
   <SchemaRenderer schema={ValidationInputSchema} />
 
   ```typescript
@@ -131,6 +131,6 @@ The `Input` builder provides a fluent API to configure the field.
     .minLength(10)
     .maxLength(50)
   ```
-</Preview>
+</ComponentPreview>
 
 </div>

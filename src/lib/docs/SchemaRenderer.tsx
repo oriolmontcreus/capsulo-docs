@@ -157,18 +157,18 @@ export const SchemaRenderer: React.FC<SchemaRendererProps> = ({
     <DocsProvider>
       <div className={cn("w-full rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden", className)}>
         {/* Header */}
-        <div className="flex items-center gap-3 px-6 py-5 border-b bg-muted/50">
+        <div className="flex items-center gap-3 px-4 py-3 border-b bg-muted/50">
           {styledIcon && (
-            <div className="flex items-center justify-center size-9 rounded-lg bg-primary/10 text-primary">
+            <div className="flex items-center justify-center size-8 rounded-lg bg-primary/10 text-primary">
               {styledIcon}
             </div>
           )}
           <div>
-            <h3 className="text-lg font-semibold leading-none tracking-tight">
+            <h3 className="text-base font-semibold leading-none tracking-tight">
               {schema.name}
             </h3>
             {schema.description && (
-              <p className="text-sm text-muted-foreground mt-1.5">
+              <p className="text-xs text-muted-foreground mt-1">
                 {schema.description}
               </p>
             )}
@@ -176,7 +176,7 @@ export const SchemaRenderer: React.FC<SchemaRendererProps> = ({
         </div>
 
         {/* Body with fields */}
-        <div className="p-6 pt-8">
+        <div className="p-4 pt-6">
           <div className="grid gap-6">
             {schema.fields.map((field, index) => {
               // Handle layouts (Grid, Tabs)
