@@ -13,6 +13,7 @@ import {
   ValidationInputSchema
 } from "@/lib/docs/examples/input.examples";
 import { ComponentPreview } from "@/components/component-preview";
+import { TypeTable } from 'fumadocs-ui/components/type-table';
 
 The `Input` field is used to capture text, numbers, emails, passwords, and other single-line values. It supports various configurations including validation, prefixes, suffixes, and different input types.
 
@@ -29,26 +30,88 @@ Input('fieldName')
 
 The `Input` builder provides a fluent API to configure the field.
 
-| Method | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `label(value)` | `string` | - | Sets the label of the input field. |
-| `description(value)` | `string` | - | Adds a helper description below the field. |
-| `placeholder(value)` | `string` | - | Sets the placeholder text. |
-| `required(value)` | `boolean` \| `function` | `true` | Marks the field as required. Can be conditional. |
-| `defaultValue(value)` | `string` | - | Sets the initial value of the field. |
-| `type(value)` | `'text'` \| `'email'` \| `'url'` \| `'password'` \| `'number'` | `'text'` | Sets the HTML input type. |
-| `prefix(value)` | `ReactNode` | - | Adds an element (icon or text) to the start of the input. |
-| `suffix(value)` | `ReactNode` | - | Adds an element (icon or text) to the end of the input. |
-| `minLength(value)` | `number` | - | Sets the minimum number of characters. |
-| `maxLength(value)` | `number` | - | Sets the maximum number of characters. |
-| `min(value)` | `number` | - | Sets the minimum numeric value (for number inputs). |
-| `max(value)` | `number` | - | Sets the maximum numeric value (for number inputs). |
-| `step(value)` | `number` | - | Sets the step interval (for number inputs). |
-| `allowDecimals(value)` | `boolean` | `true` | Allows decimal numbers (for number inputs). |
-| `regex(value)` | `string` \| `RegExp` | - | Validates the input against a regular expression. |
-| `translatable(value)` | `boolean` | `true` | Enables translation for this field. |
-| `showInTable(value)` | `boolean` | `true` | Shows this field in the collection table view. |
-| `hidden(value)` | `boolean` \| `function` | `false` | Hides the field conditionally. |
+<TypeTable
+  type={{
+    label: {
+      description: 'Sets the label of the input field.',
+      type: 'string',
+    },
+    description: {
+      description: 'Adds a helper description below the field.',
+      type: 'string',
+    },
+    placeholder: {
+      description: 'Sets the placeholder text.',
+      type: 'string',
+    },
+    required: {
+      description: 'Marks the field as required. Can be conditional.',
+      type: 'boolean | function',
+      default: 'true',
+    },
+    defaultValue: {
+      description: 'Sets the initial value of the field.',
+      type: 'string',
+    },
+    type: {
+      description: 'Sets the HTML input type.',
+      type: "'text' | 'email' | 'url' | 'password' | 'number'",
+      default: "'text'",
+    },
+    prefix: {
+      description: 'Adds an element (icon or text) to the start of the input.',
+      type: 'ReactNode',
+    },
+    suffix: {
+      description: 'Adds an element (icon or text) to the end of the input.',
+      type: 'ReactNode',
+    },
+    minLength: {
+      description: 'Sets the minimum number of characters.',
+      type: 'number',
+    },
+    maxLength: {
+      description: 'Sets the maximum number of characters.',
+      type: 'number',
+    },
+    min: {
+      description: 'Sets the minimum numeric value (for number inputs).',
+      type: 'number',
+    },
+    max: {
+      description: 'Sets the maximum numeric value (for number inputs).',
+      type: 'number',
+    },
+    step: {
+      description: 'Sets the step interval (for number inputs).',
+      type: 'number',
+    },
+    allowDecimals: {
+      description: 'Allows decimal numbers (for number inputs).',
+      type: 'boolean',
+      default: 'true',
+    },
+    regex: {
+      description: 'Validates the input against a regular expression.',
+      type: 'string | RegExp',
+    },
+    translatable: {
+      description: 'Enables translation for this field.',
+      type: 'boolean',
+      default: 'true',
+    },
+    showInTable: {
+      description: 'Shows this field in the collection table view.',
+      type: 'boolean',
+      default: 'true',
+    },
+    hidden: {
+      description: 'Hides the field conditionally.',
+      type: 'boolean | function',
+      default: 'false',
+    },
+  }}
+/>
 
 ## Examples
 
