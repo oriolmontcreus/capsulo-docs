@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -54,9 +55,9 @@ export function ComponentPreview({
         </TabsContent>
         <TabsContent value="code" className="mt-0">
           <div className="flex flex-col space-y-4">
-            <div className="w-full rounded-md [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto">
-              {code}
-            </div>
+             <ScrollArea className="h-[350px] w-full rounded-md border bg-muted/50 [&_pre]:my-0 [&_pre]:h-full [&_pre]:overflow-visible">
+               {code}
+             </ScrollArea>
           </div>
         </TabsContent>
       </Tabs>

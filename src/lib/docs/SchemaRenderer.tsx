@@ -130,18 +130,6 @@ export const SchemaRenderer: React.FC<SchemaRendererProps> = ({
     [onValuesChange]
   );
 
-  // Clone icon with proper styling
-  const styledIcon = useMemo(() => {
-    if (!schema.icon) return null;
-    if (React.isValidElement<{ className?: string }>(schema.icon)) {
-      const existingClassName = schema.icon.props.className || '';
-      return React.cloneElement(schema.icon, {
-        className: `size-5 ${existingClassName}`.trim(),
-      });
-    }
-    return schema.icon;
-  }, [schema.icon]);
-
   // Pre-compute layout field values
   const layoutFieldsMap = useMemo(() => {
     const map: Record<string, DataField[]> = {};
@@ -155,68 +143,56 @@ export const SchemaRenderer: React.FC<SchemaRendererProps> = ({
 
   return (
     <DocsProvider>
-      <div className={cn("w-full rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden", className)}>
-        {/* Header */}
-        <div className="flex items-center gap-3 px-4 py-3 border-b bg-muted/50">
-          {styledIcon && (
-            <div className="flex items-center justify-center size-8 rounded-lg bg-primary/10 text-primary">
-              {styledIcon}
+      <div className={cn("w-full mb-6", className)}>
+        {/* Title outside */}
+        <h3 className="text-lg font-semibold mb-3">
+          {schema.name}
+        </h3>
+
+        {/* Card Body with fields */}
+        <div className="w-full rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
+          <div className="p-4">
+            <div className="grid gap-6">
+              {schema.fields.map((field, index) => {
+                // Handle layouts (Grid, Tabs)
+                if (field.type === 'grid' || field.type === 'tabs') {
+                  const layoutKey = `layout-${index}`;
+                  const nestedDataFields = layoutFieldsMap[layoutKey] || [];
+
+                  // Map field names to their current values
+                  const layoutValue: Record<string, unknown> = {};
+                  nestedDataFields.forEach((dataField) => {
+                    layoutValue[dataField.name] = formData[dataField.name];
+                  });
+
+                  return (
+                    <DocsFieldRenderer
+                      key={layoutKey}
+                      field={field}
+                      value={layoutValue}
+                      onChange={handleLayoutChange}
+                      formData={formData as Record<string, any>}
+                    />
+                  );
+                }
+
+                // Handle data fields
+                if ('name' in field) {
+                  const dataField = field as DataField;
+                  return (
+                    <DocsFieldRenderer
+                      key={dataField.name}
+                      field={field}
+                      value={formData[dataField.name]}
+                      onChange={(value: unknown) => handleFieldChange(dataField.name, value)}
+                      formData={formData as Record<string, any>}
+                    />
+                  );
+                }
+
+                return null;
+              })}
             </div>
-          )}
-          <div>
-            <h3 className="text-base font-semibold leading-none tracking-tight">
-              {schema.name}
-            </h3>
-            {schema.description && (
-              <p className="text-xs text-muted-foreground mt-1">
-                {schema.description}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Body with fields */}
-        <div className="p-4 pt-6">
-          <div className="grid gap-6">
-            {schema.fields.map((field, index) => {
-              // Handle layouts (Grid, Tabs)
-              if (field.type === 'grid' || field.type === 'tabs') {
-                const layoutKey = `layout-${index}`;
-                const nestedDataFields = layoutFieldsMap[layoutKey] || [];
-
-                // Map field names to their current values
-                const layoutValue: Record<string, unknown> = {};
-                nestedDataFields.forEach((dataField) => {
-                  layoutValue[dataField.name] = formData[dataField.name];
-                });
-
-                return (
-                  <DocsFieldRenderer
-                    key={layoutKey}
-                    field={field}
-                    value={layoutValue}
-                    onChange={handleLayoutChange}
-                    formData={formData as Record<string, any>}
-                  />
-                );
-              }
-
-              // Handle data fields
-              if ('name' in field) {
-                const dataField = field as DataField;
-                return (
-                  <DocsFieldRenderer
-                    key={dataField.name}
-                    field={field}
-                    value={formData[dataField.name]}
-                    onChange={(value: unknown) => handleFieldChange(dataField.name, value)}
-                    formData={formData as Record<string, any>}
-                  />
-                );
-              }
-
-              return null;
-            })}
           </div>
         </div>
       </div>
