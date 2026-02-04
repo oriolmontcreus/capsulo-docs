@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import type { InputField as InputFieldType } from './input.types';
 import { Input as InputUI } from '@/components/ui/input';
@@ -52,6 +50,14 @@ export const InputField: React.FC<InputFieldProps> = React.memo(({ field, value,
     } else {
       onChange(val);
     }
+  };
+
+  const handleVariableSelect = (key: string) => {
+    // Append the selected variable key and closing brace
+    // We assume the user just typed "{{" so we append "key}}" 
+    // Result: "{{key}}"
+    onChange(textValue + key + '}}');
+    setShowGlobalSelect(false);
   };
 
   // Get the step value
@@ -140,6 +146,7 @@ export const InputField: React.FC<InputFieldProps> = React.memo(({ field, value,
                 locale={locale}
                 diffMode={diffMode}
                 diffOldValue={diffOldValue}
+                unstyled={true}
               />
             )}
           </div>
@@ -180,5 +187,3 @@ export const InputField: React.FC<InputFieldProps> = React.memo(({ field, value,
     prevProps.diffOldValue === nextProps.diffOldValue &&
     prevProps.componentData === nextProps.componentData;
 });
-
-

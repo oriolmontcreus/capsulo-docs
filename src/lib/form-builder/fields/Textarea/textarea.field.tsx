@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import type { TextareaField as TextareaFieldType } from './textarea.types';
 import { Field, FieldDescription, FieldError } from '@/components/ui/field';
@@ -95,6 +93,7 @@ export const TextareaField: React.FC<TextareaFieldProps> = React.memo(({ field, 
               locale={locale}
               diffMode={diffMode}
               diffOldValue={diffOldValue}
+              unstyled={true}
             />
             {hasSuffix && (
               <div className={cn(
