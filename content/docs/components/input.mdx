@@ -1,0 +1,199 @@
+---
+title: Input
+description: A fundamental component for capturing user text input.
+---
+
+import { SchemaRenderer } from "@/lib/docs/SchemaRenderer";
+import {
+  BasicInputSchema,
+  EmailInputSchema,
+  PasswordInputSchema,
+  NumberInputSchema,
+  PrefixSuffixInputSchema,
+  ValidationInputSchema
+} from "@/lib/docs/examples/input.examples";
+import { ComponentPreview } from "@/components/component-preview";
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+
+The `Input` field is used to capture text, numbers, emails, passwords, and other single-line values. It supports various configurations including validation, prefixes, suffixes, and different input types.
+
+## Usage
+
+```typescript
+import { Input } from '@/lib/form-builder/fields/Input/input.builder';
+
+Input('fieldName')
+  .label('Field Label')
+```
+
+## API Reference
+
+The `Input` builder provides a fluent API to configure the field.
+
+<TypeTable
+  type={{
+    label: {
+      description: 'Sets the label of the input field.',
+      type: 'string',
+    },
+    description: {
+      description: 'Adds a helper description below the field.',
+      type: 'string',
+    },
+    placeholder: {
+      description: 'Sets the placeholder text.',
+      type: 'string',
+    },
+    required: {
+      description: 'Marks the field as required. Can be conditional.',
+      type: 'boolean | function',
+      default: 'true',
+    },
+    defaultValue: {
+      description: 'Sets the initial value of the field.',
+      type: 'string',
+    },
+    type: {
+      description: 'Sets the HTML input type.',
+      type: "'text' | 'email' | 'url' | 'password' | 'number'",
+      default: "'text'",
+    },
+    prefix: {
+      description: 'Adds an element (icon or text) to the start of the input.',
+      type: 'ReactNode',
+    },
+    suffix: {
+      description: 'Adds an element (icon or text) to the end of the input.',
+      type: 'ReactNode',
+    },
+    minLength: {
+      description: 'Sets the minimum number of characters.',
+      type: 'number',
+    },
+    maxLength: {
+      description: 'Sets the maximum number of characters.',
+      type: 'number',
+    },
+    min: {
+      description: 'Sets the minimum numeric value (for number inputs).',
+      type: 'number',
+    },
+    max: {
+      description: 'Sets the maximum numeric value (for number inputs).',
+      type: 'number',
+    },
+    step: {
+      description: 'Sets the step interval (for number inputs).',
+      type: 'number',
+    },
+    allowDecimals: {
+      description: 'Allows decimal numbers (for number inputs).',
+      type: 'boolean',
+      default: 'true',
+    },
+    regex: {
+      description: 'Validates the input against a regular expression.',
+      type: 'string | RegExp',
+    },
+    translatable: {
+      description: 'Enables translation for this field.',
+      type: 'boolean',
+      default: 'true',
+    },
+    showInTable: {
+      description: 'Shows this field in the collection table view.',
+      type: 'boolean',
+      default: 'true',
+    },
+    hidden: {
+      description: 'Hides the field conditionally.',
+      type: 'boolean | function',
+      default: 'false',
+    },
+  }}
+/>
+
+## Examples
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+<ComponentPreview>
+  <SchemaRenderer schema={BasicInputSchema} />
+
+  ```typescript
+  Input('username')
+    .label('Username')
+    .placeholder('Enter your username')
+  ```
+</ComponentPreview>
+
+<ComponentPreview>
+  <SchemaRenderer schema={EmailInputSchema} />
+
+  ```tsx
+  import { Mail } from 'lucide-react';
+
+  Input('email')
+    .label('Email Address')
+    .type('email')
+    .placeholder('john@example.com')
+    .prefix(<Mail className="size-4" />)
+  ```
+</ComponentPreview>
+
+<ComponentPreview>
+  <SchemaRenderer schema={PasswordInputSchema} />
+
+  ```tsx
+  import { Lock } from 'lucide-react';
+
+  Input('password')
+    .label('Password')
+    .type('password')
+    .placeholder('Enter your password')
+    .prefix(<Lock className="size-4" />)
+  ```
+</ComponentPreview>
+
+<ComponentPreview>
+  <SchemaRenderer schema={NumberInputSchema} />
+
+  ```typescript
+  Input('quantity')
+    .label('Quantity')
+    .type('number')
+    .min(0)
+    .max(100)
+    .defaultValue('1')
+  ```
+</ComponentPreview>
+
+<ComponentPreview>
+  <SchemaRenderer schema={PrefixSuffixInputSchema} />
+
+  ```tsx
+  import { DollarSign } from 'lucide-react';
+
+  Input('price')
+    .label('Price')
+    .type('number')
+    .prefix(<DollarSign className="size-4" />)
+    .suffix(<span className="text-sm">USD</span>)
+    .allowDecimals(true)
+    .step(0.01)
+  ```
+</ComponentPreview>
+
+<ComponentPreview>
+  <SchemaRenderer schema={ValidationInputSchema} />
+
+  ```typescript
+  Input('bio')
+    .label('Short Bio')
+    .description('Between 10 and 50 characters')
+    .minLength(10)
+    .maxLength(50)
+  ```
+</ComponentPreview>
+
+</div>

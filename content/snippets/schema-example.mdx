@@ -1,0 +1,24 @@
+---
+title: Schema Example
+description: This is the schema example in page "What is Capsulo?"
+---
+
+```tsx lineNumbers
+// [!code word:Input]
+// [!code word:Textarea]
+// [!code word:Switch]
+Input('title')
+  .label('Title')
+  .required()
+  .placeholder('Enter the article title')
+
+Textarea('subtitle')
+  .label('Subtitle')
+  .maxLength(100)
+  .placeholder('Enter the article subtitle')
+  .defaultValue('A content management system for developers')
+
+Switch('published')
+  .label('Published')
+  .description('Is the article published?')
+```
