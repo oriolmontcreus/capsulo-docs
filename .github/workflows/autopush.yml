@@ -1,0 +1,25 @@
+name: Sync to Open Source
+
+on:
+  schedule:
+    - cron: '22 18 * * *'
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    if: github.repository == 'oriolmontcreus/capsulo-docs-bunker' 
+    
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del Bunker
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false 
+
+      - name: Push al Open Source Publico
+        env:
+          API_TOKEN: ${{ secrets.TARGET_REPO_TOKEN }}
+          TARGET_URL: "github.com/oriolmontcreus/capsulo-docs.git"
+        run: |
+          git push --mirror "https://git:$API_TOKEN@$TARGET_URL"
