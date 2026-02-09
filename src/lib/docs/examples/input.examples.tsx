@@ -1,6 +1,6 @@
 import { createSchema } from '@/lib/form-builder/builders/SchemaBuilder';
 import { Input } from '@/lib/form-builder/fields/Input/input.builder';
-import { Mail, Lock, User, Search, DollarSign } from 'lucide-react';
+import { Mail, Lock, DollarSign } from 'lucide-react';
 
 export const BasicInputSchema = createSchema(
   'Basic Input',

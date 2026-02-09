@@ -43,21 +43,21 @@ export function ComponentPreview({
         <Dialog>
           <DialogTrigger asChild>
             <Button
-              variant="outline"
+              variant="ghost"
               size="icon"
-              className="absolute right-4 top-4 z-10 opacity-0 transition-opacity group-hover:opacity-100 h-8 w-8"
+              className="absolute right-4 top-4 z-10 opacity-0 transition-opacity group-hover:opacity-100 size-8 duration-150 ease-in-out cursor-pointer"
             >
-              <Code className="h-4 w-4" />
+              <Code className="size-4" />
               <span className="sr-only">View code</span>
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-3xl max-h-[80vh]">
+          <DialogContent className="min-h-[80vh] min-w-[80vw]">
             <DialogHeader>
               <DialogTitle>Manual Code</DialogTitle>
             </DialogHeader>
-            <ScrollArea className="h-[60vh] w-full [&_pre]:my-0 [&_pre]:overflow-visible">
+            <div className="h-full overflow-auto">
               {code}
-            </ScrollArea>
+            </div>
           </DialogContent>
         </Dialog>
 
