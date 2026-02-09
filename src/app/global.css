@@ -198,3 +198,19 @@ code .highlighted-word {
 .dark code .highlighted-word {
   color: rgb(251 146 60) !important;
 }
+
+h1 {
+  @apply scroll-m-24 text-3xl font-medium tracking-tight sm:text-3xl;
+}
+
+h2 {
+  @apply mt-10 scroll-m-28 text-xl font-normal tracking-tight first:mt-0 lg:mt-12;
+}
+
+h3 {
+  @apply mt-10 scroll-m-28 text-xl font-normal tracking-tight first:mt-0 lg:mt-12;
+}
+
+#toc-title {
+  @apply text-sm
+}
