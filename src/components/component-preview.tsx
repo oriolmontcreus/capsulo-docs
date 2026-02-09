@@ -29,6 +29,11 @@ export function ComponentPreview({
 }: ComponentPreviewProps) {
   const [preview, code] = React.Children.toArray(children);
 
+  // Extract schema name from SchemaRenderer if available
+  const schemaName = React.isValidElement(preview) && (preview.props as { schema?: { name?: string } })?.schema?.name
+    ? (preview.props as { schema: { name: string } }).schema.name
+    : "Manual Code";
+
   return (
     <div
       className={cn(
@@ -53,7 +58,7 @@ export function ComponentPreview({
           </DialogTrigger>
           <DialogContent className="min-h-[80vh] min-w-[80vw]">
             <DialogHeader>
-              <DialogTitle>Manual Code</DialogTitle>
+              <DialogTitle>{schemaName}</DialogTitle>
             </DialogHeader>
             <div className="h-full overflow-auto">
               {code}
