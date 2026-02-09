@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 /**
  * SchemaRenderer - A lightweight component for rendering CMS schemas in documentation.
@@ -15,19 +15,19 @@
  * ```
  */
 
-import React, { useState, useCallback, useMemo } from 'react';
-import type { Field, Schema, DataField } from '@/lib/form-builder/core/types';
-import { DocsFieldRenderer } from './DocsFieldRenderer';
-import { DocsProvider } from './DocsProvider';
-import { cn } from '@/lib/utils';
-import '@/lib/form-builder/fields/FieldRegistry';
+import React, { useState, useCallback, useMemo } from "react";
+import type { Field, Schema, DataField } from "@/lib/form-builder/core/types";
+import { DocsFieldRenderer } from "./DocsFieldRenderer";
+import { DocsProvider } from "./DocsProvider";
+import { cn } from "@/lib/utils";
+import "@/lib/form-builder/fields/FieldRegistry";
 
 // ============================================================================
 // TYPES
 // ============================================================================
 
 interface GridLayout {
-  type: 'grid';
+  type: "grid";
   columns: number;
   fields: Field[];
   gap?: number;
@@ -40,7 +40,7 @@ interface TabConfig {
 }
 
 interface TabsLayout {
-  type: 'tabs';
+  type: "tabs";
   tabs: TabConfig[];
 }
 
@@ -53,9 +53,9 @@ type Layout = GridLayout | TabsLayout;
 function flattenFields(fields: Field[]): DataField[] {
   const result: DataField[] = [];
   for (const field of fields) {
-    if (field.type === 'grid') {
+    if (field.type === "grid") {
       result.push(...flattenFields((field as GridLayout).fields));
-    } else if (field.type === 'tabs') {
+    } else if (field.type === "tabs") {
       for (const tab of (field as TabsLayout).tabs) {
         result.push(...flattenFields(tab.fields));
       }
@@ -71,12 +71,12 @@ function initializeFormData(fields: Field[]): Record<string, unknown> {
   const flat = flattenFields(fields);
   for (const field of flat) {
     const f = field as DataField & { defaultValue?: unknown };
-    if (field.type === 'switch') {
+    if (field.type === "switch") {
       data[field.name] = f.defaultValue ?? false;
-    } else if (field.type === 'fileUpload') {
+    } else if (field.type === "fileUpload") {
       data[field.name] = f.defaultValue ?? { files: [] };
     } else {
-      data[field.name] = f.defaultValue ?? '';
+      data[field.name] = f.defaultValue ?? "";
     }
   }
   return data;
@@ -116,7 +116,7 @@ export const SchemaRenderer: React.FC<SchemaRendererProps> = ({
         return updated;
       });
     },
-    [onValuesChange]
+    [onValuesChange],
   );
 
   const handleLayoutChange = useCallback(
@@ -127,14 +127,14 @@ export const SchemaRenderer: React.FC<SchemaRendererProps> = ({
         return updated;
       });
     },
-    [onValuesChange]
+    [onValuesChange],
   );
 
   // Pre-compute layout field values
   const layoutFieldsMap = useMemo(() => {
     const map: Record<string, DataField[]> = {};
     schema.fields.forEach((field, index) => {
-      if (field.type === 'grid' || field.type === 'tabs') {
+      if (field.type === "grid" || field.type === "tabs") {
         map[`layout-${index}`] = flattenFields([field]);
       }
     });
@@ -145,17 +145,15 @@ export const SchemaRenderer: React.FC<SchemaRendererProps> = ({
     <DocsProvider>
       <div className={cn("w-full mb-6", className)}>
         {/* Title outside */}
-        <h3 className="text-lg font-semibold mb-3">
-          {schema.name}
-        </h3>
+        <h3 className="text-lg font-light mb-3">{schema.name}</h3>
 
         {/* Card Body with fields */}
-        <div className="w-full rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
+        <div className="w-full text-card-foreground">
           <div className="p-4">
             <div className="grid gap-6">
               {schema.fields.map((field, index) => {
                 // Handle layouts (Grid, Tabs)
-                if (field.type === 'grid' || field.type === 'tabs') {
+                if (field.type === "grid" || field.type === "tabs") {
                   const layoutKey = `layout-${index}`;
                   const nestedDataFields = layoutFieldsMap[layoutKey] || [];
 
@@ -177,14 +175,16 @@ export const SchemaRenderer: React.FC<SchemaRendererProps> = ({
                 }
 
                 // Handle data fields
-                if ('name' in field) {
+                if ("name" in field) {
                   const dataField = field as DataField;
                   return (
                     <DocsFieldRenderer
                       key={dataField.name}
                       field={field}
                       value={formData[dataField.name]}
-                      onChange={(value: unknown) => handleFieldChange(dataField.name, value)}
+                      onChange={(value: unknown) =>
+                        handleFieldChange(dataField.name, value)
+                      }
                       formData={formData as Record<string, any>}
                     />
                   );
