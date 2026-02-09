@@ -68,7 +68,7 @@ export function ComponentPreview({
             "items-start": align === "start",
             "items-end": align === "end",
             "min-h-[350px] p-10": showMargin,
-            "min-h-0 p-6": !showMargin,
+            "min-h-0 p-6 py-0": !showMargin,
           })}
         >
           {preview}
