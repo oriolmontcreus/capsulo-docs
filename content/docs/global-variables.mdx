@@ -1,0 +1,268 @@
+---
+title: Global Variables
+description: Learn how to define, inject, and use global variables across your CMS and frontend.
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TypeTable } from '@/components/type-table';
+
+Global variables provide a centralized way to manage site-wide settings like site name, contact information, social media links, and other reusable content.
+
+<Callout type="info">
+**Key Features:**
+- Define once in the globals schema
+- Edit through the CMS admin interface
+- Inject anywhere using `{{variableName}}` syntax
+- Access in code via utility functions
+- Fully localized with multi-language support
+</Callout>
+
+## Architecture
+
+The global variables system consists of four key components:
+
+1. **Schema Definition** — Defines the structure and fields for global variables
+2. **Storage & Loading** — Fetches global data from `/api/cms/globals/load` with caching
+3. **CMS Field Integration** — Lexical editor with autocomplete for `{{variableName}}`
+4. **Frontend Resolution** — Automatically resolves `{{variableName}}` placeholders
+
+### Data flow
+
+```
+┌─────────────────────┐
+│  globals.schema.tsx │  ← Define variables
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│   CMS Admin UI      │  ← Edit values
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  /api/cms/globals/  │  ← Store/Load
+│       load          │
+└──────────┬──────────┘
+           │
+           ├──────────────────┐
+           │                  │
+           ▼                  ▼
+┌─────────────────────┐  ┌──────────────────┐
+│  LexicalCMSField    │  │  Frontend Utils  │
+│  (CMS Editor)       │  │  (Astro/React)   │
+└─────────────────────┘  └──────────────────┘
+```
+
+## Adding new global variables
+
+Edit `src/config/globals/globals.schema.tsx`:
+
+```tsx
+import { Input } from '@/lib/form-builder/fields';
+import { createSchema } from '@/lib/form-builder/builders/SchemaBuilder';
+import { Globe } from 'lucide-react';
+
+export const GlobalsSchema = createSchema(
+    'Global Variables',
+    [
+        Input('siteName')
+            .label('Site Name')
+            .description('The name of your website')
+            .required()
+            .translatable()  // Enables multi-language support
+            .defaultValue('My Awesome Site'),
+
+        Input('siteEmail')
+            .label('Contact Email')
+            .type('email')
+            .description('Primary contact email address')
+            .defaultValue('contact@example.com'),
+
+        Input('companyName')
+            .label('Company Name')
+            .description('Your company or organization name')
+            .translatable()
+            .defaultValue(''),
+    ],
+    'Global site-wide settings',
+    'globals',
+    <Globe size={18} />,
+);
+```
+
+<Callout>
+You can use any CMS field type (Input, Textarea, Select, Checkbox, Number, Date, FileInput, etc.). 
+
+Use `.translatable()` to enable multi-language support for a field.
+</Callout>
+
+## Using variables in CMS fields
+
+Any Input or Textarea field automatically supports global variable injection.
+
+### Autocomplete
+
+1. Type `{{` in any Input or Textarea field
+2. Autocomplete menu appears with available variables
+3. Navigate with arrow keys and select with Enter
+4. Variable inserted as `{{variableName}}`
+
+### Example
+
+```tsx
+import { Input, Textarea } from '@/lib/form-builder/fields';
+
+Input('pageTitle')
+    .label('Page Title')
+    .defaultValue('Welcome to {{siteName}}'),
+
+Textarea('welcomeMessage')
+    .label('Welcome Message')
+    .defaultValue('Contact us at {{siteEmail}}'),
+```
+
+## Using variables in frontend
+
+<Tabs items={['Astro Context', 'Auto Resolution', 'React Hook']}>
+
+<Tab value="Astro Context">
+
+The recommended way to access global variables in Astro components:
+
+```astro
+---
+import { getGlobalsFromContext } from '@/lib/cms-context';
+import type { GlobalsSchemaData } from '@/config/globals/globals.schema.d';
+
+const globals = getGlobalsFromContext<GlobalsSchemaData>();
+---
+
+<header>
+    <h1>{globals?.siteName}</h1>
+    <p>Contact: {globals?.siteEmail}</p>
+</header>
+```
+
+</Tab>
+
+<Tab value="Auto Resolution">
+
+Variables in CMS content are automatically resolved when loaded:
+
+```tsx
+// In your component schema
+Input('heroTitle')
+    .defaultValue('Welcome to {{siteName}}')
+
+// When loaded in frontend, automatically becomes:
+// "Welcome to My Awesome Site"
+```
+
+</Tab>
+
+<Tab value="React Hook">
+
+For React components within the CMS:
+
+```tsx
+import { useGlobalVariables } from '@/lib/form-builder/lexical/hooks/useGlobalVariables';
+
+function MyReactComponent() {
+    const variables = useGlobalVariables();
+    const siteName = variables.find(v => v.key === 'siteName')?.value;
+    
+    return <h1>{siteName}</h1>;
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## API reference
+
+<TypeTable
+  type={{
+    'loadGlobalVariables()': {
+      description: 'Loads global variables from the API with caching.',
+      type: '() => Promise<GlobalData | null>',
+    },
+    'useGlobalVariables(contextLocale?)': {
+      description: 'React hook for accessing global variables in CMS components.',
+      type: '(contextLocale?: string) => VariableItem[]',
+    },
+    'getGlobalsFromContext<T>()': {
+      description: 'Gets global variables from CMS context for Astro components.',
+      type: '<T = Record<string, any>>() => T | null',
+    },
+  }}
+/>
+
+### Type definitions
+
+```typescript
+type VariableItem = {
+    key: string;        // Variable name (e.g., 'siteName')
+    value: string;      // Display value (localized if applicable)
+    scope: 'Global';
+};
+
+interface GlobalData {
+    variables: GlobalVariableItem[];
+}
+
+interface GlobalVariableItem {
+    id: string;
+    data: Record<string, any>;
+}
+```
+
+## Best practices
+
+### Use descriptive variable names
+
+```tsx
+// ✅ Good
+Input('companyPhoneNumber')
+Input('primaryContactEmail')
+Input('copyrightYear')
+
+// ❌ Avoid
+Input('phone')  // Too generic
+Input('email')  // Which email?
+```
+
+### Provide default values
+
+```tsx
+Input('siteName')
+    .defaultValue('My Site')  // Prevents empty values
+```
+
+<Callout type="warn">
+**Common Pitfalls:**
+- Forgetting to add `.translatable()` for multi-language content
+- Using overly generic variable names that cause confusion
+- Not providing default values, leading to empty strings in production
+</Callout>
+
+## Troubleshooting
+
+### Variables not appearing in autocomplete
+
+- Ensure the variable is defined in `globals.schema.tsx`
+- Check that the CMS admin has saved values for the global variables
+- Verify the API endpoint `/api/cms/globals/load` is accessible
+
+### Variables not resolving in frontend
+
+- Confirm `setCMSContext()` is called in your layout
+- Check that the variable name matches exactly (case-sensitive)
+- Verify the variable has a value set in the CMS admin
+
+### Localization not working
+
+- Ensure `.translatable()` is set on the field definition
+- Check that translations exist for all required locales
+- Verify the correct locale is being passed to the context
