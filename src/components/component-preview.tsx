@@ -1,36 +1,44 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Code } from "lucide-react"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Button } from "@/components/ui/button"
+import * as React from "react";
+import { Code } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { cn } from "@/lib/utils"
+} from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
-  align?: "center" | "start" | "end"
+  align?: "center" | "start" | "end";
+  showBorder?: boolean;
+  showMargin?: boolean;
 }
 
 export function ComponentPreview({
   children,
   className,
   align = "center",
+  showBorder = true,
+  showMargin = true,
   ...props
 }: ComponentPreviewProps) {
-  const [preview, code] = React.Children.toArray(children)
+  const [preview, code] = React.Children.toArray(children);
 
   return (
     <div
-      className={cn("group relative my-4 flex flex-col space-y-2", className)}
+      className={cn(
+        "group relative flex flex-col",
+        showMargin && "my-4 space-y-2",
+        className
+      )}
       {...props}
     >
-      <div className="relative rounded-md border">
+      <div className={cn("relative", showBorder && "border")}>
         {/* Code Icon Button - appears on hover */}
         <Dialog>
           <DialogTrigger asChild>
@@ -55,18 +63,17 @@ export function ComponentPreview({
 
         {/* Preview Area */}
         <div
-          className={cn(
-            "flex min-h-[350px] items-center justify-center p-10",
-            {
-              "items-center": align === "center",
-              "items-start": align === "start",
-              "items-end": align === "end",
-            }
-          )}
+          className={cn("flex items-center justify-center", {
+            "items-center": align === "center",
+            "items-start": align === "start",
+            "items-end": align === "end",
+            "min-h-[350px] p-10": showMargin,
+            "min-h-0 p-6": !showMargin,
+          })}
         >
           {preview}
         </div>
       </div>
     </div>
-  )
+  );
 }
