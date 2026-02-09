@@ -4,6 +4,9 @@ description: A deep dive into Capsulo's philosophy, architecture, and the proble
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
+import { SchemaRenderer } from "@/lib/docs/SchemaRenderer";
+import { HeroSchema } from "@/lib/docs/examples/hero.schema";
+import { ComponentPreview } from "@/components/component-preview";
 
 ## The story
 
@@ -27,7 +30,34 @@ Building content-driven websites shouldn't require complex configuration or lear
 
 - **Schema-as-Code**: Write your content schemas using familiar React/TSX components with a Fluent API.
 
-TODO: SHOW PREVIEW HERE
+<ComponentPreview>
+  <SchemaRenderer schema={HeroSchema} />
+
+  ```tsx
+  createSchema('Hero', [
+    Input('title')
+      .label('Hero title')
+      .description('The main headline')
+      .required()
+      .translatable()
+      .defaultValue('Welcome to Capsulo'),
+
+    Textarea('subtitle')
+      .label('Subtitle')
+      .rows(3)
+      .translatable()
+      .defaultValue('A content management system for developers'),
+
+    Select('ctaLinkType')
+      .label('CTA link type')
+      .options([
+        { label: 'Internal Page', value: 'internal' },
+        { label: 'External URL', value: 'external' },
+      ])
+      .defaultValue('internal'),
+  ])
+  ```
+</ComponentPreview>
 
 - **GitHub-Native**: Your content lives in your repository, versioned and backed up automatically with Git.
 Dont stress about databases, servers, or content versioning ever again.
