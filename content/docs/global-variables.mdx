@@ -9,15 +9,6 @@ import { TypeTable } from '@/components/type-table';
 
 Global variables provide a centralized way to manage site-wide settings like site name, contact information, social media links, and other reusable content.
 
-<Callout type="info">
-**Key Features:**
-- Define once in the globals schema
-- Edit through the CMS admin interface
-- Inject anywhere using `{{variableName}}` syntax
-- Access in code via utility functions
-- Fully localized with multi-language support
-</Callout>
-
 ## Architecture
 
 The global variables system consists of four key components:
@@ -239,13 +230,6 @@ Input('email')  // Which email?
 Input('siteName')
     .defaultValue('My Site')  // Prevents empty values
 ```
-
-<Callout type="warn">
-**Common Pitfalls:**
-- Forgetting to add `.translatable()` for multi-language content
-- Using overly generic variable names that cause confusion
-- Not providing default values, leading to empty strings in production
-</Callout>
 
 ## Troubleshooting
 
