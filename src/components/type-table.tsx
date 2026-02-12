@@ -59,7 +59,7 @@ const fieldVariants = cva("text-fd-muted-foreground not-prose pe-2");
 
 export function TypeTable({ type }: { type: Record<string, TypeNode> }) {
   return (
-    <div className="@container flex flex-col p-1 bg-fd-card text-fd-card-foreground rounded-2xl border my-6 text-sm overflow-hidden">
+    <div className="@container flex flex-col p-1 bg-fd-card text-fd-card-foreground rounded-none border my-6 text-sm overflow-hidden">
       <div className="flex font-medium items-center px-3 py-1 not-prose text-fd-muted-foreground">
         <p className="w-[25%]">Prop</p>
         <p className="@max-xl:hidden">Type</p>
@@ -95,7 +95,7 @@ function Item({
       open={open}
       onOpenChange={setOpen}
       className={cn(
-        "rounded-xl border overflow-hidden transition-all",
+        "rounded-none border overflow-hidden transition-all",
         open
           ? "shadow-sm bg-fd-background not-last:mb-2"
           : "border-transparent",
