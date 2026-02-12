@@ -3,7 +3,7 @@ title: What is Capsulo
 description: A deep dive into Capsulo's philosophy, architecture, and the problems it solves.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+import { Callout } from "@/components/callout";
 import { SchemaRenderer } from "@/lib/docs/SchemaRenderer";
 import { HeroSchema } from "@/lib/docs/examples/hero.schema";
 import { ComponentPreview } from "@/components/component-preview";
@@ -12,6 +12,7 @@ import { ComponentPreview } from "@/components/component-preview";
 
 Hey! I'm Oriol M, the creator of Capsulo.
 Everything started because I was tired of:
+
 - Having to [reinvent the wheel](https://en.wikipedia.org/wiki/Reinventing_the_wheel) every time I wanted to build a content-driven website.
 - The hassle of deploying the project when it was all done
 - Those platforms who force you into their way of doing things, with little flexibility, or that even worse, you have to pay a fortune for basic features.
@@ -33,34 +34,35 @@ Building content-driven websites shouldn't require complex configuration or lear
 <ComponentPreview>
   <SchemaRenderer schema={HeroSchema} />
 
-  ```tsx
-  createSchema('Hero', [
-    Input('title')
-      .label('Hero title')
-      .description('The main headline')
-      .required()
-      .translatable()
-      .defaultValue('Welcome to Capsulo'),
+```tsx
+createSchema("Hero", [
+  Input("title")
+    .label("Hero title")
+    .description("The main headline")
+    .required()
+    .translatable()
+    .defaultValue("Welcome to Capsulo"),
 
-    Textarea('subtitle')
-      .label('Subtitle')
-      .rows(3)
-      .translatable()
-      .defaultValue('A content management system for developers'),
+  Textarea("subtitle")
+    .label("Subtitle")
+    .rows(3)
+    .translatable()
+    .defaultValue("A content management system for developers"),
 
-    Select('ctaLinkType')
-      .label('CTA link type')
-      .options([
-        { label: 'Internal Page', value: 'internal' },
-        { label: 'External URL', value: 'external' },
-      ])
-      .defaultValue('internal'),
-  ])
-  ```
+  Select("ctaLinkType")
+    .label("CTA link type")
+    .options([
+      { label: "Internal Page", value: "internal" },
+      { label: "External URL", value: "external" },
+    ])
+    .defaultValue("internal"),
+]);
+```
+
 </ComponentPreview>
 
 - **GitHub-Native**: Your content lives in your repository, versioned and backed up automatically with Git.
-Dont stress about databases, servers, or content versioning ever again.
+  Dont stress about databases, servers, or content versioning ever again.
 - **Zero Infrastructure**: Deploy to any static host for free. No servers to maintain, no databases to manage. By default, Capsulo is **100% static**, which is why it can be hosted anywhere—even at zero cost—using providers that offer free hosting for static content.
 - **100% Open Source**: Capsulo is fully open source. Anyone can fork it and use it as a template to build a custom CMS that perfectly fits their specific requirements.
 
@@ -72,8 +74,9 @@ You own your content and control every aspect of how it works. Capsulo gives you
 - **Type Safety**: Built with TypeScript and Zod for automatic type inference and runtime validation. This ensures your content adheres to the defined schemas. <span className='text-fd-muted-foreground'> Ex: If you define an Input type as "email", Capsulo wont let you save anything else than a valid email.</span>
 - **No Lock-in**: Your content is stored in your repository as markdown and JSON. Switch frameworks or platforms anytime without losing your work.
 
-<Callout type="info">
-Note that you need somewhere to host your images. Capsulo is powered by Cloudflare R2 by default but can be switched to any other storage provider.
+<Callout type="info" title="Note">
+  You need somewhere to host your images. Capsulo is powered by Cloudflare R2 by
+  default but can be switched to any other storage provider.
 </Callout>
 
 ### 3. Performance
