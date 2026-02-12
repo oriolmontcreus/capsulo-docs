@@ -30,16 +30,18 @@ export function ComponentPreview({
   const [preview, code] = React.Children.toArray(children);
 
   // Extract schema name from SchemaRenderer if available
-  const schemaName = React.isValidElement(preview) && (preview.props as { schema?: { name?: string } })?.schema?.name
-    ? (preview.props as { schema: { name: string } }).schema.name
-    : "Manual Code";
+  const schemaName =
+    React.isValidElement(preview) &&
+    (preview.props as { schema?: { name?: string } })?.schema?.name
+      ? (preview.props as { schema: { name: string } }).schema.name
+      : "Manual Code";
 
   return (
     <div
       className={cn(
         "group relative flex flex-col",
         showMargin && "my-4 space-y-2",
-        className
+        className,
       )}
       {...props}
     >
@@ -60,9 +62,7 @@ export function ComponentPreview({
             <DialogHeader>
               <DialogTitle>{schemaName}</DialogTitle>
             </DialogHeader>
-            <div className="h-full overflow-auto">
-              {code}
-            </div>
+            <div className="h-full overflow-auto">{code}</div>
           </DialogContent>
         </Dialog>
 
@@ -73,7 +73,7 @@ export function ComponentPreview({
             "items-start": align === "start",
             "items-end": align === "end",
             "min-h-[350px] p-10": showMargin,
-            "min-h-0 p-6 py-0": !showMargin,
+            "min-h-0 p-6 pb-0 pt-8": !showMargin,
           })}
         >
           {preview}
