@@ -110,16 +110,19 @@ Switch("terms").label("Accept Terms and Conditions").required(true);
 
 </ComponentPreview>
 
-<ComponentPreview showMargin={false}>
+<ComponentPreview showMargin={false} className="col-span-full">
   <ConditionalFieldExample />
 
 ```typescript
 // [!code word:Switch]
-(Switch("hasDiscount").label("Apply Discount").defaultValue(false),
-  Input("discountCode")
-    .label("Discount Code")
-    .placeholder("Enter code")
-    .hidden((formData) => !formData?.hasDiscount));
+// [!code word:Input]
+    Switch("hasLink").label("Has link").defaultValue(false),
+    Input("link")
+      .label("Link")
+      .type("url")
+      .prefix("https://")
+      .required((formData) => formData?.hasLink)
+      .hidden((formData) => !formData?.hasLink),
 ```
 
 </ComponentPreview>
