@@ -9,11 +9,7 @@ export const BasicColorPickerSchema = createSchema(
 
 export const AlphaColorPickerSchema = createSchema(
   "With alpha channel",
-  [
-    ColorPicker("overlayColor")
-      .label("Overlay Color")
-      .showAlpha(true),
-  ],
+  [ColorPicker("overlayColor").label("Overlay Color").showAlpha(true)],
   "Color picker that supports transparency",
 );
 
@@ -22,14 +18,7 @@ export const PresetColorsColorPickerSchema = createSchema(
   [
     ColorPicker("brandColor")
       .label("Brand Color")
-      .presetColors([
-        "#FF0000",
-        "#00FF00",
-        "#0000FF",
-        "#FFFF00",
-        "#FF00FF",
-        "#00FFFF",
-      ]),
+      .presetColors(["#ef4444", "#f59e0b", "#eab308", "#10b981", "#3b82f6"]),
   ],
   "Color picker with predefined color options",
 );
@@ -42,4 +31,17 @@ export const DefaultValueColorPickerSchema = createSchema(
       .defaultValue("#3B82F6"),
   ],
   "Color picker pre-populated with a default color",
+);
+
+export const OnlyPresetsColorPickerSchema = createSchema(
+  "Only presets",
+  [
+    ColorPicker("accentColor")
+      .label("Accent Color")
+      .presetColors(
+        ["#0ea5e9", "#3b82f6", "#6366f1", "#8b5cf6", "#a855f7", "#d946ef"],
+        true,
+      ),
+  ],
+  "Color picker restricted to preset colors only",
 );
