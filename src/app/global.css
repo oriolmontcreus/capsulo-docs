@@ -92,6 +92,8 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --color-brand: var(--brand);
   --color-highlight: var(--highlight);
+  /* Fumadocs - https://www.fumadocs.dev/docs/ui/theme */
+  --color-fd-primary: var(--primary);
 }
 
 :root {
