@@ -73,11 +73,6 @@ export const ValidationInputSchema = createSchema(
 
 export const GlobalVariablesInputSchema = createSchema(
   "Global Variables",
-  [
-    Input("pageTitle")
-      .label("Title")
-      .description("Uses global variables like {{siteName}}")
-      .defaultValue("Welcome to {{siteName}}"),
-  ],
+  [Input("pageTitle").label("Title").defaultValue("Welcome to {{siteName}}")],
   "Input with global variable injection support",
 );
