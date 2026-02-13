@@ -1,0 +1,181 @@
+---
+title: Textarea
+description: A multi-line text input component for capturing longer user input.
+---
+
+import { SchemaRenderer } from "@/lib/docs/SchemaRenderer";
+import {
+  BasicTextareaSchema,
+  ValidationTextareaSchema,
+  AutoResizeTextareaSchema,
+  FixedSizeTextareaSchema,
+  PrefixSuffixTextareaSchema,
+} from "@/lib/docs/examples/textarea.examples";
+import { ComponentPreview } from "@/components/component-preview";
+import { TypeTable } from "@/components/type-table";
+
+The `Textarea` field is used to capture multi-line text input such as descriptions, comments, or longer form content. It supports various configurations including validation, auto-resizing, fixed dimensions, and prefix/suffix elements.
+
+## Usage
+
+```typescript
+import { Textarea } from "@/lib/form-builder/fields/Textarea/textarea.builder";
+```
+
+```typescript
+// [!code word:Textarea]
+Textarea("fieldName").label("Field Label");
+```
+
+## API
+
+The `Textarea` builder provides a fluent API to configure the field.
+
+<TypeTable
+  type={{
+    label: {
+      description: "Sets the label of the textarea field.",
+      type: "string",
+    },
+    description: {
+      description: "Adds a helper description below the field.",
+      type: "string",
+    },
+    placeholder: {
+      description: "Sets the placeholder text.",
+      type: "string",
+    },
+    required: {
+      description: "Marks the field as required. Can be conditional.",
+      type: "boolean | function",
+      default: "true",
+    },
+    defaultValue: {
+      description: "Sets the initial value of the field.",
+      type: "string",
+    },
+    rows: {
+      description: "Sets the initial number of visible rows.",
+      type: "number",
+    },
+    minLength: {
+      description: "Sets the minimum number of characters.",
+      type: "number",
+    },
+    maxLength: {
+      description: "Sets the maximum number of characters.",
+      type: "number",
+    },
+    prefix: {
+      description:
+        "Adds an element (icon or text) to the start of the textarea.",
+      type: "ReactNode",
+    },
+    suffix: {
+      description: "Adds an element (icon or text) to the end of the textarea.",
+      type: "ReactNode",
+    },
+    autoResize: {
+      description: "Enables automatic resizing based on content length.",
+      type: "boolean",
+      default: "true",
+    },
+    minRows: {
+      description: "Sets the minimum visible rows when autoResize is enabled.",
+      type: "number",
+    },
+    maxRows: {
+      description: "Sets the maximum rows before scrolling appears.",
+      type: "number",
+    },
+    resize: {
+      description: "Controls the textarea resize handle behavior.",
+      type: "'none' | 'vertical' | 'horizontal' | 'both'",
+      default: "'vertical'",
+    },
+    regex: {
+      description: "Validates the input against a regular expression.",
+      type: "string | RegExp",
+    },
+    translatable: {
+      description: "Enables translation for this field.",
+      type: "boolean",
+      default: "true",
+    },
+    showInTable: {
+      description: "Shows this field in the collection table view.",
+      type: "boolean",
+      default: "true",
+    },
+    hidden: {
+      description: "Hides the field conditionally.",
+      type: "boolean | function",
+      default: "false",
+    },
+  }}
+/>
+
+## Examples
+
+<div className="grid grid-cols-1 md:grid-cols-2 border overflow-hidden *:m-0 *:rounded-none [&>*>div]:border-0 [&>*>div]:m-0">
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={BasicTextareaSchema} />
+
+```typescript
+// [!code word:Textarea]
+Textarea("comment").label("Comment").placeholder("Enter your comment");
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={ValidationTextareaSchema} />
+
+```typescript
+// [!code word:Textarea]
+Textarea("bio")
+  .label("Bio")
+  .description("Between 50 and 500 characters")
+  .minLength(50)
+  .maxLength(500);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={AutoResizeTextareaSchema} />
+
+```typescript
+// [!code word:Textarea]
+Textarea("message").label("Message").autoResize(true).minRows(3).maxRows(8);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={FixedSizeTextareaSchema} />
+
+```typescript
+// [!code word:Textarea]
+Textarea("notes").label("Notes").rows(4).resize("none");
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-r">
+  <SchemaRenderer schema={PrefixSuffixTextareaSchema} />
+
+```tsx
+import { MessageCircle } from "lucide-react";
+
+// [!code word:Textarea]
+Textarea("feedback")
+  .label("Feedback")
+  .prefix(<MessageCircle className="size-4" />)
+  .suffix(<span className="text-sm">Optional</span>);
+```
+
+</ComponentPreview>
+
+</div>
