@@ -7,10 +7,10 @@ import { SchemaRenderer } from "@/lib/docs/SchemaRenderer";
 import {
   BasicInputSchema,
   EmailInputSchema,
-  PasswordInputSchema,
   NumberInputSchema,
   PrefixSuffixInputSchema,
   ValidationInputSchema,
+  GlobalVariablesInputSchema,
 } from "@/lib/docs/examples/input.examples";
 import { ComponentPreview } from "@/components/component-preview";
 import { TypeTable } from "@/components/type-table";
@@ -146,37 +146,21 @@ Input("email")
 </ComponentPreview>
 
 <ComponentPreview showMargin={false} className="border-b border-r">
-  <SchemaRenderer schema={PasswordInputSchema} />
+  <SchemaRenderer schema={GlobalVariablesInputSchema} />
 
 ```tsx
-import { Lock } from "lucide-react";
+import { Globe } from "lucide-react";
 
 // [!code word:Input]
-Input("password")
-  .label("Password")
-  .type("password")
-  .placeholder("Enter your password")
-  .prefix(<Lock className="size-4" />);
+Input("pageTitle")
+  .label("Title")
+  .description("Uses global variables like {{siteName}}")
+  .defaultValue("Welcome to {{siteName}}");
 ```
 
 </ComponentPreview>
 
 <ComponentPreview showMargin={false} className="border-b">
-  <SchemaRenderer schema={NumberInputSchema} />
-
-```typescript
-// [!code word:Input]
-Input("quantity")
-  .label("Quantity")
-  .type("number")
-  .min(0)
-  .max(100)
-  .defaultValue("1");
-```
-
-</ComponentPreview>
-
-<ComponentPreview showMargin={false} className="border-r">
   <SchemaRenderer schema={PrefixSuffixInputSchema} />
 
 ```tsx
