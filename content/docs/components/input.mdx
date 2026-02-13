@@ -116,23 +116,25 @@ The `Input` builder provides a fluent API to configure the field.
 
 ## Examples
 
-<div className="grid grid-cols-1 md:grid-cols-2 border border-gray-200 overflow-hidden *:m-0 *:rounded-none [&>*>div]:border-0 [&>*>div]:m-0">
+<div className="grid grid-cols-1 md:grid-cols-2 border overflow-hidden *:m-0 *:rounded-none [&>*>div]:border-0 [&>*>div]:m-0">
 
-<ComponentPreview showMargin={false} className="border-b border-r border-gray-200">
+<ComponentPreview showMargin={false} className="border-b border-r">
   <SchemaRenderer schema={BasicInputSchema} />
 
 ```typescript
+// [!code word:Input]
 Input("username").label("Username").placeholder("Enter your username");
 ```
 
 </ComponentPreview>
 
-<ComponentPreview showMargin={false} className="border-b border-gray-200">
+<ComponentPreview showMargin={false} className="border-b">
   <SchemaRenderer schema={EmailInputSchema} />
 
 ```tsx
 import { Mail } from "lucide-react";
 
+// [!code word:Input]
 Input("email")
   .label("Email Address")
   .type("email")
@@ -142,12 +144,13 @@ Input("email")
 
 </ComponentPreview>
 
-<ComponentPreview showMargin={false} className="border-b border-r border-gray-200">
+<ComponentPreview showMargin={false} className="border-b border-r">
   <SchemaRenderer schema={PasswordInputSchema} />
 
 ```tsx
 import { Lock } from "lucide-react";
 
+// [!code word:Input]
 Input("password")
   .label("Password")
   .type("password")
@@ -157,10 +160,11 @@ Input("password")
 
 </ComponentPreview>
 
-<ComponentPreview showMargin={false} className="border-b border-gray-200">
+<ComponentPreview showMargin={false} className="border-b">
   <SchemaRenderer schema={NumberInputSchema} />
 
 ```typescript
+// [!code word:Input]
 Input("quantity")
   .label("Quantity")
   .type("number")
@@ -171,12 +175,13 @@ Input("quantity")
 
 </ComponentPreview>
 
-<ComponentPreview showMargin={false} className="border-r border-gray-200">
+<ComponentPreview showMargin={false} className="border-r">
   <SchemaRenderer schema={PrefixSuffixInputSchema} />
 
 ```tsx
 import { DollarSign } from "lucide-react";
 
+// [!code word:Input]
 Input("price")
   .label("Price")
   .type("number")
@@ -192,6 +197,7 @@ Input("price")
   <SchemaRenderer schema={ValidationInputSchema} />
 
 ```typescript
+// [!code word:Input]
 Input("bio")
   .label("Short Bio")
   .description("Between 10 and 50 characters")
