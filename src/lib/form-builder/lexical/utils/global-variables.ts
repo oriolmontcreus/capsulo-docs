@@ -19,6 +19,33 @@ export const loadGlobalVariables = async (): Promise<GlobalData | null> => {
         return globalVariablesCache;
     }
 
+    // Check if we're in documentation environment (docs pages)
+    // This is a simple check - you can refine this based on your routing
+    const isDocsEnvironment = typeof window !== 'undefined' && 
+        (window.location.pathname.includes('/docs/') || 
+         window.location.hostname.includes('localhost') || 
+         process.env.NODE_ENV === 'development');
+
+    if (isDocsEnvironment) {
+        // Return mock data for documentation
+        const mockData: GlobalData = {
+            variables: [
+                {
+                    id: 'globals',
+                    data: {
+                        siteName: { value: 'My Awesome Site' },
+                        companyName: { value: 'Acme Inc.' },
+                        siteEmail: { value: 'contact@example.com' },
+                        phoneNumber: { value: '+1 (555) 123-4567' },
+                        address: { value: '123 Main St, City, State' }
+                    }
+                }
+            ]
+        };
+        globalVariablesCache = mockData;
+        return mockData;
+    }
+
     // Reuse existing promise if fetch is in progress
     if (globalVariablesPromise) {
         return globalVariablesPromise;

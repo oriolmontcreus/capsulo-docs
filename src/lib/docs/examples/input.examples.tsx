@@ -1,76 +1,83 @@
-import { createSchema } from '@/lib/form-builder/builders/SchemaBuilder';
-import { Input } from '@/lib/form-builder/fields/Input/input.builder';
-import { Mail, Lock, DollarSign } from 'lucide-react';
+import { createSchema } from "@/lib/form-builder/builders/SchemaBuilder";
+import { Input } from "@/lib/form-builder/fields/Input/input.builder";
+import { Mail, Lock, DollarSign, Globe } from "lucide-react";
 
 export const BasicInputSchema = createSchema(
-  'Basic Input',
-  [
-    Input('username')
-      .label('Username')
-      .placeholder('Enter your username')
-  ],
-  'A standard text input field'
+  "Basic input",
+  [Input("username").label("Username").placeholder("Enter your username")],
+  "A standard text input field",
 );
 
 export const EmailInputSchema = createSchema(
-  'Email Input',
+  "Email input",
   [
-    Input('email')
-      .label('Email Address')
-      .type('email')
-      .placeholder('john@example.com')
-      .prefix(<Mail className="size-4" />)
+    Input("email")
+      .label("Email Address")
+      .type("email")
+      .placeholder("john@example.com")
+      .prefix(<Mail className="size-4" />),
   ],
-  'Input field optimized for email addresses'
+  "Input field optimized for email addresses",
 );
 
 export const PasswordInputSchema = createSchema(
-  'Password Input',
+  "Password input",
   [
-    Input('password')
-      .label('Password')
-      .type('password')
-      .placeholder('Enter your password')
-      .prefix(<Lock className="size-4" />)
+    Input("password")
+      .label("Password")
+      .type("password")
+      .placeholder("Enter your password")
+      .prefix(<Lock className="size-4" />),
   ],
-  'Secure input for passwords'
+  "Secure input for passwords",
 );
 
 export const NumberInputSchema = createSchema(
-  'Number Input',
+  "Number input",
   [
-    Input('quantity')
-      .label('Quantity')
-      .type('number')
+    Input("quantity")
+      .label("Quantity")
+      .type("number")
       .min(0)
       .max(100)
-      .defaultValue('1')
+      .defaultValue("1"),
   ],
-  'Numeric input with min/max constraints'
+  "Numeric input with min/max constraints",
 );
 
 export const PrefixSuffixInputSchema = createSchema(
-  'Prefix & Suffix',
+  "Prefix & Suffix",
   [
-    Input('price')
-      .label('Price')
-      .type('number')
+    Input("price")
+      .label("Price")
+      .type("number")
       .prefix(<DollarSign className="size-4" />)
       .suffix(<span className="text-sm text-muted-foreground">USD</span>)
       .allowDecimals(true)
-      .step(0.01)
+      .step(0.01),
   ],
-  'Input with visual indicators'
+  "Input with visual indicators",
 );
 
 export const ValidationInputSchema = createSchema(
-  'Validation',
+  "Validation",
   [
-    Input('bio')
-      .label('Short Bio')
-      .description('Between 10 and 50 characters')
+    Input("bio")
+      .label("Short Bio")
+      .description("Between 10 and 50 characters")
       .minLength(10)
-      .maxLength(50)
+      .maxLength(50),
   ],
-  'Input with character length validation'
+  "Input with character length validation",
+);
+
+export const GlobalVariablesInputSchema = createSchema(
+  "Global Variables",
+  [
+    Input("pageTitle")
+      .label("Title")
+      .description("Uses global variables like {{siteName}}")
+      .defaultValue("Welcome to {{siteName}}"),
+  ],
+  "Input with global variable injection support",
 );
