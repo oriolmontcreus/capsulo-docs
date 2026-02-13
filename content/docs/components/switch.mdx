@@ -1,0 +1,127 @@
+---
+title: Switch
+description: A toggle component for capturing boolean values.
+---
+
+import { SchemaRenderer } from "@/lib/docs/SchemaRenderer";
+import {
+  BasicSwitchSchema,
+  DefaultOnSwitchSchema,
+  WithDescriptionSwitchSchema,
+  RequiredSwitchSchema,
+} from "@/lib/docs/examples/switch.examples";
+import { ConditionalFieldExample } from "@/components/switch/ConditionalFieldExample";
+import { ComponentPreview } from "@/components/component-preview";
+import { TypeTable } from "@/components/type-table";
+
+The `Switch` field is used to capture boolean values in a toggle format. It's ideal for settings, preferences, conditional fields, and on/off states.
+
+## Usage
+
+```typescript
+import { Switch } from "@/lib/form-builder/fields/Switch/switch.builder";
+```
+
+```typescript
+// [!code word:Switch]
+Switch("fieldName").label("Field Label");
+```
+
+## API
+
+The `Switch` builder provides a fluent API to configure the field.
+
+<TypeTable
+  type={{
+    label: {
+      description: "Sets the label of the switch field.",
+      type: "string",
+    },
+    description: {
+      description: "Adds a helper description below the field.",
+      type: "string",
+    },
+    required: {
+      description: "Marks the field as required. Can be conditional.",
+      type: "boolean | function",
+      default: "false",
+    },
+    defaultValue: {
+      description: "Sets the initial value of the field.",
+      type: "boolean",
+      default: "false",
+    },
+    showInTable: {
+      description: "Shows this field in the collection table view.",
+      type: "boolean",
+      default: "true",
+    },
+    hidden: {
+      description: "Hides the field conditionally.",
+      type: "boolean | function",
+      default: "false",
+    },
+  }}
+/>
+
+## Examples
+
+<div className="grid grid-cols-1 md:grid-cols-2 border overflow-hidden *:m-0 *:rounded-none [&>*>div]:border-0 [&>*>div]:m-0">
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={BasicSwitchSchema} />
+
+```typescript
+// [!code word:Switch]
+Switch("enabled").label("Enabled");
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={DefaultOnSwitchSchema} />
+
+```typescript
+// [!code word:Switch]
+Switch("notifications").label("Enable Notifications").defaultValue(true);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={WithDescriptionSwitchSchema} />
+
+```typescript
+// [!code word:Switch]
+Switch("marketing")
+  .label("Marketing Emails")
+  .description("Receive promotional emails and offers");
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={RequiredSwitchSchema} />
+
+```typescript
+// [!code word:Switch]
+Switch("terms").label("Accept Terms and Conditions").required(true);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false}>
+  <ConditionalFieldExample />
+
+```typescript
+// [!code word:Switch]
+(Switch("hasDiscount").label("Apply Discount").defaultValue(false),
+  Input("discountCode")
+    .label("Discount Code")
+    .placeholder("Enter code")
+    .hidden((formData) => !formData?.hasDiscount));
+```
+
+</ComponentPreview>
+
+</div>
