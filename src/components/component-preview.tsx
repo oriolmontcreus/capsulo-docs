@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { Code } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -52,17 +51,17 @@ export function ComponentPreview({
             <Button
               variant="ghost"
               size="icon"
-              className="absolute right-4 top-4 z-10 opacity-0 transition-opacity group-hover:opacity-100 size-8 duration-150 ease-in-out cursor-pointer"
+              className="absolute right-4 top-4 opacity-0 transition-opacity group-hover:opacity-100 size-8 duration-150 ease-in-out cursor-pointer"
             >
               <Code className="size-4" />
               <span className="sr-only">View code</span>
             </Button>
           </DialogTrigger>
-          <DialogContent className="min-h-[80vh] min-w-[80vw]">
+          <DialogContent className="min-h-[80vh] min-w-[80vw] content-start">
             <DialogHeader>
               <DialogTitle>{schemaName}</DialogTitle>
             </DialogHeader>
-            <div className="h-full overflow-auto">{code}</div>
+            <div className="overflow-auto items-start w-full">{code}</div>
           </DialogContent>
         </Dialog>
 
