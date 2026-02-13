@@ -3,18 +3,30 @@ title: Introduction
 description: Getting to know the basics
 ---
 
-import { Callout } from '@/components/callout';
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
-import { Step, Steps } from 'fumadocs-ui/components/steps';
-import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
-import { Code, Zap, Settings, MessageSquare, Bug, GitPullRequest, Briefcase, FileText, User, BookOpen, Globe, Package, Users, Lightbulb } from 'lucide-react';
-import { GithubInfo } from '@/components/github-info';
-import { GitHub } from '@/components/github-icon';
+import { Callout } from "@/components/callout";
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
+import {
+  Code,
+  Zap,
+  Settings,
+  MessageSquare,
+  Bug,
+  GitPullRequest,
+  Briefcase,
+  FileText,
+  User,
+  BookOpen,
+  Globe,
+  Package,
+  Users,
+  Lightbulb,
+} from "lucide-react";
+import { GithubInfo } from "@/components/github-info";
+import { GitHub } from "@/components/github-icon";
 
-<GithubInfo
-  owner="oriolmontcreus"
-  repo="capsulo"
-/>
+<GithubInfo owner="oriolmontcreus" repo="capsulo" />
 
 ## What is Capsulo?
 
@@ -22,46 +34,49 @@ Capsulo is a **CMS framework** <span className='text-fd-muted-foreground text-sm
 
 ## Key features
 
-
 <Cards>
-  <Card 
+  <Card
     icon={<Code />}
-    title="Schema-Based Architecture" 
+    title="Schema-Based Architecture"
     href="/docs/what-is-capsulo#schema-first-architecture"
   >
-    Define content structures as code using React/TSX components with a Fluent API. Automatic discovery, no registration needed.
+    Define content structures as code using React/TSX components with a Fluent
+    API. Automatic discovery, no registration needed.
   </Card>
-  <Card 
+  <Card
     icon={<Settings />}
-    title="100% Static & Free to Host" 
+    title="100% Static & Free to Host"
     href="/docs/what-is-capsulo#static-first-approach"
   >
-    By default, Capsulo is 100% static. Deploy to Cloudflare Pages, Vercel, or any host for free.
+    By default, Capsulo is 100% static. Deploy to Cloudflare Pages, Vercel, or
+    any host for free.
   </Card>
-  <Card 
+  <Card
     icon={<Users />}
-    title="100% Open Source" 
+    title="100% Open Source"
     href="https://github.com/oriolmontcreus/capsulo"
   >
-    Love the recipe but hate my seasoning? Fork it to make it yours, or submit a PR to teach me how to cook. Either way, the kitchen is yours
+    Love the recipe but hate my seasoning? Fork it to make it yours, or submit a
+    PR to teach me how to cook. Either way, the kitchen is yours
   </Card>
-  <Card 
+  <Card
     icon={<GitHub />}
-    title="GitHub-Native Storage" 
+    title="GitHub-Native Storage"
     href="/docs/what-is-capsulo#github-native-workflow"
   >
-    Dual storage: local files for development and GitHub API for production with draft branches
+    Dual storage: local files for development and GitHub API for production with
+    draft branches
   </Card>
-  <Card 
+  <Card
     icon={<Globe />}
-    title="Built-in Translations" 
+    title="Built-in Translations"
     href="/docs/what-is-capsulo#translations"
   >
     Translations supported out of the box for multi-language content management.
   </Card>
-  <Card 
+  <Card
     icon={<Package />}
-    title="Global Variables" 
+    title="Global Variables"
     href="/docs/what-is-capsulo#global-variables"
   >
     Define and use global variables—modify them once and they change everywhere.
@@ -69,7 +84,8 @@ Capsulo is a **CMS framework** <span className='text-fd-muted-foreground text-sm
 </Cards>
 
 <Callout>
-  Want to understand the philosophy behind Capsulo? Check out [What is Capsulo](/docs/what-is-capsulo) for a deep dive into our approach.
+  Want to understand the philosophy behind Capsulo? Check out [What is
+  Capsulo](/docs/what-is-capsulo) for a deep dive into our approach.
 </Callout>
 
 ## Quick start: Understanding schemas
@@ -86,21 +102,17 @@ Create a schema using React/TSX and the Fluent API:
 
 ```typescript
 export const HeroSchema = createSchema(
-  'Hero',
+  "Hero",
   [
-    Input('title')
-      .label('Hero Title')
-      .required()
-      .defaultValue('Welcome'),
-    
-    Grid({ base: 1, md: 2 })
-      .contains([
-        Input('ctaButton').label('CTA Button'),
-        Input('ctaLink').label('CTA Link')
-      ])
+    Input("title").label("Hero Title").required().defaultValue("Welcome"),
+
+    Grid({ base: 1, md: 2 }).contains([
+      Input("ctaButton").label("CTA Button"),
+      Input("ctaLink").label("CTA Link"),
+    ]),
   ],
-  'Hero section with title and CTA',
-  'hero'
+  "Hero section with title and CTA",
+  "hero",
 );
 ```
 
@@ -142,63 +154,42 @@ Content creators can now edit the Hero component directly in the CMS interface a
 ## Perfect for
 
 <InfoCards>
-  <InfoCard 
-    icon={<Zap />}
-    title="Landing pages"
-  >
+  <InfoCard title="Landing pages">
     Fast, conversion-focused pages with editable content
   </InfoCard>
-  <InfoCard 
-    icon={<FileText />}
-    title="Blogs"
-  >
+  <InfoCard title="Blogs">
     Personal or company blogs with easy content management
   </InfoCard>
-  <InfoCard 
-    icon={<User />}
-    title="Portfolios"
-  >
+  <InfoCard title="Portfolios">
     Showcase your work with a beautiful, manageable interface
   </InfoCard>
-  <InfoCard 
-    icon={<Globe />}
-    title="Marketing websites"
-  >
+  <InfoCard title="Marketing websites">
     Multi-page sites with frequently updated content
   </InfoCard>
-  <InfoCard 
-    icon={<Package />}
-    title="Product pages"
-  >
+  <InfoCard title="Product pages">
     SaaS product sites with dynamic content sections
   </InfoCard>
-  <InfoCard 
-    icon={<Briefcase />}
-    title="Agency websites"
-  >
+  <InfoCard title="Agency websites">
     Client projects requiring non-technical content updates
   </InfoCard>
-  <InfoCard 
-    icon={<Code />}
-    title="Component libraries"
-  >
+  <InfoCard title="Component libraries">
     Showcase your React, Vue, or web components with live demos
   </InfoCard>
-  <InfoCard 
-    icon={<Lightbulb />}
-    title="Open Source showcases"
-  >
+  <InfoCard title="Open Source showcases">
     Create beautiful project pages with instant and free hosting
   </InfoCard>
 </InfoCards>
 
-
 <Callout>
-  **Free Hosting**: Capsulo is 100% static by default, meaning it can be hosted for free on GitHub Pages, Vercel, Cloudflare Pages, Netlify, and more. Want more power? You can always opt out of full static and connect your own services.
+  **Free Hosting**: Capsulo is 100% static by default, meaning it can be hosted
+  for free on GitHub Pages, Vercel, Cloudflare Pages, Netlify, and more. Want
+  more power? You can always opt out of full static and connect your own
+  services.
 </Callout>
 
 <Callout type="warn">
-  Capsulo is currently in active development. Some features may change before the stable release.
+  Capsulo is currently in active development. Some features may change before
+  the stable release.
 </Callout>
 
 ## Next steps
