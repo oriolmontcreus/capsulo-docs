@@ -1,0 +1,132 @@
+---
+title: ColorPicker
+description: A component for selecting colors with support for alpha channel and preset colors.
+---
+
+import { SchemaRenderer } from "@/lib/docs/SchemaRenderer";
+import {
+  BasicColorPickerSchema,
+  AlphaColorPickerSchema,
+  PresetColorsColorPickerSchema,
+  DefaultValueColorPickerSchema,
+} from "@/lib/docs/examples/colorpicker.examples";
+import { ComponentPreview } from "@/components/component-preview";
+import { TypeTable } from "@/components/type-table";
+
+The `ColorPicker` field is used to capture color values. It supports hex color values, alpha channel transparency, and preset color options.
+
+## Usage
+
+```typescript
+import { ColorPicker } from "@/lib/form-builder/fields/ColorPicker/colorpicker.builder";
+```
+
+```typescript
+// [!code word:ColorPicker]
+ColorPicker("fieldName").label("Field Label");
+```
+
+## API
+
+The `ColorPicker` builder provides a fluent API to configure the field.
+
+<TypeTable
+  type={{
+    label: {
+      description: "Sets the label of the color picker field.",
+      type: "string",
+    },
+    description: {
+      description: "Adds a helper description below the field.",
+      type: "string",
+    },
+    required: {
+      description: "Marks the field as required. Can be conditional.",
+      type: "boolean | function",
+      default: "true",
+    },
+    defaultValue: {
+      description: "Sets the initial value of the field (hex color string).",
+      type: "string",
+    },
+    showAlpha: {
+      description: "Enables alpha channel controls for transparency.",
+      type: "boolean",
+      default: "false",
+    },
+    presetColors: {
+      description: "Array of preset color swatches to display.",
+      type: "string[]",
+    },
+    showInTable: {
+      description: "Shows this field in the collection table view.",
+      type: "boolean",
+      default: "true",
+    },
+    hidden: {
+      description: "Hides the field conditionally.",
+      type: "boolean | function",
+      default: "false",
+    },
+  }}
+/>
+
+## Examples
+
+<div className="grid grid-cols-1 md:grid-cols-2 border overflow-hidden *:m-0 *:rounded-none [&>*>div]:border-0 [&>*>div]:m-0">
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={BasicColorPickerSchema} />
+
+```typescript
+// [!code word:ColorPicker]
+ColorPicker("themeColor").label("Theme Color");
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={AlphaColorPickerSchema} />
+
+```typescript
+// [!code word:ColorPicker]
+ColorPicker("overlayColor")
+  .label("Overlay Color")
+  .showAlpha(true);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={PresetColorsColorPickerSchema} />
+
+```typescript
+// [!code word:ColorPicker]
+ColorPicker("brandColor")
+  .label("Brand Color")
+  .presetColors([
+    "#FF0000",
+    "#00FF00",
+    "#0000FF",
+    "#FFFF00",
+    "#FF00FF",
+    "#00FFFF",
+  ]);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={DefaultValueColorPickerSchema} />
+
+```typescript
+// [!code word:ColorPicker]
+ColorPicker("backgroundColor")
+  .label("Background Color")
+  .defaultValue("#3B82F6");
+```
+
+</ComponentPreview>
+
+
+</div>
