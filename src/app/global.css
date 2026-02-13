@@ -218,6 +218,12 @@ h3 {
   @apply mt-10 scroll-m-28 text-xl font-normal tracking-tight first:mt-0 lg:mt-12;
 }
 
+/* Fix for Lexical editor paragraph margin in component preview and documentation (Overwritte Fumadocs default styles) */
+[data-lexical-editor] p {
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+}
+
 #toc-title {
   @apply text-sm;
 }
