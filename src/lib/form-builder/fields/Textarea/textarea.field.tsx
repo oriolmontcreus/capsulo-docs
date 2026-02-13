@@ -49,6 +49,7 @@ export const TextareaField: React.FC<TextareaFieldProps> = React.memo(({ field, 
       locale={locale}
       diffMode={diffMode}
       diffOldValue={diffOldValue}
+      maxLength={field.maxLength}
     />
   );
 
@@ -94,6 +95,7 @@ export const TextareaField: React.FC<TextareaFieldProps> = React.memo(({ field, 
               diffMode={diffMode}
               diffOldValue={diffOldValue}
               unstyled={true}
+              maxLength={field.maxLength}
             />
             {hasSuffix && (
               <div className={cn(
