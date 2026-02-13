@@ -9,6 +9,7 @@ import {
   AlphaColorPickerSchema,
   PresetColorsColorPickerSchema,
   DefaultValueColorPickerSchema,
+  OnlyPresetsColorPickerSchema,
 } from "@/lib/docs/examples/colorpicker.examples";
 import { ComponentPreview } from "@/components/component-preview";
 import { TypeTable } from "@/components/type-table";
@@ -55,8 +56,9 @@ The `ColorPicker` builder provides a fluent API to configure the field.
       default: "false",
     },
     presetColors: {
-      description: "Array of preset color swatches to display.",
-      type: "string[]",
+      description:
+        "Array of preset color swatches to display. Accepts a boolean as second parameter to restrict selection to only presets.",
+      type: "string[], boolean?",
     },
     showInTable: {
       description: "Shows this field in the collection table view.",
@@ -90,9 +92,7 @@ ColorPicker("themeColor").label("Theme Color");
 
 ```typescript
 // [!code word:ColorPicker]
-ColorPicker("overlayColor")
-  .label("Overlay Color")
-  .showAlpha(true);
+ColorPicker("overlayColor").label("Overlay Color").showAlpha(true);
 ```
 
 </ComponentPreview>
@@ -104,14 +104,7 @@ ColorPicker("overlayColor")
 // [!code word:ColorPicker]
 ColorPicker("brandColor")
   .label("Brand Color")
-  .presetColors([
-    "#FF0000",
-    "#00FF00",
-    "#0000FF",
-    "#FFFF00",
-    "#FF00FF",
-    "#00FFFF",
-  ]);
+  .presetColors(["#ef4444", "#f59e0b", "#eab308", "#10b981", "#3b82f6"]);
 ```
 
 </ComponentPreview>
@@ -128,5 +121,19 @@ ColorPicker("backgroundColor")
 
 </ComponentPreview>
 
+<ComponentPreview showMargin={false} className="col-span-full">
+  <SchemaRenderer schema={OnlyPresetsColorPickerSchema} />
+
+```typescript
+// [!code word:ColorPicker]
+ColorPicker("accentColor")
+  .label("Accent Color")
+  .presetColors(
+    ["#0ea5e9", "#3b82f6", "#6366f1", "#8b5cf6", "#a855f7", "#d946ef"],
+    true,
+  );
+```
+
+</ComponentPreview>
 
 </div>
