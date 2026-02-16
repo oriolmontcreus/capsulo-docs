@@ -1,0 +1,185 @@
+---
+title: Grid
+description: A responsive grid layout container for organizing form fields.
+---
+
+import { SchemaRenderer } from "@/lib/docs/SchemaRenderer";
+import {
+  BasicGridSchema,
+  ResponsiveGridSchema,
+  CustomGapGridSchema,
+  ResponsiveGapGridSchema,
+  NestedFieldsGridSchema,
+} from "@/lib/docs/examples/grid.examples";
+import { ComponentPreview } from "@/components/component-preview";
+import { TypeTable } from "@/components/type-table";
+
+The `Grid` layout is a responsive container that organizes fields into columns. It supports mobile-first responsive design with configurable columns and gaps for different screen sizes.
+
+## Usage
+
+```typescript
+import { Grid } from "@/lib/form-builder/layouts/Grid/grid.builder";
+```
+
+```typescript
+// [!code word:Grid]
+Grid({ base: 1, md: 2 }).contains([
+  Input("firstName").label("First Name"),
+  Input("lastName").label("Last Name"),
+]);
+```
+
+## API
+
+The `Grid` builder provides a fluent API to configure the layout.
+
+### Constructor
+
+<TypeTable
+  type={{
+    columns: {
+      description: "Number of columns in the grid. Can be a single number or responsive object.",
+      type: "number | ResponsiveValue",
+      default: "{ base: 1, md: 2, lg: 3 }",
+    },
+  }}
+/>
+
+### Methods
+
+<TypeTable
+  type={{
+    gap: {
+      description: "Sets the gap between grid items. Can be a single number or responsive object.",
+      type: "number | ResponsiveValue",
+      default: "{ base: 4 }",
+    },
+    contains: {
+      description: "Adds fields to be rendered inside the grid container.",
+      type: "Field[]",
+    },
+    hidden: {
+      description: "Conditionally hides the grid based on form data.",
+      type: "boolean | function",
+      default: "false",
+    },
+  }}
+/>
+
+### ResponsiveValue Type
+
+The responsive value object allows different values for each breakpoint:
+
+<TypeTable
+  type={{
+    base: {
+      description: "Value for base/mobile screens (< 640px)",
+      type: "number",
+    },
+    sm: {
+      description: "Value for small screens (640px+)",
+      type: "number",
+    },
+    md: {
+      description: "Value for medium screens (768px+)",
+      type: "number",
+    },
+    lg: {
+      description: "Value for large screens (1024px+)",
+      type: "number",
+    },
+    xl: {
+      description: "Value for extra large screens (1280px+)",
+      type: "number",
+    },
+  }}
+/>
+
+## Examples
+
+<div className="grid grid-cols-1 md:grid-cols-2 border overflow-hidden *:m-0 *:rounded-none [&>*>div]:border-0 [&>*>div]:m-0">
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={BasicGridSchema} />
+
+```typescript
+// [!code word:Grid]
+Grid().contains([
+  Input("firstName").label("First Name"),
+  Input("lastName").label("Last Name"),
+]);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={CustomGapGridSchema} />
+
+```typescript
+// [!code word:Grid]
+Grid(2)
+  .gap(6)
+  .contains([
+    Input("username").label("Username"),
+    Input("email").label("Email"),
+    Input("bio").label("Bio"),
+    Input("website").label("Website"),
+  ]);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="col-span-full border-b">
+  <SchemaRenderer schema={ResponsiveGridSchema} />
+
+```typescript
+// [!code word:Grid]
+Grid({ base: 1, md: 2, lg: 3 }).contains([
+  Input("name").label("Name"),
+  Input("email").label("Email"),
+  Input("phone").label("Phone"),
+  Input("address").label("Address"),
+  Input("city").label("City"),
+  Input("country").label("Country"),
+]);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="col-span-full border-b">
+  <SchemaRenderer schema={ResponsiveGapGridSchema} />
+
+```typescript
+// [!code word:Grid]
+Grid({ base: 1, lg: 2 })
+  .gap({ base: 2, md: 4, lg: 6 })
+  .contains([
+    Input("title").label("Title"),
+    Input("description").label("Description"),
+  ]);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="col-span-full">
+  <SchemaRenderer schema={NestedFieldsGridSchema} />
+
+```typescript
+// Nested grid layout
+Grid(2).contains([
+  Input("firstName").label("First Name"),
+  Input("lastName").label("Last Name"),
+  Textarea("address").label("Address"),
+  Grid({ base: 1, sm: 2 })
+    .gap(4)
+    .contains([
+      Input("city").label("City"),
+      Input("zip").label("ZIP Code"),
+    ]),
+]);
+```
+
+</ComponentPreview>
+
+</div>
