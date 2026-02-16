@@ -28,7 +28,7 @@ export const AutoResizeTextareaSchema = createSchema(
 
 export const FixedSizeTextareaSchema = createSchema(
   "Fixed size",
-  [Textarea("notes").label("Notes").rows(4).resize("none")],
+  [Textarea("notes").label("Notes").rows(7).resize("none")],
   "Textarea with fixed dimensions and no resize handle",
 );
 
