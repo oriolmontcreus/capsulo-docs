@@ -11,6 +11,101 @@ import {
   CollapsibleTrigger,
 } from "./ui/collapsible";
 
+// Helper function to detect custom types
+function isCustomTypePart(typePart: string): boolean {
+  const cleanType = typePart
+    .trim()
+    .replace(/^['"`]/, "")
+    .replace(/['"`]$/, "");
+
+  // Standard JavaScript/TypeScript types that should NOT be highlighted
+  const standardTypes = [
+    "string",
+    "number",
+    "boolean",
+    "object",
+    "null",
+    "undefined",
+    "any",
+    "void",
+    "never",
+    "bigint",
+    "symbol",
+    "unknown",
+    "Function",
+    "Date",
+    "RegExp",
+    "Array",
+    "Promise",
+    "true",
+    "false",
+  ];
+
+  // Check if it's a standard type
+  if (standardTypes.includes(cleanType)) {
+    return false;
+  }
+
+  if (cleanType.includes("<") && cleanType.includes(">")) {
+    const innerContent = cleanType.slice(
+      cleanType.indexOf("<") + 1,
+      cleanType.lastIndexOf(">"),
+    );
+    const innerParts = innerContent.split(",").map((part) => part.trim());
+    if (
+      innerParts.every(
+        (part) => standardTypes.includes(part) || /^\d+$/.test(part),
+      )
+    ) {
+      return false;
+    }
+  }
+
+  const customTypePatterns = ["ResponsiveValue"];
+  return customTypePatterns.some((pattern) => cleanType.includes(pattern));
+}
+
+// Function to render type with custom type highlighting
+function renderTypeWithHighlighting(type: ReactNode): ReactNode {
+  if (typeof type !== "string") {
+    return type;
+  }
+
+  // Split by pipe operator to handle union types
+  const parts = type.split("|");
+
+  if (parts.length === 1) {
+    // Single type
+    const part = parts[0];
+    if (isCustomTypePart(part)) {
+      return <span className="text-green-600">{part}</span>;
+    }
+    return type;
+  }
+
+  // Union type - process each part
+  return parts.map((part, index) => {
+    const trimmedPart = part.trim();
+    const isLast = index === parts.length - 1;
+
+    if (isCustomTypePart(trimmedPart)) {
+      return (
+        <span key={index}>
+          <span className="text-green-600">{trimmedPart}</span>
+          {!isLast && " | "}
+        </span>
+      );
+    }
+
+    return (
+      <span key={index}>
+        {trimmedPart}
+        {!isLast && " | "}
+      </span>
+    );
+  });
+}
+
 export interface ParameterNode {
   name: string;
   description: ReactNode;
@@ -118,7 +213,9 @@ function Item({
             {type}
           </Link>
         ) : (
-          <span className="@max-xl:hidden">{type}</span>
+          <span className="@max-xl:hidden">
+            {renderTypeWithHighlighting(type)}
+          </span>
         )}
         <ChevronDown className="absolute end-2 size-4 text-fd-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
       </CollapsibleTrigger>
