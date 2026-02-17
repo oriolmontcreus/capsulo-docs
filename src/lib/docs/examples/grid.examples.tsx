@@ -1,6 +1,8 @@
 import { createSchema } from "@/lib/form-builder/builders/SchemaBuilder";
 import { Input } from "@/lib/form-builder/fields/Input/input.builder";
 import { Textarea } from "@/lib/form-builder/fields/Textarea/textarea.builder";
+import { ColorPicker } from "@/lib/form-builder/fields/ColorPicker/colorpicker.builder";
+import { Switch } from "@/lib/form-builder/fields/Switch/switch.builder";
 import { Grid } from "@/lib/form-builder/layouts/Grid/grid.builder";
 
 export const BasicGridSchema = createSchema(
@@ -89,4 +91,20 @@ export const ColSpanExampleSchema = createSchema(
       ]),
   ],
   "Fields with column spanning in grid layouts",
+);
+
+export const ColSpanMixedFieldsSchema = createSchema(
+  "Column Span with Mixed Field Types",
+  [
+    Grid({ base: 1, md: 2, lg: 3 })
+      .contains([
+        Input("productName").label("Product Name").colSpan({ base: 1, md: 2 }),
+        ColorPicker("primaryColor").label("Primary Color"),
+        ColorPicker("secondaryColor").label("Secondary Color"),
+        Switch("isActive").label("Active").colSpan("full"),
+        Switch("isPublic").label("Public"),
+        Input("sku").label("SKU Code"),
+      ]),
+  ],
+  "ColorPicker and Switch components with column spanning",
 );

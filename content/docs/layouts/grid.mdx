@@ -11,6 +11,7 @@ import {
   ResponsiveGapGridSchema,
   NestedFieldsGridSchema,
   ColSpanExampleSchema,
+  ColSpanMixedFieldsSchema,
 } from "@/lib/docs/examples/grid.examples";
 import { ComponentPreview } from "@/components/component-preview";
 import { TypeTable } from "@/components/type-table";
@@ -219,6 +220,24 @@ Grid({ base: 1, md: 2, lg: 3 })
     Input("address").label("Address").colSpan("full"),
     Input("city").label("City"),
     Input("country").label("Country"),
+  ]);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="col-span-full">
+  <SchemaRenderer schema={ColSpanMixedFieldsSchema} />
+
+```typescript
+// ColorPicker and Switch with column spanning
+Grid({ base: 1, md: 2, lg: 3 })
+  .contains([
+    Input("productName").label("Product Name").colSpan({ base: 1, md: 2 }),
+    ColorPicker("primaryColor").label("Primary Color"),
+    ColorPicker("secondaryColor").label("Secondary Color"),
+    Switch("isActive").label("Active").colSpan("full"),
+    Switch("isPublic").label("Public"),
+    Input("sku").label("SKU Code"),
   ]);
 ```
 
