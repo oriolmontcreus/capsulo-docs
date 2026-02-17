@@ -1,5 +1,6 @@
 import type { Field } from '../../core/types';
 import type { RepeaterField } from './repeater.types';
+import type { ColSpanValue } from '../../core/translation.types';
 
 interface FieldBuilder {
     build(): Field;
