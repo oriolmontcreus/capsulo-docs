@@ -74,3 +74,15 @@ export const NestedFieldsGridSchema = createSchema(
   ],
   "Grid with nested fields and layouts",
 );
+
+export const ColSpanExampleSchema = [
+  Grid({ base: 1, md: 2, lg: 3 })
+    .contains([
+      Input("firstName").label("First Name"),
+      Input("lastName").label("Last Name"),
+      Textarea("bio").label("Biography").colSpan({ base: 1, md: 2 }),
+      Input("address").label("Address").colSpan("full"),
+      Input("city").label("City"),
+      Input("country").label("Country"),
+    ]),
+];
