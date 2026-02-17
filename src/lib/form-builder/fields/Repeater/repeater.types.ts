@@ -16,4 +16,6 @@ export interface RepeaterField<TFormData = unknown> {
     itemPluralName?: string;
     variant?: RepeaterVariant;
     hidden?: boolean | ((formData: TFormData) => boolean);
+    // Column span for grid layouts
+    colSpan?: ColSpanValue;
 }
