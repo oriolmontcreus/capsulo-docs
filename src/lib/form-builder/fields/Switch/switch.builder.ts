@@ -1,4 +1,5 @@
 import type { SwitchField } from './switch.types';
+import type { ColSpanValue } from '../../core/translation.types';
 
 class SwitchBuilder {
     private field: SwitchField;
