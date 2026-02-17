@@ -221,13 +221,62 @@ export const GridFieldComponent: React.FC<GridFieldProps> = ({ field, value, onC
                         }
                     `;
                 } else if (typeof colSpan === "number") {
-                    // Single number - same on all breakpoints
-                    const span = Math.min(colSpan, totalCols);
+                    // Single number - generate responsive CSS for each breakpoint
+                    // Base breakpoint
+                    const baseSpan = Math.min(colSpan, field.columns?.base ?? 1);
                     css += `
                         [data-grid-id="${gridId}"] [data-field-name="${fieldName}"] {
-                            grid-column: span ${span} / span ${span} !important;
+                            grid-column: span ${baseSpan} / span ${baseSpan} !important;
                         }
                     `;
+                    
+                    // sm breakpoint
+                    if (field.columns?.sm !== undefined) {
+                        const smSpan = Math.min(colSpan, field.columns.sm);
+                        css += `
+                            @media (min-width: 640px) {
+                                [data-grid-id="${gridId}"] [data-field-name="${fieldName}"] {
+                                    grid-column: span ${smSpan} / span ${smSpan} !important;
+                                }
+                            }
+                        `;
+                    }
+                    
+                    // md breakpoint
+                    if (field.columns?.md !== undefined) {
+                        const mdSpan = Math.min(colSpan, field.columns.md);
+                        css += `
+                            @media (min-width: 768px) {
+                                [data-grid-id="${gridId}"] [data-field-name="${fieldName}"] {
+                                    grid-column: span ${mdSpan} / span ${mdSpan} !important;
+                                }
+                            }
+                        `;
+                    }
+                    
+                    // lg breakpoint
+                    if (field.columns?.lg !== undefined) {
+                        const lgSpan = Math.min(colSpan, field.columns.lg);
+                        css += `
+                            @media (min-width: 1024px) {
+                                [data-grid-id="${gridId}"] [data-field-name="${fieldName}"] {
+                                    grid-column: span ${lgSpan} / span ${lgSpan} !important;
+                                }
+                            }
+                        `;
+                    }
+                    
+                    // xl breakpoint
+                    if (field.columns?.xl !== undefined) {
+                        const xlSpan = Math.min(colSpan, field.columns.xl);
+                        css += `
+                            @media (min-width: 1280px) {
+                                [data-grid-id="${gridId}"] [data-field-name="${fieldName}"] {
+                                    grid-column: span ${xlSpan} / span ${xlSpan} !important;
+                                }
+                            }
+                        `;
+                    }
                 } else {
                     // Responsive object
                     if (colSpan.base !== undefined) {
