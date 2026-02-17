@@ -1,3 +1,5 @@
+import type { ColSpanValue } from '../../core/translation.types';
+
 export interface ColorPickerField<TFormData = unknown> {
   type: "colorpicker";
   name: string;
