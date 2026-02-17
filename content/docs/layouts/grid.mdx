@@ -10,6 +10,7 @@ import {
   CustomGapGridSchema,
   ResponsiveGapGridSchema,
   NestedFieldsGridSchema,
+  ColSpanExampleSchema,
 } from "@/lib/docs/examples/grid.examples";
 import { ComponentPreview } from "@/components/component-preview";
 import { TypeTable } from "@/components/type-table";
@@ -96,6 +97,29 @@ The responsive value object allows different values for each breakpoint:
   }}
 />
 
+## Column Spanning
+
+Fields inside a grid can span multiple columns using the `colSpan()` method. This is applied directly to the field builder for a more intuitive API.
+
+### colSpan Method
+
+<TypeTable
+  type={{
+    "Field.colSpan(value)": {
+      description: "Sets how many columns this field should span in a grid layout. Supports numbers, 'full' for all columns, or responsive objects.",
+      type: "number | 'full' | ResponsiveValue",
+    },
+  }}
+/>
+
+### colSpan Values
+
+- **number**: Span that many columns on all breakpoints (e.g., `colSpan(2)`)
+- **"full"**: Span all available columns (e.g., `colSpan("full")`)
+- **ResponsiveValue**: Different spans per breakpoint (e.g., `colSpan({ base: 1, md: 2 })`)
+
+If a colSpan exceeds the available columns, it automatically caps at the maximum available.
+
 ## Examples
 
 <div className="grid grid-cols-1 md:grid-cols-2 border overflow-hidden *:m-0 *:rounded-none [&>*>div]:border-0 [&>*>div]:m-0">
@@ -178,6 +202,24 @@ Grid(2).contains([
       Input("zip").label("ZIP Code"),
     ]),
 ]);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="col-span-full">
+  <SchemaRenderer schema={ColSpanExampleSchema} />
+
+```typescript
+// Field-based column spanning
+Grid({ base: 1, md: 2, lg: 3 })
+  .contains([
+    Input("firstName").label("First Name"),
+    Input("lastName").label("Last Name"),
+    Textarea("bio").label("Biography").colSpan({ base: 1, md: 2 }),
+    Input("address").label("Address").colSpan("full"),
+    Input("city").label("City"),
+    Input("country").label("Country"),
+  ]);
 ```
 
 </ComponentPreview>
