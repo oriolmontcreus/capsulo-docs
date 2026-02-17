@@ -61,6 +61,16 @@ The `Switch` builder provides a fluent API to configure the field.
       type: "boolean | function",
       default: "false",
     },
+    colSpan: {
+      description: (
+        <>
+          Sets how many columns this field should span when inside a{" "}
+          <a href="/docs/layouts/grid">Grid layout</a>. Supports numbers, 'full'
+          for all columns, or responsive objects.
+        </>
+      ),
+      type: "number | 'full' | ResponsiveValue",
+    },
   }}
 />
 
