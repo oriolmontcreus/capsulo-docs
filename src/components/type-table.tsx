@@ -61,7 +61,12 @@ function isCustomTypePart(typePart: string): boolean {
     }
   }
 
-  const customTypePatterns = ["ResponsiveValue"];
+  const customTypePatterns = [
+    "ResponsiveValue",
+    "SelectOption",
+    "SelectOptionGroup",
+    "ResponsiveColumns",
+  ];
   return customTypePatterns.some((pattern) => cleanType.includes(pattern));
 }
 

@@ -1,0 +1,329 @@
+---
+title: Select
+description: A versatile dropdown component for selecting from predefined options.
+---
+
+import { SchemaRenderer } from "@/lib/docs/SchemaRenderer";
+import {
+  BasicSelectSchema,
+  SearchableSelectSchema,
+  GroupedSelectSchema,
+  MultiColumnSelectSchema,
+  PrefixSuffixSelectSchema,
+  DescriptionSelectSchema,
+  InternalLinksSelectSchema,
+} from "@/lib/docs/examples/select.examples";
+import { ComponentPreview } from "@/components/component-preview";
+import { TypeTable } from "@/components/type-table";
+
+The `Select` field provides a dropdown interface for choosing from a list of options. It supports two modes: a standard select dropdown and a searchable combobox. Advanced features include grouped options, multi-column layouts, virtualization for large lists, and internal links mode for page selection.
+
+## Usage
+
+```typescript
+import { Select } from "@/lib/form-builder/fields/Select/select.builder";
+```
+
+```typescript
+// [!code word:Select]
+Select("fieldName").label("Field Label").options([
+  { label: "Option 1", value: "opt1" },
+  { label: "Option 2", value: "opt2" },
+]);
+```
+
+## API
+
+The `Select` builder provides a fluent API to configure the field.
+
+<TypeTable
+  type={{
+    label: {
+      description: "Sets the label of the select field.",
+      type: "string",
+    },
+    description: {
+      description: "Adds a helper description below the field.",
+      type: "string",
+    },
+    placeholder: {
+      description: "Sets the placeholder text when no option is selected.",
+      type: "string",
+    },
+    required: {
+      description: "Marks the field as required. Can be conditional.",
+      type: "boolean | function",
+      default: "false",
+    },
+    defaultValue: {
+      description: "Sets the initial selected value.",
+      type: "string",
+    },
+    options: {
+      description: "Array of selectable options with label, value, and optional prefix/suffix/description.",
+      type: "SelectOption[]",
+    },
+    groups: {
+      description: "Array of option groups, each containing a label and options array.",
+      type: "SelectOptionGroup[]",
+    },
+    prefix: {
+      description: "Adds an element (icon or text) to the start of the select.",
+      type: "ReactNode",
+    },
+    suffix: {
+      description: "Adds an element (icon or text) to the end of the select.",
+      type: "ReactNode",
+    },
+    searchable: {
+      description: "Enables search functionality with a combobox interface.",
+      type: "boolean",
+      default: "false",
+    },
+    searchPlaceholder: {
+      description: "Sets the placeholder text for the search input.",
+      type: "string",
+      default: "'Search...'",
+    },
+    emptyMessage: {
+      description: "Message displayed when no options match the search.",
+      type: "string",
+      default: "'No results found.'",
+    },
+    columns: {
+      description: "Number of columns for grid layout (1-4) or responsive object with breakpoints.",
+      type: "number | ResponsiveColumns",
+    },
+    highlightMatches: {
+      description: "Highlights matching text in search results.",
+      type: "boolean",
+      default: "false",
+    },
+    minSearchLength: {
+      description: "Minimum characters required before search activates.",
+      type: "number",
+      default: "0",
+    },
+    virtualized: {
+      description: "Enables virtualization for large option lists to improve performance.",
+      type: "boolean",
+      default: "false",
+    },
+    itemHeight: {
+      description: "Height of each option item in pixels (for virtualization).",
+      type: "number",
+      default: "40",
+    },
+    maxVisible: {
+      description: "Maximum number of visible items before scrolling.",
+      type: "number",
+      default: "8",
+    },
+    virtualizeThreshold: {
+      description: "Minimum number of options before virtualization activates.",
+      type: "number",
+      default: "50",
+    },
+    internalLinks: {
+      description: "Enables internal links mode for page selection. Automatically scans and provides page options.",
+      type: "boolean",
+      default: "false",
+    },
+    showInTable: {
+      description: "Shows this field in the collection table view.",
+      type: "boolean",
+      default: "true",
+    },
+    hidden: {
+      description: "Hides the field conditionally.",
+      type: "boolean | function",
+      default: "false",
+    },
+    colSpan: {
+      description: <>Sets how many columns this field should span when inside a <a href="/docs/layouts/grid">Grid layout</a>. Supports numbers, 'full' for all columns, or responsive objects.</>,
+      type: "number | 'full' | ResponsiveValue",
+    },
+  }}
+/>
+
+## Type Definitions
+
+### SelectOption
+
+```typescript
+interface SelectOption {
+  label: string;           // Display text for the option
+  value: string;           // Value when option is selected
+  prefix?: ReactNode;      // Optional icon or element before label
+  suffix?: ReactNode;      // Optional icon or element after label
+  disabled?: boolean;      // Whether the option is disabled
+  description?: string;    // Secondary text shown in muted color
+}
+```
+
+### SelectOptionGroup
+
+```typescript
+interface SelectOptionGroup {
+  label: string;                // Group heading text
+  options: Array<SelectOption>; // Options within this group
+}
+```
+
+### ResponsiveColumns
+
+```typescript
+interface ResponsiveColumns {
+  base?: number;  // Default columns (mobile)
+  sm?: number;    // Small screens (640px+)
+  md?: number;    // Medium screens (768px+)
+  lg?: number;    // Large screens (1024px+)
+  xl?: number;    // Extra large screens (1280px+)
+}
+```
+
+## Examples
+
+<div className="grid grid-cols-1 md:grid-cols-2 border overflow-hidden *:m-0 *:rounded-none [&>*>div]:border-0 [&>*>div]:m-0">
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={BasicSelectSchema} />
+
+```typescript
+// [!code word:Select]
+Select("country")
+  .label("Country")
+  .placeholder("Select a country")
+  .options([
+    { label: "United States", value: "us" },
+    { label: "United Kingdom", value: "uk" },
+    { label: "Canada", value: "ca" },
+    { label: "Australia", value: "au" },
+  ]);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={SearchableSelectSchema} />
+
+```typescript
+// [!code word:Select]
+Select("city")
+  .label("City")
+  .searchable()
+  .searchPlaceholder("Search cities...")
+  .options([
+    { label: "New York", value: "ny" },
+    { label: "Los Angeles", value: "la" },
+    { label: "Chicago", value: "chi" },
+    // ... more options
+  ]);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={GroupedSelectSchema} />
+
+```typescript
+// [!code word:Select]
+Select("framework")
+  .label("Framework")
+  .placeholder("Choose a framework")
+  .groups([
+    {
+      label: "Frontend",
+      options: [
+        { label: "React", value: "react" },
+        { label: "Vue", value: "vue" },
+      ],
+    },
+    {
+      label: "Backend",
+      options: [
+        { label: "Express", value: "express" },
+        { label: "Fastify", value: "fastify" },
+      ],
+    },
+  ]);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={MultiColumnSelectSchema} />
+
+```typescript
+// [!code word:Select]
+Select("color")
+  .label("Color")
+  .searchable()
+  .columns(3)
+  .options([
+    { label: "Red", value: "red" },
+    { label: "Blue", value: "blue" },
+    { label: "Green", value: "green" },
+    // ... more options
+  ]);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={PrefixSuffixSelectSchema} />
+
+```tsx
+import { Globe, MapPin } from "lucide-react";
+
+// [!code word:Select]
+Select("region")
+  .label("Region")
+  .prefix(<Globe className="size-4" />)
+  .suffix(<MapPin className="size-4 text-muted-foreground" />)
+  .options([
+    { label: "North America", value: "na" },
+    { label: "Europe", value: "eu" },
+  ]);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={DescriptionSelectSchema} />
+
+```typescript
+// [!code word:Select]
+Select("plan")
+  .label("Subscription Plan")
+  .searchable()
+  .options([
+    {
+      label: "Free",
+      value: "free",
+      description: "Basic features for personal use",
+    },
+    {
+      label: "Pro",
+      value: "pro",
+      description: "Advanced features for professionals",
+    },
+  ]);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="col-span-full">
+  <SchemaRenderer schema={InternalLinksSelectSchema} />
+
+```typescript
+// [!code word:Select]
+Select("linkedPage")
+  .label("Link to Page")
+  .internalLinks(true, false)
+  .placeholder("Select a page to link to");
+```
+
+</ComponentPreview>
+
+</div>
