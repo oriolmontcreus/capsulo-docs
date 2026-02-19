@@ -11,7 +11,6 @@ import {
   ResponsiveGapGridSchema,
   NestedFieldsGridSchema,
   ColSpanExampleSchema,
-  ColSpanMixedFieldsSchema,
 } from "@/lib/docs/examples/grid.examples";
 import { ComponentPreview } from "@/components/component-preview";
 import { TypeTable } from "@/components/type-table";
@@ -41,7 +40,8 @@ The `Grid` builder provides a fluent API to configure the layout.
 <TypeTable
   type={{
     columns: {
-      description: "Number of columns in the grid. Can be a single number or responsive object.",
+      description:
+        "Number of columns in the grid. Can be a single number or responsive object.",
       type: "number | ResponsiveValue",
       default: "{ base: 1, md: 2, lg: 3 }",
     },
@@ -53,7 +53,8 @@ The `Grid` builder provides a fluent API to configure the layout.
 <TypeTable
   type={{
     gap: {
-      description: "Sets the gap between grid items. Can be a single number or responsive object.",
+      description:
+        "Sets the gap between grid items. Can be a single number or responsive object.",
       type: "number | ResponsiveValue",
       default: "{ base: 4 }",
     },
@@ -107,7 +108,8 @@ Fields inside a grid can span multiple columns using the `colSpan()` method. Thi
 <TypeTable
   type={{
     "Field.colSpan(value)": {
-      description: "Sets how many columns this field should span in a grid layout. Supports numbers, 'full' for all columns, or responsive objects.",
+      description:
+        "Sets how many columns this field should span in a grid layout. Supports numbers, 'full' for all columns, or responsive objects.",
       type: "number | 'full' | ResponsiveValue",
     },
   }}
@@ -198,10 +200,7 @@ Grid(2).contains([
   Textarea("address").label("Address"),
   Grid({ base: 1, sm: 2 })
     .gap(4)
-    .contains([
-      Input("city").label("City"),
-      Input("zip").label("ZIP Code"),
-    ]),
+    .contains([Input("city").label("City"), Input("zip").label("ZIP Code")]),
 ]);
 ```
 
@@ -212,33 +211,14 @@ Grid(2).contains([
 
 ```typescript
 // Field-based column spanning
-Grid({ base: 1, md: 2, lg: 3 })
-  .contains([
-    Input("firstName").label("First Name"),
-    Input("lastName").label("Last Name"),
-    Textarea("bio").label("Biography").colSpan({ base: 1, md: 2 }),
-    Input("address").label("Address").colSpan("full"),
-    Input("city").label("City"),
-    Input("country").label("Country"),
-  ]);
-```
-
-</ComponentPreview>
-
-<ComponentPreview showMargin={false} className="col-span-full">
-  <SchemaRenderer schema={ColSpanMixedFieldsSchema} />
-
-```typescript
-// ColorPicker and Switch with column spanning
-Grid({ base: 1, md: 2, lg: 3 })
-  .contains([
-    Input("productName").label("Product Name").colSpan({ base: 1, md: 2 }),
-    ColorPicker("primaryColor").label("Primary Color"),
-    ColorPicker("secondaryColor").label("Secondary Color"),
-    Switch("isActive").label("Active").colSpan("full"),
-    Switch("isPublic").label("Public"),
-    Input("sku").label("SKU Code"),
-  ]);
+Grid({ base: 1, md: 2, lg: 3 }).contains([
+  Input("firstName").label("First Name"),
+  Input("lastName").label("Last Name"),
+  Textarea("bio").label("Biography").colSpan({ base: 1, md: 2 }),
+  Input("address").label("Address").colSpan("full"),
+  Input("city").label("City"),
+  Input("country").label("Country"),
+]);
 ```
 
 </ComponentPreview>

@@ -1,12 +1,10 @@
 import { createSchema } from "@/lib/form-builder/builders/SchemaBuilder";
 import { Input } from "@/lib/form-builder/fields/Input/input.builder";
 import { Textarea } from "@/lib/form-builder/fields/Textarea/textarea.builder";
-import { ColorPicker } from "@/lib/form-builder/fields/ColorPicker/colorpicker.builder";
-import { Switch } from "@/lib/form-builder/fields/Switch/switch.builder";
 import { Grid } from "@/lib/form-builder/layouts/Grid/grid.builder";
 
 export const BasicGridSchema = createSchema(
-  "Basic Grid",
+  "Basic",
   [
     Grid().contains([
       Input("firstName").label("First Name"),
@@ -17,7 +15,7 @@ export const BasicGridSchema = createSchema(
 );
 
 export const ResponsiveGridSchema = createSchema(
-  "Responsive Grid",
+  "Responsive",
   [
     Grid({ base: 1, md: 2, lg: 3 }).contains([
       Input("name").label("Name"),
@@ -32,7 +30,7 @@ export const ResponsiveGridSchema = createSchema(
 );
 
 export const CustomGapGridSchema = createSchema(
-  "Custom Gap Grid",
+  "Custom gap",
   [
     Grid(2)
       .gap(6)
@@ -47,7 +45,7 @@ export const CustomGapGridSchema = createSchema(
 );
 
 export const ResponsiveGapGridSchema = createSchema(
-  "Responsive Gap Grid",
+  "Responsive gap",
   [
     Grid({ base: 1, lg: 2 })
       .gap({ base: 2, md: 4, lg: 6 })
@@ -60,7 +58,7 @@ export const ResponsiveGapGridSchema = createSchema(
 );
 
 export const NestedFieldsGridSchema = createSchema(
-  "Nested Fields Grid",
+  "Nested fields layout (grid inside grid)",
   [
     Grid(2).contains([
       Input("firstName").label("First Name"),
@@ -78,33 +76,16 @@ export const NestedFieldsGridSchema = createSchema(
 );
 
 export const ColSpanExampleSchema = createSchema(
-  "Column Span Example",
+  "Column span example",
   [
-    Grid({ base: 1, md: 2, lg: 3 })
-      .contains([
-        Input("firstName").label("First Name"),
-        Input("lastName").label("Last Name"),
-        Textarea("bio").label("Biography").colSpan({ base: 1, md: 2 }),
-        Input("address").label("Address").colSpan("full"),
-        Input("city").label("City"),
-        Input("country").label("Country"),
-      ]),
+    Grid({ base: 1, md: 2, lg: 3 }).contains([
+      Input("firstName").label("First Name"),
+      Input("lastName").label("Last Name"),
+      Textarea("bio").label("Biography").colSpan({ base: 1, md: 2 }),
+      Input("address").label("Address").colSpan("full"),
+      Input("city").label("City"),
+      Input("country").label("Country"),
+    ]),
   ],
   "Fields with column spanning in grid layouts",
-);
-
-export const ColSpanMixedFieldsSchema = createSchema(
-  "Column Span with Mixed Field Types",
-  [
-    Grid({ base: 1, md: 2, lg: 3 })
-      .contains([
-        Input("productName").label("Product Name").colSpan({ base: 1, md: 2 }),
-        ColorPicker("primaryColor").label("Primary Color"),
-        ColorPicker("secondaryColor").label("Secondary Color"),
-        Switch("isActive").label("Active").colSpan("full"),
-        Switch("isPublic").label("Public"),
-        Input("sku").label("SKU Code"),
-      ]),
-  ],
-  "ColorPicker and Switch components with column spanning",
 );
