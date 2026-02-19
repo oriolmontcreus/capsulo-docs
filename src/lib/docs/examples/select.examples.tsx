@@ -141,5 +141,16 @@ export const InternalLinksSelectSchema = createSchema(
       .internalLinks(true, false)
       .placeholder("Select a page to link to"),
   ],
-  "Select that automatically scans and provides internal page options",
+  "Select that automatically provides internal page options",
+);
+
+export const InternalLinksGroupedSelectSchema = createSchema(
+  "Internal links (grouped)",
+  [
+    Select("linkedPage")
+      .label("Link to Page")
+      .internalLinks(true, true)
+      .placeholder("Select a page to link to"),
+  ],
+  "Select with internal pages grouped by section",
 );

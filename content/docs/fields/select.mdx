@@ -12,6 +12,7 @@ import {
   PrefixSuffixSelectSchema,
   DescriptionSelectSchema,
   InternalLinksSelectSchema,
+  InternalLinksGroupedSelectSchema,
 } from "@/lib/docs/examples/select.examples";
 import { ComponentPreview } from "@/components/component-preview";
 import { TypeTable } from "@/components/type-table";
@@ -26,10 +27,12 @@ import { Select } from "@/lib/form-builder/fields/Select/select.builder";
 
 ```typescript
 // [!code word:Select]
-Select("fieldName").label("Field Label").options([
-  { label: "Option 1", value: "opt1" },
-  { label: "Option 2", value: "opt2" },
-]);
+Select("fieldName")
+  .label("Field Label")
+  .options([
+    { label: "Option 1", value: "opt1" },
+    { label: "Option 2", value: "opt2" },
+  ]);
 ```
 
 ## API
@@ -60,11 +63,13 @@ The `Select` builder provides a fluent API to configure the field.
       type: "string",
     },
     options: {
-      description: "Array of selectable options with label, value, and optional prefix/suffix/description.",
+      description:
+        "Array of selectable options with label, value, and optional prefix/suffix/description.",
       type: "SelectOption[]",
     },
     groups: {
-      description: "Array of option groups, each containing a label and options array.",
+      description:
+        "Array of option groups, each containing a label and options array.",
       type: "SelectOptionGroup[]",
     },
     prefix: {
@@ -91,7 +96,8 @@ The `Select` builder provides a fluent API to configure the field.
       default: "'No results found.'",
     },
     columns: {
-      description: "Number of columns for grid layout (1-4) or responsive object with breakpoints.",
+      description:
+        "Number of columns for grid layout (1-4) or responsive object with breakpoints.",
       type: "number | ResponsiveColumns",
     },
     highlightMatches: {
@@ -105,7 +111,8 @@ The `Select` builder provides a fluent API to configure the field.
       default: "0",
     },
     virtualized: {
-      description: "Enables virtualization for large option lists to improve performance.",
+      description:
+        "Enables virtualization for large option lists to improve performance.",
       type: "boolean",
       default: "false",
     },
@@ -125,9 +132,20 @@ The `Select` builder provides a fluent API to configure the field.
       default: "50",
     },
     internalLinks: {
-      description: "Enables internal links mode for page selection. Automatically scans and provides page options.",
-      type: "boolean",
-      default: "false",
+      description:
+        "Enables internal links mode for page selection. Accepts two boolean parameters: autoResolveLocale (default: true) and groupBySection (default: false) to group pages by their parent section.",
+      type: "boolean, boolean",
+      parameters: [
+        {
+          name: "autoResolveLocale",
+          description:
+            "If true, returns relative paths that auto-resolve to current locale",
+        },
+        {
+          name: "groupBySection",
+          description: "If true, groups pages by their top-level section",
+        },
+      ],
     },
     showInTable: {
       description: "Shows this field in the collection table view.",
@@ -140,7 +158,13 @@ The `Select` builder provides a fluent API to configure the field.
       default: "false",
     },
     colSpan: {
-      description: <>Sets how many columns this field should span when inside a <a href="/docs/layouts/grid">Grid layout</a>. Supports numbers, 'full' for all columns, or responsive objects.</>,
+      description: (
+        <>
+          Sets how many columns this field should span when inside a{" "}
+          <a href="/docs/layouts/grid">Grid layout</a>. Supports numbers, 'full'
+          for all columns, or responsive objects.
+        </>
+      ),
       type: "number | 'full' | ResponsiveValue",
     },
   }}
@@ -152,12 +176,12 @@ The `Select` builder provides a fluent API to configure the field.
 
 ```typescript
 interface SelectOption {
-  label: string;           // Display text for the option
-  value: string;           // Value when option is selected
-  prefix?: ReactNode;      // Optional icon or element before label
-  suffix?: ReactNode;      // Optional icon or element after label
-  disabled?: boolean;      // Whether the option is disabled
-  description?: string;    // Secondary text shown in muted color
+  label: string; // Display text for the option
+  value: string; // Value when option is selected
+  prefix?: ReactNode; // Optional icon or element before label
+  suffix?: ReactNode; // Optional icon or element after label
+  disabled?: boolean; // Whether the option is disabled
+  description?: string; // Secondary text shown in muted color
 }
 ```
 
@@ -165,7 +189,7 @@ interface SelectOption {
 
 ```typescript
 interface SelectOptionGroup {
-  label: string;                // Group heading text
+  label: string; // Group heading text
   options: Array<SelectOption>; // Options within this group
 }
 ```
@@ -174,11 +198,11 @@ interface SelectOptionGroup {
 
 ```typescript
 interface ResponsiveColumns {
-  base?: number;  // Default columns (mobile)
-  sm?: number;    // Small screens (640px+)
-  md?: number;    // Medium screens (768px+)
-  lg?: number;    // Large screens (1024px+)
-  xl?: number;    // Extra large screens (1280px+)
+  base?: number; // Default columns (mobile)
+  sm?: number; // Small screens (640px+)
+  md?: number; // Medium screens (768px+)
+  lg?: number; // Large screens (1024px+)
+  xl?: number; // Extra large screens (1280px+)
 }
 ```
 
@@ -313,7 +337,7 @@ Select("plan")
 
 </ComponentPreview>
 
-<ComponentPreview showMargin={false} className="col-span-full">
+<ComponentPreview showMargin={false} className="border-b border-r">
   <SchemaRenderer schema={InternalLinksSelectSchema} />
 
 ```typescript
@@ -321,6 +345,19 @@ Select("plan")
 Select("linkedPage")
   .label("Link to Page")
   .internalLinks(true, false)
+  .placeholder("Select a page to link to");
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={InternalLinksGroupedSelectSchema} />
+
+```typescript
+// [!code word:Select]
+Select("linkedPage")
+  .label("Link to Page")
+  .internalLinks(true, true)
   .placeholder("Select a page to link to");
 ```
 
