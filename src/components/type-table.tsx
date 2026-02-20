@@ -76,12 +76,127 @@ function renderTypeWithHighlighting(type: ReactNode): ReactNode {
     return type;
   }
 
+  const customTypePatterns = [
+    "SelectOptionRenderContext", // More specific patterns first
+    "SelectOptionGroup",
+    "SelectOption",
+    "ResponsiveColumns",
+    "ResponsiveValue",
+  ];
+
+  // Check if it's a function signature
+  if (type.includes("=>") || (type.includes("(") && type.includes(")"))) {
+    // For function signatures, we need to highlight custom types within the signature
+    // Find all matches with their positions
+    const matches: Array<{ start: number; end: number; pattern: string }> = [];
+
+    customTypePatterns.forEach((pattern) => {
+      const regex = new RegExp(`\\b${pattern}\\b`, "g");
+      let match;
+      while ((match = regex.exec(type)) !== null) {
+        matches.push({
+          start: match.index,
+          end: match.index + pattern.length,
+          pattern: pattern,
+        });
+      }
+    });
+
+    // Sort matches by start position
+    matches.sort((a, b) => a.start - b.start);
+
+    // Build result
+    const result: ReactNode[] = [];
+    let lastIndex = 0;
+
+    matches.forEach((match, index) => {
+      // Add text before this match
+      if (match.start > lastIndex) {
+        result.push(
+          <span key={`text-${index}`}>{type.substring(lastIndex, match.start)}</span>
+        );
+      }
+
+      // Add highlighted custom type
+      result.push(
+        <span key={`custom-${index}`} className="text-green-600">
+          {match.pattern}
+        </span>
+      );
+
+      lastIndex = match.end;
+    });
+
+    // Add remaining text
+    if (lastIndex < type.length) {
+      result.push(
+        <span key="text-end">{type.substring(lastIndex)}</span>
+      );
+    }
+
+    return result.length > 0 ? <>{result}</> : type;
+  }
+
   // Split by pipe operator to handle union types
   const parts = type.split("|");
 
   if (parts.length === 1) {
-    // Single type
-    const part = parts[0];
+    // Single type - check if it's a generic type like Array<SelectOption>
+    const part = parts[0].trim();
+    
+    // Check if it's a generic type
+    if (part.includes("<") && part.includes(">")) {
+      const matches: Array<{ start: number; end: number; pattern: string }> = [];
+
+      customTypePatterns.forEach((pattern) => {
+        const regex = new RegExp(`\\b${pattern}\\b`, "g");
+        let match;
+        while ((match = regex.exec(part)) !== null) {
+          matches.push({
+            start: match.index,
+            end: match.index + pattern.length,
+            pattern: pattern,
+          });
+        }
+      });
+
+      if (matches.length > 0) {
+        // Sort matches by start position
+        matches.sort((a, b) => a.start - b.start);
+
+        // Build result
+        const result: ReactNode[] = [];
+        let lastIndex = 0;
+
+        matches.forEach((match, index) => {
+          // Add text before this match
+          if (match.start > lastIndex) {
+            result.push(
+              <span key={`text-${index}`}>{part.substring(lastIndex, match.start)}</span>
+            );
+          }
+
+          // Add highlighted custom type
+          result.push(
+            <span key={`custom-${index}`} className="text-green-600">
+              {match.pattern}
+            </span>
+          );
+
+          lastIndex = match.end;
+        });
+
+        // Add remaining text
+        if (lastIndex < part.length) {
+          result.push(
+            <span key="text-end">{part.substring(lastIndex)}</span>
+          );
+        }
+
+        return <>{result}</>;
+      }
+    }
+    
     if (isCustomTypePart(part)) {
       return <span className="text-green-600">{part}</span>;
     }
