@@ -29,7 +29,7 @@ class SelectBuilder {
   }
 
   required<T = Record<string, any>>(value: boolean | ((formData: T) => boolean) = true): this {
-    this.field.required = value;
+    this.field.required = value as boolean | ((formData: unknown) => boolean);
     return this;
   }
 
@@ -164,7 +164,7 @@ class SelectBuilder {
    * @param value - Boolean to hide/show field, or function receiving formData to determine visibility. Defaults to `true`.
    */
   hidden<T = Record<string, any>>(value: boolean | ((formData: T) => boolean) = true): this {
-    this.field.hidden = value;
+    this.field.hidden = value as boolean | ((formData: unknown) => boolean);
     return this;
   }
 
@@ -174,6 +174,15 @@ class SelectBuilder {
    */
   colSpan(value: ColSpanValue): this {
     this.field.colSpan = value;
+    return this;
+  }
+
+  /**
+   * Provide a custom render function for all options in this select field
+   * @param fn - Function that receives the option and context (isSelected, isDisabled) and returns a ReactNode
+   */
+  renderOption(fn: (option: SelectOption, context: { isSelected: boolean; isDisabled: boolean }) => ReactNode): this {
+    this.field.renderOption = fn;
     return this;
   }
 

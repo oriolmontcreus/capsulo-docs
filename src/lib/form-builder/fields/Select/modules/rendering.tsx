@@ -106,8 +106,24 @@ export const useRendering = (props: RenderingProps) => {
         return field.groups;
     }, [field.internalLinks, field.groupBySection, internalLinksGroups, field.groups]);
 
-    // Helper to render option content with prefix/suffix/description
-    const renderOptionContent = (opt: any) => {
+    // Helper to render option content with prefix/suffix/description or custom render
+    const renderOptionContent = (opt: any, isSelected: boolean = false) => {
+        const context = {
+            isSelected,
+            isDisabled: !!opt.disabled,
+        };
+
+        // Priority 1: Option-level custom render function
+        if (opt.render) {
+            return opt.render(opt, context);
+        }
+
+        // Priority 2: Field-level custom render function
+        if (field.renderOption) {
+            return field.renderOption(opt, context);
+        }
+
+        // Priority 3: Default rendering with prefix/suffix/description
         const hasOptPrefix = !!opt.prefix;
         const hasOptSuffix = !!opt.suffix;
         const hasDescription = !!opt.description;
@@ -157,6 +173,8 @@ export const useRendering = (props: RenderingProps) => {
             label: highlightText(opt.label, queryToUse, field.highlightMatches)
         } : opt;
 
+        const isSelected = value === opt.value;
+
         return (
             <CommandItem
                 key={`${opt.value}-${virtualIndex || 0}`}
@@ -174,21 +192,21 @@ export const useRendering = (props: RenderingProps) => {
             >
                 {hasMultipleColumns() ? (
                     <>
-                        <span className="truncate">{renderOptionContent(optionContent)}</span>
+                        <span className="truncate">{renderOptionContent(optionContent, isSelected)}</span>
                         <Check
                             className={cn(
                                 "h-4 w-4 shrink-0",
-                                value === opt.value ? "opacity-100" : "opacity-0"
+                                isSelected ? "opacity-100" : "opacity-0"
                             )}
                         />
                     </>
                 ) : (
                     <>
-                        {renderOptionContent(optionContent)}
+                        {renderOptionContent(optionContent, isSelected)}
                         <Check
                             className={cn(
                                 "ml-auto h-4 w-4",
-                                value === opt.value ? "opacity-100" : "opacity-0"
+                                isSelected ? "opacity-100" : "opacity-0"
                             )}
                         />
                     </>
@@ -244,19 +262,25 @@ export const useRendering = (props: RenderingProps) => {
             return activeGroups!.map((group) => (
                 <SelectGroup key={group.label}>
                     <SelectLabel>{group.label}</SelectLabel>
-                    {group.options.map(opt => (
-                        <SelectItem key={opt.value} value={opt.value} disabled={opt.disabled}>
-                            {renderOptionContent(opt)}
-                        </SelectItem>
-                    ))}
+                    {group.options.map(opt => {
+                        const isSelected = value === opt.value;
+                        return (
+                            <SelectItem key={opt.value} value={opt.value} disabled={opt.disabled}>
+                                {renderOptionContent(opt, isSelected)}
+                            </SelectItem>
+                        );
+                    })}
                 </SelectGroup>
             ));
         } else {
-            return field.options.map(opt => (
-                <SelectItem key={opt.value} value={opt.value} disabled={opt.disabled}>
-                    {renderOptionContent(opt)}
-                </SelectItem>
-            ));
+            return field.options.map(opt => {
+                const isSelected = value === opt.value;
+                return (
+                    <SelectItem key={opt.value} value={opt.value} disabled={opt.disabled}>
+                        {renderOptionContent(opt, isSelected)}
+                    </SelectItem>
+                );
+            });
         }
     };
 

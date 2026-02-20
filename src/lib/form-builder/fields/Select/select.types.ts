@@ -2,6 +2,11 @@ import type { ReactNode } from 'react';
 import type { PageInfo } from './page-scanner';
 import type { ColSpanValue } from '../../core/translation.types';
 
+export interface SelectOptionRenderContext {
+  isSelected: boolean;
+  isDisabled: boolean;
+}
+
 export interface SelectOption {
   label: string;
   value: string;
@@ -9,6 +14,7 @@ export interface SelectOption {
   suffix?: ReactNode;
   disabled?: boolean;
   description?: string; // Secondary text shown in muted color
+  render?: (option: SelectOption, context: SelectOptionRenderContext) => ReactNode;
 }export interface SelectOptionGroup {
   label: string;
   options: Array<SelectOption>;
@@ -53,6 +59,8 @@ export interface SelectField<TFormData = unknown> {
   autoResolveLocale?: boolean;
   availablePages?: PageInfo[];
   groupBySection?: boolean;
+  // Custom rendering
+  renderOption?: (option: SelectOption, context: SelectOptionRenderContext) => ReactNode;
   // Table display control
   showInTable?: boolean; // Whether to show this field as a column in a repeater with table variant (default: true)
   hidden?: boolean | ((formData: TFormData) => boolean);

@@ -13,6 +13,9 @@ import {
   DescriptionSelectSchema,
   InternalLinksSelectSchema,
   InternalLinksGroupedSelectSchema,
+  StatusSelectSchema,
+  CustomRenderedColumnsSchema,
+  OptionLevelCustomRenderSchema,
 } from "@/lib/docs/examples/select.examples";
 import { ComponentPreview } from "@/components/component-preview";
 import { TypeTable } from "@/components/type-table";
@@ -147,6 +150,11 @@ The `Select` builder provides a fluent API to configure the field.
         },
       ],
     },
+    renderOption: {
+      description:
+        "Custom render function for all options. Receives the option and context (isSelected, isDisabled) and returns a ReactNode. This allows complete customization of how options appear in the dropdown.",
+      type: "(option: SelectOption, context: SelectOptionRenderContext) => ReactNode",
+    },
     showInTable: {
       description: "Shows this field in the collection table view.",
       type: "boolean",
@@ -174,37 +182,101 @@ The `Select` builder provides a fluent API to configure the field.
 
 ### SelectOption
 
-```typescript
-interface SelectOption {
-  label: string; // Display text for the option
-  value: string; // Value when option is selected
-  prefix?: ReactNode; // Optional icon or element before label
-  suffix?: ReactNode; // Optional icon or element after label
-  disabled?: boolean; // Whether the option is disabled
-  description?: string; // Secondary text shown in muted color
-}
-```
+<TypeTable
+  type={{
+    label: {
+      description: "Display text for the option.",
+      type: "string",
+      required: true,
+    },
+    value: {
+      description: "Value when option is selected.",
+      type: "string",
+      required: true,
+    },
+    prefix: {
+      description: "Optional icon or element before label.",
+      type: "ReactNode",
+    },
+    suffix: {
+      description: "Optional icon or element after label.",
+      type: "ReactNode",
+    },
+    disabled: {
+      description: "Whether the option is disabled.",
+      type: "boolean",
+    },
+    description: {
+      description: "Secondary text shown in muted color.",
+      type: "string",
+    },
+    render: {
+      description: "Custom render function for this specific option. Receives the option and context (isSelected, isDisabled) and returns a ReactNode.",
+      type: "(option: SelectOption, context: SelectOptionRenderContext) => ReactNode",
+    },
+  }}
+/>
+
+### SelectOptionRenderContext
+
+<TypeTable
+  type={{
+    isSelected: {
+      description: "Whether this option is currently selected.",
+      type: "boolean",
+      required: true,
+    },
+    isDisabled: {
+      description: "Whether this option is disabled.",
+      type: "boolean",
+      required: true,
+    },
+  }}
+/>
 
 ### SelectOptionGroup
 
-```typescript
-interface SelectOptionGroup {
-  label: string; // Group heading text
-  options: Array<SelectOption>; // Options within this group
-}
-```
+<TypeTable
+  type={{
+    label: {
+      description: "Group heading text.",
+      type: "string",
+      required: true,
+    },
+    options: {
+      description: "Options within this group.",
+      type: "Array<SelectOption>",
+      required: true,
+    },
+  }}
+/>
 
 ### ResponsiveColumns
 
-```typescript
-interface ResponsiveColumns {
-  base?: number; // Default columns (mobile)
-  sm?: number; // Small screens (640px+)
-  md?: number; // Medium screens (768px+)
-  lg?: number; // Large screens (1024px+)
-  xl?: number; // Extra large screens (1280px+)
-}
-```
+<TypeTable
+  type={{
+    base: {
+      description: "Default columns (mobile).",
+      type: "number",
+    },
+    sm: {
+      description: "Small screens (640px+).",
+      type: "number",
+    },
+    md: {
+      description: "Medium screens (768px+).",
+      type: "number",
+    },
+    lg: {
+      description: "Large screens (1024px+).",
+      type: "number",
+    },
+    xl: {
+      description: "Extra large screens (1280px+).",
+      type: "number",
+    },
+  }}
+/>
 
 ## Examples
 
@@ -359,6 +431,117 @@ Select("linkedPage")
   .label("Link to Page")
   .internalLinks(true, true)
   .placeholder("Select a page to link to");
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={StatusSelectSchema} />
+
+```tsx
+// [!code word:Select]
+Select("status")
+  .label("Status")
+  .placeholder("Select a status")
+  .renderOption((option, context) => (
+    <div className="flex items-center gap-2">
+      <div
+        className="size-2 rounded-full"
+        style={{ backgroundColor: option.value }}
+      />
+      <span>{option.label}</span>
+    </div>
+  ))
+  .options([
+    { label: "Completed", value: "#22c55e" },
+    { label: "In Progress", value: "#3b82f6" },
+    { label: "Pending", value: "#f59e0b" },
+    { label: "Cancelled", value: "#6b7280" },
+    { label: "Failed", value: "#ef4444" },
+  ]);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={CustomRenderedColumnsSchema} />
+
+```tsx
+// [!code word:Select]
+Select("color")
+  .label("Color Palette")
+  .placeholder("Select a color")
+  .searchable()
+  .columns(2)
+  .renderOption((option, context) => (
+    <div className="flex items-center gap-2">
+      <div
+        className="size-4 rounded border"
+        style={{ backgroundColor: option.value }}
+      />
+      <span className="truncate">{option.label}</span>
+    </div>
+  ))
+  .options([
+    { label: "Crimson Red", value: "#ef4444" },
+    { label: "Ocean Blue", value: "#0284c7" },
+    { label: "Forest Green", value: "#16a34a" },
+    { label: "Sunset Orange", value: "#f97316" },
+    { label: "Royal Purple", value: "#7c3aed" },
+    { label: "Golden Yellow", value: "#eab308" },
+    { label: "Rose Pink", value: "#f43f5e" },
+    { label: "Teal", value: "#14b8a6" },
+  ]);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={OptionLevelCustomRenderSchema} />
+
+```tsx
+// [!code word:Select]
+Select("notification")
+  .label("Notification Type")
+  .placeholder("Select notification type")
+  .searchable()
+  .options([
+    {
+      label: "Email",
+      value: "email",
+      render: (opt, ctx) => (
+        <div className="flex items-center gap-3">
+          <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+            📧
+          </div>
+          <div className="flex flex-col">
+            <span className="font-medium">Email Notification</span>
+            <span className="text-xs text-muted-foreground">
+              Receive updates via email
+            </span>
+          </div>
+        </div>
+      ),
+    },
+    {
+      label: "SMS",
+      value: "sms",
+      render: (opt, ctx) => (
+        <div className="flex items-center gap-3">
+          <div className="flex size-8 items-center justify-center rounded-full bg-green-100 text-green-600">
+            💬
+          </div>
+          <div className="flex flex-col">
+            <span className="font-medium">SMS Alert</span>
+            <span className="text-xs text-muted-foreground">
+              Get instant text messages
+            </span>
+          </div>
+        </div>
+      ),
+    },
+    // ... more options with unique renders
+  ]);
 ```
 
 </ComponentPreview>
