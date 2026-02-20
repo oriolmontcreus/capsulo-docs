@@ -20,16 +20,22 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
   if (!page) notFound();
 
   const MDX = page.data.body;
+  
+  // Construct the file path from the slug
+  const markdownPath = params.slug ? params.slug.join("/") + ".mdx" : "index.mdx";
+  
+  // Use GitHub raw content URL for fetching markdown
+  const githubRawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/content/docs/${markdownPath}`;
 
   return (
     <DocsPage toc={page.data.toc} full={page.data.full}>
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <div className="flex flex-row gap-2 items-center border-b -mt-8 pb-6">
-        <LLMCopyButton markdownUrl={`${page.url}.mdx`} />
+        <LLMCopyButton markdownUrl={githubRawUrl} />
         <ViewOptions
-          markdownUrl={`${page.url}.mdx`}
-          githubUrl={`https://github.com/${owner}/${repo}/blob/main/content/docs/${page.path}`}
+          markdownUrl={githubRawUrl}
+          githubUrl={`https://github.com/${owner}/${repo}/blob/main/content/docs/${markdownPath}`}
         />
       </div>
       <DocsBody>
