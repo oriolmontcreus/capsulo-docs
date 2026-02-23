@@ -342,6 +342,8 @@ export const DateFieldComponent: React.FC<DateFieldProps> = React.memo(({
                         toYear={field.toYear}
                         weekStartsOn={field.weekStartsOn}
                         locale={getDateFnsLocale()}
+                        fixedWeeks={field.fixedWeeks}
+                        showOutsideDays={field.showOutsideDays ?? field.fixedWeeks}
                         initialFocus
                     />
                 </PopoverContent>

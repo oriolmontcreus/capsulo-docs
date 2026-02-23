@@ -1,0 +1,220 @@
+---
+title: DateField
+description: A component for capturing dates and date ranges.
+---
+
+import { SchemaRenderer } from "@/lib/docs/SchemaRenderer";
+import {
+  BasicDateFieldSchema,
+  RangeDateFieldSchema,
+  InputDateFieldSchema,
+  DropdownDateFieldSchema,
+  FixedWeeksDateFieldSchema,
+  DisabledDateFieldSchema,
+} from "@/lib/docs/examples/datefield.examples";
+import { ComponentPreview } from "@/components/component-preview";
+import { TypeTable } from "@/components/type-table";
+
+The `DateField` is used to capture dates or ranges of dates. It supports various formats, modes (single or range), custom disabled constraints, and different visual variants (calendar popover or direct input).
+
+## Usage
+
+```typescript
+import { DateField } from "@/lib/form-builder/fields/DateField/datefield.builder";
+```
+
+```typescript
+// [!code word:DateField]
+DateField("fieldName").label("Field Label");
+```
+
+## API
+
+The `DateField` builder provides a fluent API to configure the field.
+
+<TypeTable
+  type={{
+    label: {
+      description: "Sets the label of the date field.",
+      type: "string",
+    },
+    description: {
+      description: "Adds a helper description below the field.",
+      type: "string",
+    },
+    placeholder: {
+      description: "Sets the placeholder text.",
+      type: "string",
+    },
+    required: {
+      description: "Marks the field as required. Can be conditional.",
+      type: "boolean | function",
+      default: "true",
+    },
+    defaultValue: {
+      description: "Sets the initial value of the field. Expects a single date/string or an object { start, end } depending on the mode.",
+      type: "Date | string | { start: Date | string; end: Date | string }",
+    },
+    mode: {
+      description: "Sets the date field mode to select a single date or a range.",
+      type: "'single' | 'range'",
+      default: "'single'",
+    },
+    variant: {
+      description: "Sets the date field variant. 'calendar' uses a popover, while 'input' provides a typed input.",
+      type: "'calendar' | 'input'",
+      default: "'calendar'",
+    },
+    format: {
+      description: "Sets the date formatting style.",
+      type: "'short' | 'medium' | 'long' | 'full' | 'custom'",
+      default: "'medium'",
+    },
+    customFormat: {
+      description: "Sets custom date formatting options when `format` is 'custom'.",
+      type: "Intl.DateTimeFormatOptions",
+    },
+    captionLayout: {
+      description: "Sets the layout of the calendar caption.",
+      type: "'dropdown' | 'dropdown-months' | 'dropdown-years' | 'label'",
+      default: "'dropdown'",
+    },
+    disabled: {
+      description: "Configures disabled dates (e.g., past dates, specific days of the week).",
+      type: "DateFieldDisabledConfig",
+    },
+    minDate: {
+      description: "Sets the minimum selectable date.",
+      type: "Date | string",
+    },
+    maxDate: {
+      description: "Sets the maximum selectable date.",
+      type: "Date | string",
+    },
+    showYearDropdown: {
+      description: "Enables a dropdown for selecting the year.",
+      type: "boolean",
+    },
+    showMonthDropdown: {
+      description: "Enables a dropdown for selecting the month.",
+      type: "boolean",
+    },
+    fixedWeeks: {
+      description: "Always shows 6 weeks in the calendar to prevent layout shifts.",
+      type: "boolean",
+    },
+    showOutsideDays: {
+      description: "Shows days from the previous and next months in the calendar.",
+      type: "boolean",
+    },
+    yearRange: {
+      description: "Sets the year range for the dropdown. Takes a start year and an optional end year.",
+      type: "(from: number, to?: number) => this",
+    },
+    weekStartsOn: {
+      description: "Sets which day the week starts on (0 for Sunday, 6 for Saturday).",
+      type: "0 | 1 | 2 | 3 | 4 | 5 | 6",
+    },
+    locale: {
+      description: "Sets the locale for date formatting.",
+      type: "string",
+    },
+    showInTable: {
+      description: "Shows this field in the collection table view.",
+      type: "boolean",
+      default: "true",
+    },
+    hidden: {
+      description: "Hides the field conditionally.",
+      type: "boolean | function",
+      default: "false",
+    },
+    colSpan: {
+      description: <>Sets how many columns this field should span when inside a <a href="/docs/layouts/grid">Grid layout</a>. Supports numbers, 'full' for all columns, or responsive objects.</>,
+      type: "number | 'full' | ResponsiveValue",
+    },
+  }}
+/>
+
+## Examples
+
+<div className="grid grid-cols-1 md:grid-cols-2 border overflow-hidden *:m-0 *:rounded-none [&>*>div]:border-0 [&>*>div]:m-0">
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={BasicDateFieldSchema} />
+
+```typescript
+// [!code word:DateField]
+DateField("dob").label("Date of Birth").placeholder("Select your birth date");
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={RangeDateFieldSchema} />
+
+```tsx
+// [!code word:DateField]
+DateField("eventDates")
+  .label("Event Dates")
+  .mode("range")
+  .description("Select start and end dates");
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={InputDateFieldSchema} />
+
+```tsx
+// [!code word:DateField]
+DateField("departure")
+  .label("Departure Date")
+  .variant("input")
+  .format("long");
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={DropdownDateFieldSchema} />
+
+```tsx
+// [!code word:DateField]
+DateField("anniversary")
+  .label("Anniversary")
+  .captionLayout("dropdown")
+  .showYearDropdown(true)
+  .showMonthDropdown(true)
+  .yearRange(1900, new Date().getFullYear() + 100);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={FixedWeeksDateFieldSchema} />
+
+```tsx
+// [!code word:DateField]
+DateField("fixedWeeksDate")
+  .label("Booking Date")
+  .fixedWeeks(true)
+  .showOutsideDays(true)
+  .description("Calendar always shows 6 weeks to prevent layout shifts");
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={DisabledDateFieldSchema} />
+
+```typescript
+// [!code word:DateField]
+DateField("appointment")
+  .label("Appointment Date")
+  .disabled({ before: new Date(), dayOfWeek: [0, 6] });
+```
+
+</ComponentPreview>
+
+</div>
