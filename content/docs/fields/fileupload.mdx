@@ -1,0 +1,237 @@
+---
+title: File Upload
+description: A powerful component for uploading and managing files with support for images, documents, and media.
+---
+
+import { SchemaRenderer } from "@/lib/docs/SchemaRenderer";
+import {
+  BasicFileUploadSchema,
+  ImageUploadSchema,
+  AvatarUploadSchema,
+  CoverUploadSchema,
+  MultipleFileUploadSchema,
+  DocumentUploadSchema,
+  ListVariantSchema,
+  GridVariantSchema,
+  InlineVariantSchema,
+} from "@/lib/docs/examples/fileupload.examples";
+import { ComponentPreview } from "@/components/component-preview";
+import { TypeTable } from "@/components/type-table";
+
+The `FileUpload` field enables users to upload and manage files including images, documents, and media. It supports multiple variants, file validation, image optimization, and convenient presets for common use cases like avatars and cover images.
+
+## Usage
+
+```typescript
+import { FileUpload } from "@/lib/form-builder/fields/FileUpload/fileUpload.builder";
+```
+
+```typescript
+// [!code word:FileUpload]
+FileUpload("fieldName").label("Field Label");
+```
+
+## API
+
+The `FileUpload` builder provides a fluent API to configure the field.
+
+<TypeTable
+  type={{
+    label: {
+      description: "Sets the label of the file upload field.",
+      type: "string",
+    },
+    description: {
+      description: "Adds a helper description below the field.",
+      type: "string",
+    },
+    required: {
+      description: "Marks the field as required. Can be conditional.",
+      type: "boolean | function",
+      default: "true",
+    },
+    defaultValue: {
+      description: "Sets the initial value of the field.",
+      type: "FileUploadValue",
+    },
+    accept: {
+      description: "Sets the accepted file types (MIME types or file extensions).",
+      type: "string",
+    },
+    maxSize: {
+      description: "Sets the maximum file size in bytes.",
+      type: "number",
+    },
+    maxFiles: {
+      description: "Sets the maximum number of files allowed.",
+      type: "number",
+    },
+    multiple: {
+      description: "Allows multiple file selection.",
+      type: "boolean",
+      default: "false",
+    },
+    variant: {
+      description: "Sets the display variant of the field.",
+      type: "'list' | 'grid' | 'inline'",
+      default: "'list' (or 'inline' for single mode)",
+    },
+    inlineConfig: {
+      description: "Configuration for the inline variant.",
+      type: "InlineConfig",
+    },
+    imageOptimization: {
+      description: "Configuration for image optimization settings.",
+      type: "ImageOptimizationConfig",
+    },
+    showInTable: {
+      description: "Shows this field in the collection table view.",
+      type: "boolean",
+      default: "true",
+    },
+    hidden: {
+      description: "Hides the field conditionally.",
+      type: "boolean | function",
+      default: "false",
+    },
+    colSpan: {
+      description: <>Sets how many columns this field should span when inside a <a href="/docs/layouts/grid">Grid layout</a>. Supports numbers, 'full' for all columns, or responsive objects.</>,
+      type: "number | 'full' | ResponsiveValue",
+    },
+  }}
+/>
+
+### Convenience Methods
+
+The `FileUpload` builder also provides several convenience methods for common configurations:
+
+- **`images()`**: Configures the field for image uploads with WebP conversion and quality settings
+- **`documents()`**: Configures the field for document uploads (.pdf, .doc, .docx, .txt, .rtf)
+- **`media()`**: Configures the field for all media types (images, videos, audio)
+- **`inline()`**: Sets the field to inline variant with single file mode
+- **`avatar()`**: Creates an avatar upload field with square aspect ratio and 2MB limit
+- **`cover()`**: Creates a cover image upload field with wide aspect ratio and 5MB limit
+- **`thumbnail()`**: Creates a thumbnail upload field with square aspect ratio and 1MB limit
+
+## Examples
+
+<div className="grid grid-cols-1 md:grid-cols-2 border overflow-hidden *:m-0 *:rounded-none [&>*>div]:border-0 [&>*>div]:m-0">
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={BasicFileUploadSchema} />
+
+```typescript
+// [!code word:FileUpload]
+FileUpload("attachment").label("Attachment");
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={ImageUploadSchema} />
+
+```typescript
+// [!code word:FileUpload]
+FileUpload("heroImage")
+  .label("Hero Image")
+  .images()
+  .maxSize(5 * 1024 * 1024); // 5MB
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={AvatarUploadSchema} />
+
+```typescript
+// [!code word:FileUpload]
+FileUpload("profilePicture")
+  .label("Profile Picture")
+  .avatar();
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={CoverUploadSchema} />
+
+```typescript
+// [!code word:FileUpload]
+FileUpload("bannerImage")
+  .label("Banner Image")
+  .cover();
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={MultipleFileUploadSchema} />
+
+```typescript
+// [!code word:FileUpload]
+FileUpload("gallery")
+  .label("Image Gallery")
+  .images()
+  .multiple()
+  .maxFiles(10);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={DocumentUploadSchema} />
+
+```typescript
+// [!code word:FileUpload]
+FileUpload("resume")
+  .label("Resume")
+  .documents()
+  .maxSize(10 * 1024 * 1024); // 10MB
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b border-r">
+  <SchemaRenderer schema={ListVariantSchema} />
+
+```typescript
+// [!code word:FileUpload]
+FileUpload("files")
+  .label("Files (List)")
+  .variant("list")
+  .multiple()
+  .maxFiles(5);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border-b">
+  <SchemaRenderer schema={GridVariantSchema} />
+
+```typescript
+// [!code word:FileUpload]
+FileUpload("images")
+  .label("Images (Grid)")
+  .variant("grid")
+  .images()
+  .multiple()
+  .maxFiles(6);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="col-span-full">
+  <SchemaRenderer schema={InlineVariantSchema} />
+
+```typescript
+// [!code word:FileUpload]
+FileUpload("logo")
+  .label("Logo (Inline)")
+  .variant("inline")
+  .images()
+  .maxSize(2 * 1024 * 1024); // 2MB
+```
+
+</ComponentPreview>
+
+</div>
