@@ -4,17 +4,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 import { DateRange } from 'react-day-picker';
 import { Button } from '@/components/ui/button';
-import {
-  endOfMonth,
-  endOfYear,
-  startOfMonth,
-  startOfYear,
-  subDays,
-  subMonths,
-  subYears,
-  addMonths,
-  Locale,
-} from 'date-fns';
+import { addMonths, Locale, subMonths } from 'date-fns';
 import { enUS } from 'date-fns/locale'; // Import enUS locale
 
 // Minimal mock for Drawer components
@@ -82,43 +72,6 @@ export const RangeCalendarPicker = ({
   const [leftMonth, setLeftMonth] = useState<Date>(new Date());
   const [rightMonth, setRightMonth] = useState<Date>(addMonths(new Date(), 1)); // Initialize right month to be 1 month ahead
 
-  // Define preset date ranges
-  const today = new Date();
-  const presets = {
-    today: {
-      from: today,
-      to: today,
-    },
-    yesterday: {
-      from: subDays(today, 1),
-      to: subDays(today, 1),
-    },
-    last7Days: {
-      from: subDays(today, 6),
-      to: today,
-    },
-    last30Days: {
-      from: subDays(today, 29),
-      to: today,
-    },
-    monthToDate: {
-      from: startOfMonth(today),
-      to: today,
-    },
-    lastMonth: {
-      from: startOfMonth(subMonths(today, 1)),
-      to: endOfMonth(subMonths(today, 1)),
-    },
-    yearToDate: {
-      from: startOfYear(today),
-      to: today,
-    },
-    lastYear: {
-      from: startOfYear(subYears(today, 1)),
-      to: endOfYear(subYears(today, 1)),
-    },
-  };
-
   useEffect(() => {
     if (open) {
       setTempValue(value);
@@ -134,12 +87,6 @@ export const RangeCalendarPicker = ({
 
   const handleSelect = (range: DateRange | undefined) => {
     setTempValue(range);
-  };
-
-  const handlePresetSelect = (preset: DateRange) => {
-    setTempValue(preset);
-    setLeftMonth(preset.from || new Date());
-    setRightMonth(addMonths(preset.from || new Date(), 1)); // Keep right month 1 month ahead of preset start
   };
 
   const handleConfirm = () => {
@@ -180,74 +127,6 @@ export const RangeCalendarPicker = ({
               <DrawerTitle>Select Date Range</DrawerTitle>
             </VisuallyHidden> */}
 
-            {/* Preset buttons for mobile */}
-            <div className="flex gap-2 overflow-x-auto pb-2 pt-2">
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => handlePresetSelect(presets.today)}
-                className="whitespace-nowrap"
-              >
-                Today
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => handlePresetSelect(presets.yesterday)}
-                className="whitespace-nowrap"
-              >
-                Yesterday
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => handlePresetSelect(presets.last7Days)}
-                className="whitespace-nowrap"
-              >
-                Last 7 Days
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => handlePresetSelect(presets.last30Days)}
-                className="whitespace-nowrap"
-              >
-                Last 30 Days
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => handlePresetSelect(presets.monthToDate)}
-                className="whitespace-nowrap"
-              >
-                Month to date
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => handlePresetSelect(presets.lastMonth)}
-                className="whitespace-nowrap"
-              >
-                Last month
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => handlePresetSelect(presets.yearToDate)}
-                className="whitespace-nowrap"
-              >
-                Year to date
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => handlePresetSelect(presets.lastYear)}
-                className="whitespace-nowrap"
-              >
-                Last year
-              </Button>
-            </div>
-
             <Calendar
               key={value?.from?.toDateString() || 'empty'}
               mode="range"
@@ -286,78 +165,6 @@ export const RangeCalendarPicker = ({
         <PopoverContent className="w-auto p-0 mr-2" align="start">
           <div className="rounded-md">
             <div className="flex">
-              {/* Preset sidebar */}
-              <div className="relative py-4 w-32">
-                <div className="h-full border-e">
-                  <div className="flex flex-col px-2">
-                    <Button
-                      className="w-full justify-start"
-                      onClick={() => handlePresetSelect(presets.today)}
-                      size="sm"
-                      variant="ghost"
-                    >
-                      Today
-                    </Button>
-                    <Button
-                      className="w-full justify-start"
-                      onClick={() => handlePresetSelect(presets.yesterday)}
-                      size="sm"
-                      variant="ghost"
-                    >
-                      Yesterday
-                    </Button>
-                    <Button
-                      className="w-full justify-start"
-                      onClick={() => handlePresetSelect(presets.last7Days)}
-                      size="sm"
-                      variant="ghost"
-                    >
-                      Last 7 Days
-                    </Button>
-                    <Button
-                      className="w-full justify-start"
-                      onClick={() => handlePresetSelect(presets.last30Days)}
-                      size="sm"
-                      variant="ghost"
-                    >
-                      Last 30 Days
-                    </Button>
-                    <Button
-                      className="w-full justify-start"
-                      onClick={() => handlePresetSelect(presets.monthToDate)}
-                      size="sm"
-                      variant="ghost"
-                    >
-                      Month to date
-                    </Button>
-                    <Button
-                      className="w-full justify-start"
-                      onClick={() => handlePresetSelect(presets.lastMonth)}
-                      size="sm"
-                      variant="ghost"
-                    >
-                      Last month
-                    </Button>
-                    <Button
-                      className="w-full justify-start"
-                      onClick={() => handlePresetSelect(presets.yearToDate)}
-                      size="sm"
-                      variant="ghost"
-                    >
-                      Year to date
-                    </Button>
-                    <Button
-                      className="w-full justify-start"
-                      onClick={() => handlePresetSelect(presets.lastYear)}
-                      size="sm"
-                      variant="ghost"
-                    >
-                      Last year
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
               {/* Calendars - Two separate calendars for independent year/month navigation */}
               <div className="flex gap-4">
                 <Calendar
