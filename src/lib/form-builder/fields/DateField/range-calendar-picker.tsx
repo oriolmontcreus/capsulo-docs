@@ -66,6 +66,12 @@ export const RangeCalendarPicker = ({
   fromYear,
   toYear,
 }: RangeCalendarPickerProps) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const [open, setOpen] = useState(false);
   const [tempValue, setTempValue] = useState<DateRange | undefined>(value);
@@ -106,9 +112,24 @@ export const RangeCalendarPicker = ({
     setLeftMonth(subMonths(month, 1));
   };
 
+  if (!isMounted) {
+    return (
+      <div className={className}>
+        <div
+          className={cn(
+            classNameContainerTrigger,
+            disabled && 'pointer-events-none opacity-50'
+          )}
+        >
+          {trigger}
+        </div>
+      </div>
+    );
+  }
+
   if (!isDesktop) {
     return (
-      <div className={className} suppressHydrationWarning>
+      <div className={className}>
         <Drawer open={open} onOpenChange={setOpen}>
           <DrawerTrigger asChild>
             <div
