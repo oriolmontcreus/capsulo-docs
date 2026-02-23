@@ -1,28 +1,37 @@
-import { ReactNode, useState, useEffect } from 'react';
+import { type ReactNode, useState, useEffect } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
-import { DateRange } from 'react-day-picker';
+import { type DateRange } from 'react-day-picker';
 import { Button } from '@/components/ui/button';
-import { addMonths, Locale, subMonths } from 'date-fns';
-import { enUS } from 'date-fns/locale'; // Import enUS locale
+import { addMonths, subMonths } from 'date-fns';
+import config from '@/capsulo.config';
+import { getDateFnsLocale } from './datefield.utils';
 
 // Minimal mock for Drawer components
-const Drawer = ({ children, open, onOpenChange }: { children: ReactNode; open: boolean; onOpenChange: (open: boolean) => void }) => {
-  return <div data-open={open} onClick={() => onOpenChange(!open)}>{children}</div>;
+const Drawer = ({
+  children,
+  open,
+  onOpenChange,
+}: {
+  children: ReactNode;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) => {
+  return (
+    <div data-open={open} onClick={() => onOpenChange(!open)}>
+      {children}
+    </div>
+  );
 };
-const DrawerTrigger = ({ children, asChild }: { children: ReactNode, asChild?: boolean }) => {
+const DrawerTrigger = ({ children, asChild }: { children: ReactNode; asChild?: boolean }) => {
   if (asChild) return <>{children}</>;
   return <button>{children}</button>;
 };
-const DrawerContent = ({ children, className }: { children: ReactNode; className?: string }) => <div className={className}>{children}</div>;
+const DrawerContent = ({ children, className }: { children: ReactNode; className?: string }) => (
+  <div className={className}>{children}</div>
+);
 const DrawerTitle = ({ children }: { children: ReactNode }) => <h2>{children}</h2>;
-
-
-const getDateLocale = (locale: string): Locale => {
-  // For now, always return enUS. In a real app, this would dynamically load locales.
-  return enUS;
-};
 
 const useMediaQuery = (query: string) => {
   const [matches, setMatches] = useState(false);
@@ -41,7 +50,6 @@ const useMediaQuery = (query: string) => {
 
   return matches;
 };
-
 
 export type RangeCalendarPickerProps = {
   value?: DateRange;
@@ -116,10 +124,7 @@ export const RangeCalendarPicker = ({
     return (
       <div className={className}>
         <div
-          className={cn(
-            classNameContainerTrigger,
-            disabled && 'pointer-events-none opacity-50'
-          )}
+          className={cn(classNameContainerTrigger, disabled && 'pointer-events-none opacity-50')}
         >
           {trigger}
         </div>
@@ -157,7 +162,7 @@ export const RangeCalendarPicker = ({
               onMonthChange={handleLeftMonthChange}
               onSelect={handleSelect}
               autoFocus
-              locale={getDateLocale(locale || "en-US")}
+              locale={getDateFnsLocale(locale || config.i18n?.defaultLocale)}
               captionLayout="dropdown"
               fixedWeeks
               fromYear={fromYear || 2000}
@@ -196,7 +201,7 @@ export const RangeCalendarPicker = ({
                   onMonthChange={handleLeftMonthChange}
                   onSelect={handleSelect}
                   autoFocus
-                  locale={getDateLocale(locale || "en-US")}
+                  locale={getDateFnsLocale(locale || config.i18n?.defaultLocale)}
                   captionLayout="dropdown"
                   numberOfMonths={1}
                   fixedWeeks
@@ -210,7 +215,7 @@ export const RangeCalendarPicker = ({
                   month={rightMonth}
                   onMonthChange={handleRightMonthChange}
                   onSelect={handleSelect}
-                  locale={getDateLocale(locale || "en-US")}
+                  locale={getDateFnsLocale(locale || config.i18n?.defaultLocale)}
                   captionLayout="dropdown"
                   numberOfMonths={1}
                   fixedWeeks
@@ -221,7 +226,7 @@ export const RangeCalendarPicker = ({
             </div>
           </div>
           <div className="p-3 border-t border-border flex justify-end">
-            <Button onClick={handleConfirm} size="sm" className="h-[30px] rounded-lg">
+            <Button onClick={handleConfirm} size="sm" className="h-7.5 rounded-lg">
               Confirm
             </Button>
           </div>
