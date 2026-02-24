@@ -1,0 +1,161 @@
+---
+title: Tabs
+description: A layout container that organizes fields into navigable tabs.
+---
+
+import { SchemaRenderer } from "@/lib/docs/SchemaRenderer";
+import {
+  BasicTabsSchema,
+  VerticalTabsSchema,
+  TabsWithIconsSchema,
+  TabsWithGridSchema,
+} from "@/lib/docs/examples/tabs.examples";
+import { ComponentPreview } from "@/components/component-preview";
+import { TypeTable } from "@/components/type-table";
+
+The `Tabs` layout allows you to divide complex forms into logical sections accessible via a tabbed interface. This is particularly useful for reducing vertical scroll on long forms.
+
+## Usage
+
+```typescript
+import { Tabs, Tab } from "@/lib/form-builder/layouts/Tabs/tabs.builder";
+```
+
+```typescript
+// [!code word:Tabs]
+Tabs()
+  .tab("Profile", [Input("name").label("Name")])
+  .tab("Settings", [Input("theme").label("Theme")]);
+```
+
+## API
+
+The `Tabs` builder provides a fluent API to configure the layout and its contents.
+
+### Tabs Methods
+
+<TypeTable
+  type={{
+    variant: {
+      description: "Sets the visual style of the tabs.",
+      type: "'default' | 'vertical'",
+      default: "'default'",
+    },
+    tab: {
+      description: "Directly adds a tab with a label and its fields.",
+      type: "(label, fields, options?) => this",
+    },
+    addTab: {
+      description: "Adds a tab using a pre-configured TabBuilder instance.",
+      type: "(tabBuilder) => this",
+    },
+    className: {
+      description: "Applies custom CSS classes to the tabs container.",
+      type: "string",
+    },
+    hidden: {
+      description: "Conditionally hides the tabs layout.",
+      type: "boolean | function",
+      default: "false",
+    },
+  }}
+/>
+
+### Tab Builder (for Icons/Badges)
+
+For more advanced tab headers, use the `Tab()` builder.
+
+<TypeTable
+  type={{
+    prefix: {
+      description: "Adds a React node (like an icon) before the label.",
+      type: "ReactNode",
+    },
+    suffix: {
+      description: "Adds a React node (like a badge) after the label.",
+      type: "ReactNode",
+    },
+  }}
+/>
+
+## Examples
+
+<ComponentPreview showMargin={false} className="border rounded-lg bg-card my-4">
+  <SchemaRenderer schema={BasicTabsSchema} />
+
+```typescript
+// [!code word:Tabs]
+Tabs()
+  .tab("Profile", [
+    Input("firstName").label("First Name"),
+    Input("lastName").label("Last Name"),
+  ])
+  .tab("Contact", [
+    Input("email").label("Email"),
+    Input("phone").label("Phone Number"),
+  ]);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border rounded-lg bg-card my-4">
+  <SchemaRenderer schema={VerticalTabsSchema} />
+
+```typescript
+// [!code word:Tabs]
+Tabs()
+  .variant("vertical")
+  .tab("General", [
+    Input("siteName").label("Site Name"),
+    Input("description").label("Description"),
+  ])
+  .tab("Security", [
+    Input("password").label("Password"),
+    Input("recoveryEmail").label("Recovery Email"),
+  ]);
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border rounded-lg bg-card my-4">
+  <SchemaRenderer schema={TabsWithIconsSchema} />
+
+```typescript
+// [!code word:Tabs]
+Tabs()
+  .addTab(
+    Tab("Personal", [Input("name").label("Name")])
+      .prefix(<UserIcon className="size-4" />)
+  )
+  .addTab(
+    Tab("Settings", [Input("theme").label("Theme")])
+      .prefix(<SettingsIcon className="size-4" />)
+      .suffix(<Badge variant="secondary">New</Badge>)
+  );
+```
+
+</ComponentPreview>
+
+<ComponentPreview showMargin={false} className="border rounded-lg bg-card my-4">
+  <SchemaRenderer schema={TabsWithGridSchema} />
+
+```typescript
+// [!code word:Grid]
+Tabs()
+  .tab("Step 1: Identity", [
+    Grid({ base: 1, md: 2 }).contains([
+      Input("firstName").label("First Name"),
+      Input("lastName").label("Last Name"),
+      Input("username").label("Username").colSpan("full"),
+    ]),
+  ])
+  .tab("Step 2: Address", [
+    Grid({ base: 1, md: 2 }).contains([
+      Input("street").label("Street").colSpan("full"),
+      Input("city").label("City"),
+      Input("zip").label("ZIP Code"),
+    ]),
+  ]);
+```
+
+</ComponentPreview>
