@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Loader2, AlertCircle, Upload, Edit } from 'lucide-react';
+import { X, Loader2, AlertCircle, Upload, Edit, Clipboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ImageZoom } from '@/components/ui/image-zoom';
 import { cn } from '@/lib/utils';
@@ -59,7 +59,11 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
 
     const handleDragLeave = React.useCallback((e: React.DragEvent) => {
         e.preventDefault();
-        setIsDragOver(false);
+        // Only set isDragOver to false if we're actually leaving the container
+        // (not just entering a child element)
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+            setIsDragOver(false);
+        }
         onDragLeave?.(e);
     }, [onDragLeave]);
 
@@ -109,7 +113,7 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
 
         return (
             <div
-                className="relative border-2 border-dashed rounded-lg overflow-hidden bg-accent/30 hover:bg-accent/50 transition-colors group"
+                className="relative border-2 border-dashed rounded-lg overflow-hidden bg-accent/30 transition-colors group"
                 style={{
                     width: containerWidth,
                     maxWidth,
@@ -123,10 +127,10 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
             >
-                {/* File Preview */}
+                {/* File Preview - with peer class for hover detection */}
                 <div
                     className={cn(
-                        "w-full flex items-center justify-center relative",
+                        "w-full flex items-center justify-center relative peer bg-accent/30 hover:bg-accent/50 transition-colors",
                         useNaturalRatio ? "h-auto" : "h-full",
                         canPreview && !isImage && "cursor-pointer"
                     )}
@@ -154,45 +158,47 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
                     )}
                 </div>
 
-                {/* Action Buttons Overlay */}
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                    {isSvg && onEditSvg && (
+                {/* Action Buttons Overlay - shows when peer (preview) is hovered */}
+                <div className="absolute inset-0 bg-black/40 opacity-0 peer-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 pointer-events-none">
+                    <div className="flex items-center justify-center gap-2 pointer-events-auto">
+                        {isSvg && onEditSvg && (
+                            <Button
+                                size="sm"
+                                variant="secondary"
+                                onClick={() => onEditSvg(0)}
+                                type="button"
+                                className="gap-2"
+                            >
+                                <Edit className="size-4" />
+                                Edit SVG
+                            </Button>
+                        )}
                         <Button
                             size="sm"
                             variant="secondary"
-                            onClick={() => onEditSvg(0)}
+                            onClick={() => onSelectClick()}
                             type="button"
                             className="gap-2"
                         >
-                            <Edit className="size-4" />
-                            Edit SVG
+                            <Upload className="size-4" />
+                            Replace
                         </Button>
-                    )}
-                    <Button
-                        size="sm"
-                        variant="secondary"
-                        onClick={() => onSelectClick()}
-                        type="button"
-                        className="gap-2"
-                    >
-                        <Upload className="size-4" />
-                        Replace
-                    </Button>
-                    <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => onRemoveUploaded(0)}
-                        type="button"
-                        className="gap-2"
-                    >
-                        <X className="size-4" />
-                        Remove
-                    </Button>
+                        <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => onRemoveUploaded(0)}
+                            type="button"
+                            className="gap-2"
+                        >
+                            <X className="size-4" />
+                            Remove
+                        </Button>
+                    </div>
                 </div>
 
-                {/* File info badge (bottom) */}
+                {/* File info badge (bottom) - shows when peer (preview) is hovered */}
                 {isImage && (
-                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs px-2 py-1 opacity-0 peer-hover:opacity-100 transition-opacity pointer-events-none">
                         <p className="truncate">{uploadedFile.name} • {formatFileSize(uploadedFile.size)}</p>
                     </div>
                 )}
@@ -209,7 +215,7 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
 
         return (
             <div
-                className="relative border-2 border-dashed rounded-lg overflow-hidden bg-accent/30 group"
+                className="relative border-2 border-dashed rounded-lg overflow-hidden bg-accent/30"
                 style={{
                     width: containerWidth,
                     maxWidth,
@@ -225,7 +231,7 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
             >
                 {/* File Preview */}
                 <div className={cn(
-                    "w-full flex items-center justify-center relative",
+                    "w-full flex items-center justify-center relative group/preview",
                     useNaturalRatio ? "h-auto" : "h-full"
                 )}>
                     {queuedFile.preview ? (
@@ -279,7 +285,7 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
 
                 {/* Action Buttons Overlay (only when not uploading) */}
                 {queuedFile.status !== 'uploading' && (
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/preview:opacity-100 transition-opacity flex items-center justify-center gap-2">
                         {isSvg && onEditQueuedSvg && queuedFile.status !== 'error' && (
                             <Button
                                 size="sm"
@@ -308,20 +314,16 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
         );
     }
 
-    // Render empty state (drop zone)
+    // Render empty state (drop zone) - styled to match FileUploadDropZone
     return (
         <div
             className={cn(
-                "relative border-2 border-dashed rounded-lg overflow-hidden cursor-pointer group transition-colors",
-                isDragOver
-                    ? "bg-primary/10 border-primary"
-                    : "bg-accent/10 hover:bg-accent/20 border-border"
+                "relative flex min-h-52 flex-col items-center justify-center overflow-hidden rounded-lg border border-dashed p-4 transition-all duration-200 cursor-pointer bg-sidebar",
+                isDragOver ? "bg-brand/20 border-primary border-solid" : "border-input"
             )}
             style={{
                 width,
                 maxWidth,
-                height: height === 'auto' && aspectRatioValue !== 'auto' ? undefined : height,
-                aspectRatio: aspectRatioValue !== 'auto' ? aspectRatioValue : undefined,
             }}
             onClick={onSelectClick}
             onDragEnter={handleDragEnter}
@@ -331,24 +333,42 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >
-            <div className="w-full h-full flex flex-col items-center justify-center gap-2 p-4 text-muted-foreground group-hover:text-foreground transition-colors">
-                <Upload className="size-8" />
-                <div className="text-center">
-                    <p className="text-sm font-medium">
-                        {isDragOver ? 'Drop file here' : 'Click to upload'}
-                    </p>
-                    <p className="text-xs">or drag and drop</p>
+            <div className="flex flex-col items-center justify-center px-4 py-3 text-center">
+                <div
+                    className="mb-2 flex size-11 shrink-0 items-center justify-center rounded-full border bg-background"
+                    aria-hidden="true"
+                >
+                    <Upload className="size-4 opacity-60" />
+                </div>
+                <p className="mb-1.5 text-sm font-medium">Drop your file here</p>
+                <p className="text-xs text-muted-foreground">Click to upload or drag and drop</p>
+                <div className="flex gap-2 mt-4">
+                    <Button
+                        variant="outline"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onSelectClick();
+                        }}
+                        type="button"
+                    >
+                        <Upload className="-ms-1 opacity-60" aria-hidden="true" />
+                        Select file
+                    </Button>
+
                     {onPasteFromClipboard && (
-                        <button
-                            type="button"
+                        <Button
+                            variant="outline"
+                            size="icon"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 onPasteFromClipboard();
                             }}
-                            className="text-xs text-primary hover:underline mt-1"
+                            type="button"
+                            aria-label="Paste from clipboard"
+                            title="Paste from clipboard"
                         >
-                            Paste from clipboard
-                        </button>
+                            <Clipboard className="size-4 opacity-60" aria-hidden="true" />
+                        </Button>
                     )}
                 </div>
             </div>
