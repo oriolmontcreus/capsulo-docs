@@ -25,11 +25,11 @@ export const UploadedFileGridItem: React.FC<UploadedFileGridItemProps> = ({ file
     const isSvg = isSVG(file);
 
     return (
-        <div className="relative group border rounded-lg overflow-hidden bg-background">
+        <div className="relative group border rounded-lg overflow-hidden bg-background flex flex-col">
             {/* Preview/Thumbnail */}
             <div
                 className={cn(
-                    "aspect-square w-full bg-accent flex items-center justify-center relative",
+                    "aspect-square w-full bg-accent flex items-center justify-center relative overflow-hidden shrink-0",
                     showHover && "cursor-pointer dark:hover:bg-accent/80 hover:bg-neutral-300 transition-colors"
                 )}
                 onClick={canPreview && !isImage ? () => handleFilePreview(file.url) : undefined}
@@ -52,10 +52,10 @@ export const UploadedFileGridItem: React.FC<UploadedFileGridItemProps> = ({ file
             </div>
 
             {/* File Info */}
-            <div className="p-2 flex flex-col gap-0.5">
+            <div className="p-3 flex flex-col gap-1 min-h-[64px]">
                 <p
                     className={cn(
-                        "truncate text-xs font-medium",
+                        "line-clamp-2 text-sm font-medium leading-snug break-all",
                         canPreview && !isImage && "cursor-pointer hover:text-foreground/80 transition-colors"
                     )}
                     onClick={canPreview && !isImage ? () => handleFilePreview(file.url) : undefined}
@@ -63,7 +63,7 @@ export const UploadedFileGridItem: React.FC<UploadedFileGridItemProps> = ({ file
                 >
                     {file.name}
                 </p>
-                <p className="text-[11px] text-muted-foreground">{formatFileSize(file.size)}</p>
+                <p className="text-xs text-muted-foreground">{formatFileSize(file.size)}</p>
             </div>
 
             {/* Action buttons - shown on hover */}
@@ -127,11 +127,11 @@ export const QueuedFileGridItem: React.FC<QueuedFileGridItemProps> = ({ queuedFi
     };
 
     return (
-        <div className="relative group border rounded-lg overflow-hidden bg-background">
+        <div className="relative group border rounded-lg overflow-hidden bg-background flex flex-col">
             {/* Preview/Thumbnail */}
             <div
                 className={cn(
-                    "aspect-square w-full bg-accent flex items-center justify-center relative",
+                    "aspect-square w-full bg-accent flex items-center justify-center relative overflow-hidden shrink-0",
                     showHover && "cursor-pointer dark:hover:bg-accent/80 hover:bg-neutral-300 transition-colors"
                 )}
                 onClick={canPreview && !isImage ? handlePreview : undefined}
@@ -170,11 +170,11 @@ export const QueuedFileGridItem: React.FC<QueuedFileGridItemProps> = ({ queuedFi
             </div>
 
             {/* File Info */}
-            <div className="p-2 flex flex-col gap-0.5">
-                <div className="flex items-center gap-1.5">
+            <div className="p-3 flex flex-col gap-1 min-h-[64px]">
+                <div className="flex items-start gap-1.5">
                     <p
                         className={cn(
-                            "truncate text-xs font-medium flex-1",
+                            "line-clamp-2 text-sm font-medium flex-1 leading-snug break-all",
                             canPreview && !isImage && "cursor-pointer hover:text-foreground/80 transition-colors"
                         )}
                         onClick={canPreview && !isImage ? handlePreview : undefined}
@@ -183,15 +183,15 @@ export const QueuedFileGridItem: React.FC<QueuedFileGridItemProps> = ({ queuedFi
                         {queuedFile.file.name}
                     </p>
                     {queuedFile.status === 'uploading' && (
-                        <span className="text-[10px] text-muted-foreground shrink-0">Uploading...</span>
+                        <span className="text-[10px] text-muted-foreground shrink-0 mt-0.5">Uploading...</span>
                     )}
                     {queuedFile.status === 'error' && (
-                        <span className="text-[10px] text-destructive shrink-0">Error</span>
+                        <span className="text-[10px] text-destructive shrink-0 mt-0.5">Error</span>
                     )}
                 </div>
-                <p className="text-[11px] text-muted-foreground">{formatFileSize(queuedFile.file.size)}</p>
+                <p className="text-xs text-muted-foreground">{formatFileSize(queuedFile.file.size)}</p>
                 {queuedFile.error && (
-                    <p className="text-[10px] text-destructive line-clamp-2">{queuedFile.error}</p>
+                    <p className="text-xs text-destructive line-clamp-2">{queuedFile.error}</p>
                 )}
             </div>
 
