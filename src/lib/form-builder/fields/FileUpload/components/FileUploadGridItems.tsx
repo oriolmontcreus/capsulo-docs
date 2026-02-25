@@ -29,7 +29,7 @@ export const UploadedFileGridItem: React.FC<UploadedFileGridItemProps> = ({ file
             {/* Preview/Thumbnail */}
             <div
                 className={cn(
-                    "aspect-square w-full bg-accent flex items-center justify-center relative overflow-hidden shrink-0",
+                    "aspect-square w-full bg-accent flex items-center justify-center relative overflow-hidden shrink-0 group/preview",
                     showHover && "cursor-pointer dark:hover:bg-accent/80 hover:bg-neutral-300 transition-colors"
                 )}
                 onClick={canPreview && !isImage ? () => handleFilePreview(file.url) : undefined}
@@ -40,7 +40,7 @@ export const UploadedFileGridItem: React.FC<UploadedFileGridItemProps> = ({ file
                         <img
                             src={file.url}
                             alt={file.name}
-                            className="w-full h-full object-cover transition-all duration-200 group-hover:brightness-75"
+                            className="w-full h-full object-cover transition-all duration-200 group-hover/preview:brightness-75"
                             loading="lazy"
                         />
                     </ImageZoom>
@@ -131,7 +131,7 @@ export const QueuedFileGridItem: React.FC<QueuedFileGridItemProps> = ({ queuedFi
             {/* Preview/Thumbnail */}
             <div
                 className={cn(
-                    "aspect-square w-full bg-accent flex items-center justify-center relative overflow-hidden shrink-0",
+                    "aspect-square w-full bg-accent flex items-center justify-center relative overflow-hidden shrink-0 group/preview",
                     showHover && "cursor-pointer dark:hover:bg-accent/80 hover:bg-neutral-300 transition-colors"
                 )}
                 onClick={canPreview && !isImage ? handlePreview : undefined}
@@ -142,7 +142,7 @@ export const QueuedFileGridItem: React.FC<QueuedFileGridItemProps> = ({ queuedFi
                         <img
                             src={queuedFile.preview}
                             alt={queuedFile.file.name}
-                            className="w-full h-full object-cover transition-all duration-200 group-hover:brightness-75"
+                            className="w-full h-full object-cover transition-all duration-200 group-hover/preview:brightness-75"
                             loading="lazy"
                         />
                     </ImageZoom>
