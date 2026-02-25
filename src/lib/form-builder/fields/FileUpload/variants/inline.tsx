@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Loader2, AlertCircle, Upload, Edit, Clipboard } from 'lucide-react';
+import { X, Loader2, AlertCircle, Upload, Edit, Clipboard, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ImageZoom } from '@/components/ui/image-zoom';
 import { cn } from '@/lib/utils';
@@ -113,7 +113,7 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
 
         return (
             <div
-                className="relative border-2 border-dashed rounded-lg overflow-hidden bg-accent/30 transition-colors group"
+                className="relative border-2 border-dashed rounded-lg overflow-hidden bg-accent/30 transition-colors"
                 style={{
                     width: containerWidth,
                     maxWidth,
@@ -127,40 +127,57 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
             >
-                {/* File Preview - with peer class for hover detection */}
-                <div
-                    className={cn(
-                        "w-full flex items-center justify-center relative peer bg-accent/30 hover:bg-accent/50 transition-colors",
-                        useNaturalRatio ? "h-auto" : "h-full",
-                        canPreview && !isImage && "cursor-pointer"
-                    )}
-                    onClick={canPreview && !isImage ? () => handleFilePreview(uploadedFile.url) : undefined}
-                >
-                    {isImage ? (
-                        <ImageZoom className={useNaturalRatio ? "max-w-full" : "w-full"}>
-                            <img
-                                src={uploadedFile.url}
-                                alt={uploadedFile.name}
-                                className={cn(
-                                    useNaturalRatio ? "max-w-full h-auto max-h-[500px] object-contain" : "w-full h-full object-cover"
-                                )}
-                                loading="lazy"
-                            />
-                        </ImageZoom>
-                    ) : (
-                        <div className="flex flex-col items-center justify-center gap-2 p-4">
-                            {getFileIcon(uploadedFile, 'size-12')}
-                            <div className="text-center">
-                                <p className="text-sm font-medium truncate max-w-[200px]">{uploadedFile.name}</p>
-                                <p className="text-xs text-muted-foreground">{formatFileSize(uploadedFile.size)}</p>
+                {/* Wrapper with group - hover persists when moving between preview and buttons */}
+                <div className="group relative w-full h-full">
+                    {/* File Preview */}
+                    <div
+                        className={cn(
+                            "w-full flex items-center justify-center relative bg-accent/30 group-hover:bg-accent/50 transition-colors",
+                            useNaturalRatio ? "h-auto" : "h-full",
+                            canPreview && !isImage && "cursor-pointer"
+                        )}
+                        onClick={canPreview && !isImage ? () => handleFilePreview(uploadedFile.url) : undefined}
+                    >
+                        {isImage ? (
+                            <ImageZoom className={useNaturalRatio ? "max-w-full" : "w-full"}>
+                                <img
+                                    src={uploadedFile.url}
+                                    alt={uploadedFile.name}
+                                    className={cn(
+                                        useNaturalRatio ? "max-w-full h-auto max-h-[500px] object-contain" : "w-full h-full object-cover"
+                                    )}
+                                    loading="lazy"
+                                />
+                            </ImageZoom>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center gap-2 p-4">
+                                {getFileIcon(uploadedFile, 'size-12')}
+                                <div className="text-center">
+                                    <p className="text-sm font-medium truncate max-w-[200px]">{uploadedFile.name}</p>
+                                    <p className="text-xs text-muted-foreground">{formatFileSize(uploadedFile.size)}</p>
+                                </div>
                             </div>
-                        </div>
-                    )}
-                </div>
+                        )}
+                    </div>
 
-                {/* Action Buttons Overlay - shows when peer (preview) is hovered */}
-                <div className="absolute inset-0 bg-black/40 opacity-0 peer-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 pointer-events-none">
-                    <div className="flex items-center justify-center gap-2 pointer-events-auto">
+                    {/* Dark overlay */}
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+
+                    {/* Delete button - top right */}
+                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Button
+                            size="icon"
+                            variant="destructive"
+                            onClick={() => onRemoveUploaded(0)}
+                            type="button"
+                            className="size-8"
+                        >
+                            <Trash2 className="size-4" />
+                        </Button>
+                    </div>
+
+                    {/* Edit/Replace buttons - bottom center */}
+                    <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         {isSvg && onEditSvg && (
                             <Button
                                 size="sm"
@@ -183,25 +200,15 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
                             <Upload className="size-4" />
                             Replace
                         </Button>
-                        <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => onRemoveUploaded(0)}
-                            type="button"
-                            className="gap-2"
-                        >
-                            <X className="size-4" />
-                            Remove
-                        </Button>
                     </div>
-                </div>
 
-                {/* File info badge (bottom) - shows when peer (preview) is hovered */}
-                {isImage && (
-                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs px-2 py-1 opacity-0 peer-hover:opacity-100 transition-opacity pointer-events-none">
-                        <p className="truncate">{uploadedFile.name} • {formatFileSize(uploadedFile.size)}</p>
-                    </div>
-                )}
+                    {/* File info badge (bottom) */}
+                    {isImage && (
+                        <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                            <p className="truncate">{uploadedFile.name} • {formatFileSize(uploadedFile.size)}</p>
+                        </div>
+                    )}
+                </div>
             </div>
         );
     }
@@ -229,64 +236,85 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
             >
-                {/* File Preview */}
-                <div className={cn(
-                    "w-full flex items-center justify-center relative group/preview",
-                    useNaturalRatio ? "h-auto" : "h-full"
-                )}>
-                    {queuedFile.preview ? (
-                        <ImageZoom className={useNaturalRatio ? "max-w-full" : "w-full"}>
-                            <img
-                                src={queuedFile.preview}
-                                alt={queuedFile.file.name}
-                                className={cn(
-                                    useNaturalRatio ? "max-w-full h-auto max-h-[500px] object-contain" : "w-full h-full object-cover"
+                {/* Wrapper with group - hover persists when moving between preview and buttons */}
+                <div className="group relative w-full h-full">
+                    {/* File Preview */}
+                    <div className={cn(
+                        "w-full flex items-center justify-center relative",
+                        useNaturalRatio ? "h-auto" : "h-full"
+                    )}>
+                        {queuedFile.preview ? (
+                            <ImageZoom className={useNaturalRatio ? "max-w-full" : "w-full"}>
+                                <img
+                                    src={queuedFile.preview}
+                                    alt={queuedFile.file.name}
+                                    className={cn(
+                                        useNaturalRatio ? "max-w-full h-auto max-h-[500px] object-contain" : "w-full h-full object-cover"
+                                    )}
+                                    loading="lazy"
+                                />
+                            </ImageZoom>
+                        ) : isImage ? (
+                            <div className="flex flex-col items-center justify-center gap-2 p-4">
+                                <Upload className="size-12 text-muted-foreground" />
+                                <div className="text-center">
+                                    <p className="text-sm font-medium truncate max-w-[200px]">{queuedFile.file.name}</p>
+                                    <p className="text-xs text-muted-foreground">{formatFileSize(queuedFile.file.size)}</p>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center gap-2 p-4">
+                                {getFileIcon(queuedFile.file, 'size-12')}
+                                <div className="text-center">
+                                    <p className="text-sm font-medium truncate max-w-[200px]">{queuedFile.file.name}</p>
+                                    <p className="text-xs text-muted-foreground">{formatFileSize(queuedFile.file.size)}</p>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Status Overlay */}
+                        {queuedFile.status === 'uploading' && (
+                            <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center gap-2 text-white">
+                                <Loader2 className="size-8 animate-spin" />
+                                <span className="text-sm font-medium">
+                                    Uploading...
+                                </span>
+                            </div>
+                        )}
+                        {queuedFile.status === 'error' && (
+                            <div className="absolute inset-0 bg-destructive/60 flex flex-col items-center justify-center gap-2 text-white">
+                                <AlertCircle className="size-8" />
+                                <span className="text-sm font-medium">Upload Failed</span>
+                                {queuedFile.error && (
+                                    <p className="text-xs px-4 text-center">{queuedFile.error}</p>
                                 )}
-                                loading="lazy"
-                            />
-                        </ImageZoom>
-                    ) : isImage ? (
-                        <div className="flex flex-col items-center justify-center gap-2 p-4">
-                            <Upload className="size-12 text-muted-foreground" />
-                            <div className="text-center">
-                                <p className="text-sm font-medium truncate max-w-[200px]">{queuedFile.file.name}</p>
-                                <p className="text-xs text-muted-foreground">{formatFileSize(queuedFile.file.size)}</p>
                             </div>
-                        </div>
-                    ) : (
-                        <div className="flex flex-col items-center justify-center gap-2 p-4">
-                            {getFileIcon(queuedFile.file, 'size-12')}
-                            <div className="text-center">
-                                <p className="text-sm font-medium truncate max-w-[200px]">{queuedFile.file.name}</p>
-                                <p className="text-xs text-muted-foreground">{formatFileSize(queuedFile.file.size)}</p>
-                            </div>
+                        )}
+                    </div>
+
+                    {/* Dark overlay (only when not uploading) */}
+                    {queuedFile.status !== 'uploading' && (
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                    )}
+
+                    {/* Delete button - top right (only when not uploading) */}
+                    {queuedFile.status !== 'uploading' && (
+                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Button
+                                size="icon"
+                                variant="destructive"
+                                onClick={() => onRemoveQueued(queuedFile.id)}
+                                type="button"
+                                className="size-8"
+                            >
+                                <Trash2 className="size-4" />
+                            </Button>
                         </div>
                     )}
 
-                    {/* Status Overlay */}
-                    {queuedFile.status === 'uploading' && (
-                        <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center gap-2 text-white">
-                            <Loader2 className="size-8 animate-spin" />
-                            <span className="text-sm font-medium">
-                                Uploading...
-                            </span>
-                        </div>
-                    )}
-                    {queuedFile.status === 'error' && (
-                        <div className="absolute inset-0 bg-destructive/60 flex flex-col items-center justify-center gap-2 text-white">
-                            <AlertCircle className="size-8" />
-                            <span className="text-sm font-medium">Upload Failed</span>
-                            {queuedFile.error && (
-                                <p className="text-xs px-4 text-center">{queuedFile.error}</p>
-                            )}
-                        </div>
-                    )}
-                </div>
-
-                {/* Action Buttons Overlay (only when not uploading) */}
-                {queuedFile.status !== 'uploading' && (
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/preview:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                        {isSvg && onEditQueuedSvg && queuedFile.status !== 'error' && (
+                    {/* Edit button - bottom center (only when not uploading and no error) */}
+                    {queuedFile.status !== 'uploading' && isSvg && onEditQueuedSvg && queuedFile.status !== 'error' && (
+                        <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                             <Button
                                 size="sm"
                                 variant="secondary"
@@ -297,19 +325,9 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
                                 <Edit className="size-4" />
                                 Edit SVG
                             </Button>
-                        )}
-                        <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => onRemoveQueued(queuedFile.id)}
-                            type="button"
-                            className="gap-2"
-                        >
-                            <X className="size-4" />
-                            Remove
-                        </Button>
-                    </div>
-                )}
+                        </div>
+                    )}
+                </div>
             </div>
         );
     }
