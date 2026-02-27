@@ -2,16 +2,14 @@ import { createSchema } from "@/lib/form-builder/builders/SchemaBuilder";
 import { FileUpload } from "@/lib/form-builder/fields/FileUpload/fileUpload.builder";
 
 export const BasicFileUploadSchema = createSchema(
-  "BasicFileUpload",
-  [
-    FileUpload("attachment").label("Attachment"),
-  ],
+  "Basic file upload",
+  [FileUpload("attachment").label("Attachment")],
   "Basic file upload field",
   "basic-file-upload",
 );
 
 export const ImageUploadSchema = createSchema(
-  "ImageUpload",
+  "Image upload",
   [
     FileUpload("heroImage")
       .label("Hero Image")
@@ -23,7 +21,7 @@ export const ImageUploadSchema = createSchema(
 );
 
 export const MultipleFileUploadSchema = createSchema(
-  "MultipleFileUpload",
+  "Multiple file upload",
   [
     FileUpload("gallery")
       .label("Image Gallery")
@@ -36,7 +34,7 @@ export const MultipleFileUploadSchema = createSchema(
 );
 
 export const DocumentUploadSchema = createSchema(
-  "DocumentUpload",
+  "Document upload",
   [
     FileUpload("resume")
       .label("Resume")
@@ -48,7 +46,7 @@ export const DocumentUploadSchema = createSchema(
 );
 
 export const ListVariantSchema = createSchema(
-  "ListVariant",
+  "List variant",
   [
     FileUpload("files")
       .label("Files (List)")
@@ -61,7 +59,7 @@ export const ListVariantSchema = createSchema(
 );
 
 export const GridVariantSchema = createSchema(
-  "GridVariant",
+  "Grid variant",
   [
     FileUpload("images")
       .label("Images (Grid)")
@@ -75,7 +73,7 @@ export const GridVariantSchema = createSchema(
 );
 
 export const InlineVariantSchema = createSchema(
-  "InlineVariant",
+  "Inline variant",
   [
     FileUpload("logo")
       .label("Logo (Inline)")
