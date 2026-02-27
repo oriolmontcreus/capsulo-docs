@@ -1,5 +1,5 @@
 ---
-title: File Upload
+title: File upload
 description: A powerful component for uploading and managing files with support for images, documents, and media.
 ---
 
@@ -55,7 +55,8 @@ The `FileUpload` builder provides a fluent API to configure the field.
       type: "FileUploadValue",
     },
     accept: {
-      description: "Sets the accepted file types (MIME types or file extensions).",
+      description:
+        "Sets the accepted file types (MIME types or file extensions).",
       type: "string",
     },
     maxSize: {
@@ -95,7 +96,13 @@ The `FileUpload` builder provides a fluent API to configure the field.
       default: "false",
     },
     colSpan: {
-      description: <>Sets how many columns this field should span when inside a <a href="/docs/layouts/grid">Grid layout</a>. Supports numbers, 'full' for all columns, or responsive objects.</>,
+      description: (
+        <>
+          Sets how many columns this field should span when inside a{" "}
+          <a href="/docs/layouts/grid">Grid layout</a>. Supports numbers, 'full'
+          for all columns, or responsive objects.
+        </>
+      ),
       type: "number | 'full' | ResponsiveValue",
     },
   }}
@@ -145,9 +152,7 @@ FileUpload("heroImage")
 
 ```typescript
 // [!code word:FileUpload]
-FileUpload("profilePicture")
-  .label("Profile Picture")
-  .avatar();
+FileUpload("profilePicture").label("Profile Picture").avatar();
 ```
 
 </ComponentPreview>
@@ -157,9 +162,7 @@ FileUpload("profilePicture")
 
 ```typescript
 // [!code word:FileUpload]
-FileUpload("bannerImage")
-  .label("Banner Image")
-  .cover();
+FileUpload("bannerImage").label("Banner Image").cover();
 ```
 
 </ComponentPreview>
@@ -169,11 +172,7 @@ FileUpload("bannerImage")
 
 ```typescript
 // [!code word:FileUpload]
-FileUpload("gallery")
-  .label("Image Gallery")
-  .images()
-  .multiple()
-  .maxFiles(10);
+FileUpload("gallery").label("Image Gallery").images().multiple().maxFiles(10);
 ```
 
 </ComponentPreview>

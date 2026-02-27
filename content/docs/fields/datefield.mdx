@@ -1,5 +1,5 @@
 ---
-title: DateField
+title: Date
 description: A component for capturing dates and date ranges.
 ---
 
@@ -52,16 +52,19 @@ The `DateField` builder provides a fluent API to configure the field.
       default: "true",
     },
     defaultValue: {
-      description: "Sets the initial value of the field. Expects a single date/string or an object { start, end } depending on the mode.",
+      description:
+        "Sets the initial value of the field. Expects a single date/string or an object { start, end } depending on the mode.",
       type: "Date | string | { start: Date | string; end: Date | string }",
     },
     mode: {
-      description: "Sets the date field mode to select a single date or a range.",
+      description:
+        "Sets the date field mode to select a single date or a range.",
       type: "'single' | 'range'",
       default: "'single'",
     },
     variant: {
-      description: "Sets the date field variant. 'calendar' uses a popover, while 'input' provides a typed input.",
+      description:
+        "Sets the date field variant. 'calendar' uses a popover, while 'input' provides a typed input.",
       type: "'calendar' | 'input'",
       default: "'calendar'",
     },
@@ -71,7 +74,8 @@ The `DateField` builder provides a fluent API to configure the field.
       default: "'medium'",
     },
     customFormat: {
-      description: "Sets custom date formatting options when `format` is 'custom'.",
+      description:
+        "Sets custom date formatting options when `format` is 'custom'.",
       type: "Intl.DateTimeFormatOptions",
     },
     captionLayout: {
@@ -80,7 +84,8 @@ The `DateField` builder provides a fluent API to configure the field.
       default: "'dropdown'",
     },
     disabled: {
-      description: "Configures disabled dates (e.g., past dates, specific days of the week).",
+      description:
+        "Configures disabled dates (e.g., past dates, specific days of the week).",
       type: "DateFieldDisabledConfig",
     },
     minDate: {
@@ -100,19 +105,23 @@ The `DateField` builder provides a fluent API to configure the field.
       type: "boolean",
     },
     fixedWeeks: {
-      description: "Always shows 6 weeks in the calendar to prevent layout shifts.",
+      description:
+        "Always shows 6 weeks in the calendar to prevent layout shifts.",
       type: "boolean",
     },
     showOutsideDays: {
-      description: "Shows days from the previous and next months in the calendar.",
+      description:
+        "Shows days from the previous and next months in the calendar.",
       type: "boolean",
     },
     yearRange: {
-      description: "Sets the year range for the dropdown. Takes a start year and an optional end year.",
+      description:
+        "Sets the year range for the dropdown. Takes a start year and an optional end year.",
       type: "(from: number, to?: number) => this",
     },
     weekStartsOn: {
-      description: "Sets which day the week starts on (0 for Sunday, 6 for Saturday).",
+      description:
+        "Sets which day the week starts on (0 for Sunday, 6 for Saturday).",
       type: "0 | 1 | 2 | 3 | 4 | 5 | 6",
     },
     locale: {
@@ -130,7 +139,13 @@ The `DateField` builder provides a fluent API to configure the field.
       default: "false",
     },
     colSpan: {
-      description: <>Sets how many columns this field should span when inside a <a href="/docs/layouts/grid">Grid layout</a>. Supports numbers, 'full' for all columns, or responsive objects.</>,
+      description: (
+        <>
+          Sets how many columns this field should span when inside a{" "}
+          <a href="/docs/layouts/grid">Grid layout</a>. Supports numbers, 'full'
+          for all columns, or responsive objects.
+        </>
+      ),
       type: "number | 'full' | ResponsiveValue",
     },
   }}
@@ -168,10 +183,7 @@ DateField("eventDates")
 
 ```tsx
 // [!code word:DateField]
-DateField("departure")
-  .label("Departure Date")
-  .variant("input")
-  .format("long");
+DateField("departure").label("Departure Date").variant("input").format("long");
 ```
 
 </ComponentPreview>
