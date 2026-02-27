@@ -7,8 +7,6 @@ import { SchemaRenderer } from "@/lib/docs/SchemaRenderer";
 import {
   BasicFileUploadSchema,
   ImageUploadSchema,
-  AvatarUploadSchema,
-  CoverUploadSchema,
   MultipleFileUploadSchema,
   DocumentUploadSchema,
   ListVariantSchema,
@@ -108,7 +106,7 @@ The `FileUpload` builder provides a fluent API to configure the field.
   }}
 />
 
-### Convenience Methods
+## Convenience methods
 
 The `FileUpload` builder also provides several convenience methods for common configurations:
 
@@ -143,26 +141,6 @@ FileUpload("heroImage")
   .label("Hero Image")
   .images()
   .maxSize(5 * 1024 * 1024); // 5MB
-```
-
-</ComponentPreview>
-
-<ComponentPreview showMargin={false} className="border-b border-r">
-  <SchemaRenderer schema={AvatarUploadSchema} />
-
-```typescript
-// [!code word:FileUpload]
-FileUpload("profilePicture").label("Profile Picture").avatar();
-```
-
-</ComponentPreview>
-
-<ComponentPreview showMargin={false} className="border-b">
-  <SchemaRenderer schema={CoverUploadSchema} />
-
-```typescript
-// [!code word:FileUpload]
-FileUpload("bannerImage").label("Banner Image").cover();
 ```
 
 </ComponentPreview>

@@ -22,28 +22,6 @@ export const ImageUploadSchema = createSchema(
   "image-upload",
 );
 
-export const AvatarUploadSchema = createSchema(
-  "AvatarUpload",
-  [
-    FileUpload("profilePicture")
-      .label("Profile Picture")
-      .avatar(),
-  ],
-  "Avatar upload field with square aspect ratio",
-  "avatar-upload",
-);
-
-export const CoverUploadSchema = createSchema(
-  "CoverUpload",
-  [
-    FileUpload("bannerImage")
-      .label("Banner Image")
-      .cover(),
-  ],
-  "Cover image upload field with wide aspect ratio",
-  "cover-upload",
-);
-
 export const MultipleFileUploadSchema = createSchema(
   "MultipleFileUpload",
   [
