@@ -124,14 +124,12 @@ const ImageZoomModal = ({ src, onClose }: { src: string; onClose: () => void }) 
         if (!containerRef.current) return;
 
         const handleMouseDown = (e: MouseEvent) => {
-            if (zoom > 1) {
-                setIsDragging(true);
-                setDragStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
-            }
+            setIsDragging(true);
+            setDragStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
         };
 
         const handleMouseMove = (e: MouseEvent) => {
-            if (isDragging && zoom > 1) {
+            if (isDragging) {
                 const newPan = {
                     x: e.clientX - dragStart.x,
                     y: e.clientY - dragStart.y
@@ -181,7 +179,7 @@ const ImageZoomModal = ({ src, onClose }: { src: string; onClose: () => void }) 
                 ref={containerRef}
                 className="relative w-full h-full flex items-center justify-center overflow-hidden"
                 style={{
-                    cursor: zoom > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default'
+                    cursor: isDragging ? 'grabbing' : 'grab'
                 }}
             >
                 <img
