@@ -135,11 +135,15 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
   // Apply constraints to prevent excessive dimensions
   const useNaturalDimensions = aspectRatioValue === "auto";
   const maxWidth = inlineConfig?.width
-    ? undefined
+    ? inlineConfig.width
     : isActuallySvg
       ? "160px"
       : "600px";
   const containerWidth = useNaturalDimensions ? "auto" : width; // For natural ratios, let content determine width
+  const maxNaturalHeight =
+    inlineConfig?.height && inlineConfig.height !== "auto"
+      ? inlineConfig.height
+      : "500px";
 
   // Render uploaded file
   if (uploadedFile) {
@@ -158,7 +162,7 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
           maxWidth,
           ...(useNaturalRatio
             ? {
-                maxHeight: "500px", // Prevent images from being too tall
+                maxHeight: maxNaturalHeight, // Prevent images from being too tall
               }
             : {
                 height:
@@ -203,9 +207,14 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
                     isSvg
                       ? "size-16 object-contain"
                       : useNaturalRatio
-                        ? "max-w-full h-auto max-h-[500px] object-contain"
+                        ? "max-w-full h-auto object-contain"
                         : "w-full h-full object-cover",
                   )}
+                  style={
+                    useNaturalRatio && !isSvg
+                      ? { maxHeight: maxNaturalHeight }
+                      : undefined
+                  }
                   loading="lazy"
                 />
               </ImageZoom>
@@ -295,7 +304,7 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
           maxWidth,
           ...(useNaturalRatio
             ? {
-                maxHeight: "500px", // Prevent images from being too tall
+                maxHeight: maxNaturalHeight, // Prevent images from being too tall
               }
             : {
                 height:
@@ -334,9 +343,14 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
                     isSvg
                       ? "size-16 object-contain"
                       : useNaturalRatio
-                        ? "max-w-full h-auto max-h-[500px] object-contain"
+                        ? "max-w-full h-auto object-contain"
                         : "w-full h-full object-cover",
                   )}
+                  style={
+                    useNaturalRatio && !isSvg
+                      ? { maxHeight: maxNaturalHeight }
+                      : undefined
+                  }
                   loading="lazy"
                 />
               </ImageZoom>

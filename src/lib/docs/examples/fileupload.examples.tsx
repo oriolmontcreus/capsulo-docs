@@ -79,6 +79,8 @@ export const InlineVariantSchema = createSchema(
       .label("Logo (Inline)")
       .variant("inline")
       .images()
+      .width("200px")
+      .aspectRatio("square")
       .maxSize(2 * 1024 * 1024), // 2MB
   ],
   "File upload with inline variant",
