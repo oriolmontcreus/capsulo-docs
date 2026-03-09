@@ -47,28 +47,34 @@ export const UploadedFileItem: React.FC<UploadedFileItemProps> = ({
 }) => {
   const isImage = file.type.startsWith("image/");
   const canPreview = isPreviewable(file);
-  const showHover = canPreview || isImage;
   const isSvg = isSVG(file);
+  const showHover = canPreview || isImage;
 
   return (
     <div className="flex items-center justify-between border-b p-2 py-3">
       <div className="flex items-center gap-3 overflow-hidden">
         <div
           className={cn(
-            "aspect-square shrink-0 rounded bg-accent group",
-            showHover &&
+            "size-10 shrink-0 rounded bg-accent group overflow-hidden",
+            (showHover || (isSvg && onEditSvg)) &&
               "cursor-pointer dark:hover:bg-accent/80 hover:bg-neutral-300 transition-colors",
           )}
           onClick={
-            canPreview && !isImage
-              ? () => handleFilePreview(file.url)
-              : undefined
+            isSvg && onEditSvg
+              ? onEditSvg
+              : canPreview && !isImage
+                ? () => handleFilePreview(file.url)
+                : undefined
           }
           title={
-            canPreview && !isImage ? `Click to preview ${file.name}` : undefined
+            isSvg && onEditSvg
+              ? "Edit SVG"
+              : canPreview && !isImage
+                ? `Click to preview ${file.name}`
+                : undefined
           }
         >
-          {isImage ? (
+          {isImage && !isSvg ? (
             <ImageZoom
               className="size-10 rounded-[inherit] overflow-hidden"
               zoomMargin={zoomMargin}
@@ -156,8 +162,8 @@ export const QueuedFileItem: React.FC<QueuedFileItemProps> = ({
 }) => {
   const isImage = queuedFile.file.type.startsWith("image/");
   const canPreview = isPreviewable(queuedFile.file);
-  const showHover = canPreview || isImage;
   const isSvg = isSVG(queuedFile.file);
+  const showHover = canPreview || isImage;
 
   // Create a blob URL for preview if the file is previewable (non-image)
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
@@ -188,18 +194,26 @@ export const QueuedFileItem: React.FC<QueuedFileItemProps> = ({
       <div className="flex items-center gap-3 overflow-hidden">
         <div
           className={cn(
-            "aspect-square shrink-0 rounded bg-accent relative group",
-            showHover &&
+            "size-10 shrink-0 rounded bg-accent relative group overflow-hidden",
+            (showHover || (isSvg && onEditSvg)) &&
               "cursor-pointer dark:hover:bg-accent/80 hover:bg-neutral-300 transition-colors",
           )}
-          onClick={canPreview && !isImage ? handlePreview : undefined}
+          onClick={
+            isSvg && onEditSvg
+              ? onEditSvg
+              : canPreview && !isImage
+                ? handlePreview
+                : undefined
+          }
           title={
-            canPreview && !isImage
-              ? `Click to preview ${queuedFile.file.name}`
-              : undefined
+            isSvg && onEditSvg
+              ? "Edit SVG"
+              : canPreview && !isImage
+                ? `Click to preview ${queuedFile.file.name}`
+                : undefined
           }
         >
-          {queuedFile.preview ? (
+          {queuedFile.preview && !isSvg ? (
             <ImageZoom
               className="size-10 rounded-[inherit] overflow-hidden"
               zoomMargin={zoomMargin}
@@ -211,10 +225,6 @@ export const QueuedFileItem: React.FC<QueuedFileItemProps> = ({
                 loading="lazy"
               />
             </ImageZoom>
-          ) : queuedFile.file.type.startsWith("image/") ? (
-            <div className="size-10 rounded-[inherit] flex items-center justify-center">
-              <Image className="size-4 text-muted-foreground" />
-            </div>
           ) : (
             <div className="size-10 rounded-[inherit] flex items-center justify-center">
               {getFileIcon(queuedFile.file)}
