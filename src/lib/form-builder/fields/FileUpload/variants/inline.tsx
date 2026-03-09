@@ -125,7 +125,7 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
     (queuedFile && isSVG(queuedFile.file));
   const effectiveAspectRatio =
     aspectRatio === "auto" && isActuallySvg
-      ? "video" // Default to 16:9 for SVGs to give them a nice preview area
+      ? "square" // Square for icons is better than video
       : aspectRatio === "auto"
         ? getDefaultAspectRatio((uploadedFile || queuedFile?.file)?.type || "")
         : aspectRatio;
@@ -134,7 +134,11 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
 
   // Apply constraints to prevent excessive dimensions
   const useNaturalDimensions = aspectRatioValue === "auto";
-  const maxWidth = inlineConfig?.width ? undefined : "600px"; // Limit width when using default 100%
+  const maxWidth = inlineConfig?.width
+    ? undefined
+    : isActuallySvg
+      ? "160px"
+      : "600px";
   const containerWidth = useNaturalDimensions ? "auto" : width; // For natural ratios, let content determine width
 
   // Render uploaded file
@@ -197,7 +201,7 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
                   alt={uploadedFile.name}
                   className={cn(
                     isSvg
-                      ? "size-32 object-contain"
+                      ? "size-16 object-contain"
                       : useNaturalRatio
                         ? "max-w-full h-auto max-h-[500px] object-contain"
                         : "w-full h-full object-cover",
@@ -328,7 +332,7 @@ export const InlineVariant: React.FC<InlineVariantProps> = ({
                   alt={queuedFile.file.name}
                   className={cn(
                     isSvg
-                      ? "size-32 object-contain"
+                      ? "size-16 object-contain"
                       : useNaturalRatio
                         ? "max-w-full h-auto max-h-[500px] object-contain"
                         : "w-full h-full object-cover",

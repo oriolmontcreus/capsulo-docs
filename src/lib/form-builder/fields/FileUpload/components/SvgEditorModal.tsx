@@ -450,7 +450,7 @@ export const SvgEditorModal: React.FC<SvgEditorModalProps> = ({
                     {/* Color options */}
                     <button
                       onClick={() => setBgColor("black")}
-                      className="flex items-center gap-1.5 group"
+                      className="flex items-center gap-1.5 group cursor-pointer"
                       aria-label="Dark background"
                     >
                       <div
@@ -468,7 +468,7 @@ export const SvgEditorModal: React.FC<SvgEditorModalProps> = ({
 
                     <button
                       onClick={() => setBgColor("white")}
-                      className="flex items-center gap-1.5 group"
+                      className="flex items-center gap-1.5 group cursor-pointer"
                       aria-label="Light background"
                     >
                       <div
