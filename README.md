@@ -47,3 +47,5 @@ resources:
 Nowadays, we need editable landing pages, manageable blog content, updatable portfolios, and more. Capsulo helps you build these easier, with less vendor lock-in.
 
 https://www.fumadocs.dev/docs/markdown#codeblock
+
+.
