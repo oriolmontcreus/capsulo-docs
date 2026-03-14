@@ -1,0 +1,427 @@
+---
+title: Translations
+description: Learn how to set up and use the built-in multi-language translation system in Capsulo.
+---
+
+import { Callout } from '@/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TypeTable } from '@/components/type-table';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+Capsulo comes with a powerful, built-in translation system that enables multi-language content management without any external dependencies or complex setup.
+
+## Architecture
+
+The translation system consists of several integrated components:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Configuration (capsulo.config.ts)          │
+│                    - defaultLocale, locales[], fallbackLocale │
+└─────────────────────┬───────────────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   Validation Layer                          │
+│         (translation-config.ts - ISO 639-1 validation)        │
+└─────────────────────┬───────────────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────────────┐
+│                 Translation Context Providers                 │
+│  ┌─────────────────────┐    ┌─────────────────────────────┐   │
+│  │ TranslationContext  │    │   TranslationDataContext    │   │
+│  │ - Mode toggle       │    │  - Data storage/retrieval   │   │
+│  │ - Sidebar state     │    │  - Component binding        │   │
+│  │ - Active field      │    │  - Form synchronization     │   │
+│  └─────────────────────┘    └─────────────────────────────┘   │
+└─────────────────────┬───────────────────────────────────────┘
+                      │
+        ┌─────────────┼─────────────┐
+        ▼             ▼             ▼
+┌──────────────┐ ┌──────────┐ ┌──────────────┐
+│  Field Level │ │   Store  │ │   Frontend   │
+│  Integration │ │(External)│ │   Utilities  │
+│              │ │          │ │              │
+│ • Input      │ │ Granular │ │ • i18n-utils │
+│ • Textarea   │ │ subs     │ │ • cms-loader │
+│ • RichEditor │ │ Atomic   │ │ • mergeUtils │
+└──────────────┘ └──────────┘ └──────────────┘
+```
+
+## Configuration
+
+Enable translations in your `capsulo.config.ts`:
+
+```typescript
+const config: CapsuloConfig = {
+  // ... other config
+
+  i18n: {
+    /**
+     * Default locale for your content
+     * @default "en"
+     */
+    defaultLocale: "en",
+
+    /**
+     * Available locales for translation
+     * @example ["en", "es", "fr", "de"]
+     */
+    locales: ["en", "es", "fr"],
+
+    /**
+     * Fallback locale when a translation is missing
+     * @default Same as defaultLocale
+     */
+    fallbackLocale: "en",
+  },
+};
+```
+
+<Callout type="info">
+Translations are automatically enabled when you configure the `i18n` object. All locale codes are validated against ISO 639-1 standards (e.g., `"en"`, `"es"`, `"fr"`, or extended formats like `"en-US"`).
+</Callout>
+
+## Adding translatable fields
+
+Mark fields as translatable using the `.translatable()` method in your schemas:
+
+<Tabs items={['Input', 'Textarea', 'RichEditor']}>
+
+<Tab value="Input">
+
+```tsx
+import { Input } from '@/lib/form-builder/fields';
+
+Input('heroTitle')
+  .label('Hero Title')
+  .description('Main headline displayed in the hero section')
+  .required()
+  .translatable()  // Enable multi-language support
+  .defaultValue('Welcome to our site'),
+```
+
+</Tab>
+
+<Tab value="Textarea">
+
+```tsx
+import { Textarea } from '@/lib/form-builder/fields';
+
+Textarea('metaDescription')
+  .label('Meta Description')
+  .description('SEO meta description for this page')
+  .rows(3)
+  .translatable()
+  .defaultValue(''),
+```
+
+</Tab>
+
+<Tab value="RichEditor">
+
+```tsx
+import { RichEditor } from '@/lib/form-builder/fields';
+
+RichEditor('content')
+  .label('Page Content')
+  .description('Main content body')
+  .translatable()
+  .defaultValue('<p>Start writing here...</p>'),
+```
+
+</Tab>
+
+</Tabs>
+
+<Callout>
+Only text-based fields support translations: **Input**, **Textarea**, and **RichEditor**. Non-text fields (Select, Switch, DateField, ColorPicker, FileUpload, Repeater) do not support `.translatable()`.
+</Callout>
+
+## How translations work
+
+### Data storage format
+
+When a field is marked as `translatable`, its value is stored as a locale-keyed object:
+
+```json
+{
+  "heroTitle": {
+    "type": "input",
+    "translatable": true,
+    "value": {
+      "en": "Welcome to our site",
+      "es": "Bienvenido a nuestro sitio",
+      "fr": "Bienvenue sur notre site"
+    }
+  }
+}
+```
+
+### Field status indicators
+
+In the CMS interface, translatable fields display a **Languages icon** next to the label:
+
+- **Green icon** - All locales have translations
+- **Red icon** - One or more locales are missing translations
+
+### Translation sidebar
+
+When you focus a translatable field in the CMS:
+
+1. The sidebar automatically opens showing translation inputs for each non-default locale
+2. The sidebar displays input fields pre-populated with existing translations
+3. Changes are automatically synced to the main form data
+4. RichEditor fields open in a dialog for better editing experience
+
+To close the sidebar, click the X button or click outside the translatable field.
+
+## Using translations in frontend
+
+### Loading localized content
+
+<Tabs items={['Astro Component', 'React Component']}>
+
+<Tab value="Astro Component">
+
+```astro
+---
+import { loadPageData, getAllComponentsData } from '@/lib/cms-loader';
+
+// Get locale from URL or use default
+const locale = Astro.currentLocale || 'en';
+
+// Load page data with automatic locale resolution
+const pageData = await loadPageData('index');
+const components = getAllComponentsData(pageData, locale);
+
+// Access localized values
+const heroData = components.hero;
+const title = heroData?.heroTitle;  // Already resolved for the locale
+---
+
+<section>
+  <h1>{title}</h1>
+</section>
+```
+
+</Tab>
+
+<Tab value="React Component">
+
+```tsx
+import { getGlobalVar } from '@/lib/cms-loader';
+import type { GlobalsSchemaData } from '@/config/globals/globals.schema.d';
+
+function MyComponent() {
+  const [globals, setGlobals] = useState<GlobalsSchemaData | null>(null);
+
+  useEffect(() => {
+    // Pass locale to get localized values
+    getGlobalVar('es').then(setGlobals);
+  }, []);
+
+  return <h1>{globals?.siteName}</h1>;
+}
+```
+
+</Tab>
+
+</Tabs>
+
+### URL-based locale detection
+
+Use the built-in utility to detect locale from URLs:
+
+```typescript
+import { getLocaleFromPathname, isValidLocale } from '@/lib/i18n-utils';
+
+// URL: /es/about
+const locale = getLocaleFromPathname('/es/about');
+// Result: 'es'
+
+// URL: /about (no locale prefix)
+const locale = getLocaleFromPathname('/about');
+// Result: 'en' (defaultLocale)
+```
+
+### Fallback behavior
+
+When a translation is missing for a locale:
+
+1. If `fallbackLocale` is configured, that value is used
+2. Otherwise, `defaultLocale` value is used
+3. For complex nested structures (repeaters, objects), a deep merge is performed between target and fallback values
+
+## API Reference
+
+### Context Hooks
+
+<TypeTable
+  type={{
+    'useTranslation()': {
+      description: 'Access translation context for mode, locales, and sidebar controls.',
+      type: '() => TranslationContextValue',
+    },
+    'useTranslationData()': {
+      description: 'Access translation data context for reading/writing translation values.',
+      type: '() => TranslationDataContextValue',
+    },
+    'useTranslationDataActions()': {
+      description: 'Access only action functions (write-only, no re-renders).',
+      type: '() => TranslationDataActionsValue',
+    },
+    'useTranslationDataState()': {
+      description: 'Access only state values (re-renders on changes).',
+      type: '() => TranslationDataStateValue',
+    },
+  }}
+/>
+
+### Translation Context Value
+
+```typescript
+interface TranslationContextValue {
+  currentLocale: string;                    // Current active locale
+  availableLocales: string[];             // All configured locales
+  defaultLocale: string;                  // Default locale from config
+  isTranslationMode: boolean;             // True when a translatable field is focused
+  activeTranslationField: string | null;  // Currently focused field path
+  openTranslationSidebar: (fieldPath: string) => void;
+  closeTranslationSidebar: () => void;
+  setActiveField: (fieldPath: string | null) => void;
+  getTranslationStatus: (fieldPath: string) => TranslationStatus;
+}
+```
+
+### Utility Functions
+
+<TypeTable
+  type={{
+    'getLocaleFromPathname(pathname)': {
+      description: 'Extracts locale from URL pathname. Returns default if not found.',
+      type: '(pathname: string) => Locale',
+    },
+    'isValidLocale(locale)': {
+      description: 'Checks if a locale string is in the configured locales list.',
+      type: '(locale: string) => boolean',
+    },
+    'isTranslationObject(value)': {
+      description: 'Checks if a value is a translation object (has locale keys).',
+      type: '(value: any) => boolean',
+    },
+    'getGlobalVar(locale?)': {
+      description: 'Loads global variables with optional locale resolution.',
+      type: '(locale?: string) => Promise<Record<string, any> | null>',
+    },
+    'loadPageData(pageName)': {
+      description: 'Loads page data from filesystem or preview store.',
+      type: '(pageName: string) => Promise<PageData | null>',
+    },
+    'getAllComponentsData(pageData, locale?)': {
+      description: 'Extracts all component data with locale resolution.',
+      type: '(pageData: PageData, locale?: string) => Record<string, Record<string, any>>',
+    },
+  }}
+/>
+
+### Constants
+
+```typescript
+import { LOCALES, DEFAULT_LOCALE } from '@/lib/i18n-utils';
+
+// All configured locales from capsulo.config.ts
+console.log(LOCALES);  // ['en', 'es', 'fr']
+
+// Default locale from capsulo.config.ts
+console.log(DEFAULT_LOCALE);  // 'en'
+```
+
+## Best practices
+
+### Schema design
+
+```tsx
+// ✅ Mark all user-visible text as translatable
+Input('heroTitle').label('Hero Title').translatable().required();
+
+Textarea('description').label('Description').translatable().rows(4);
+
+RichEditor('bodyContent').label('Body Content').translatable();
+
+// ❌ Don't mark non-text fields as translatable
+Select('layoutStyle').label('Layout Style');  // No .translatable()
+Switch('showHeader').label('Show Header');   // No .translatable()
+```
+
+### Component usage
+
+```astro
+---
+// ✅ Always pass locale to data loading functions
+const { locale } = Astro.params;
+const pageData = await loadPageData('index');
+const components = getAllComponentsData(pageData, locale);
+---
+```
+
+### Type safety
+
+```typescript
+// ✅ Use generated types for translatable fields
+type HeroSchemaData = {
+  heroTitle: string;  // Resolved string for the current locale
+  // The underlying storage is { [locale]: string }
+};
+```
+
+## Troubleshooting
+
+### Translations not appearing in frontend
+
+- Verify `i18n` is configured in `capsulo.config.ts`
+- Check that the locale is being passed to `getAllComponentsData()` or `getGlobalVar()`
+- Ensure translations exist for the requested locale (falls back to default)
+
+### Translation icon showing red (missing)
+
+- Fill in translations for all configured locales
+- The icon compares all `locales` against available translations
+- Empty strings count as missing
+
+### Sidebar not opening
+
+- The sidebar only opens when you focus (click on) a translatable field
+- Ensure the field has `.translatable()` in its schema definition
+- The Translations tab is always available in the right sidebar
+
+### RichEditor translations not saving
+
+- RichEditor uses a dialog-based interface for translations
+- Click the translation field in the sidebar to open the editor dialog
+- Changes are applied when closing the dialog
+
+## Advanced: Translation Store
+
+For custom integrations, you can use the external store directly:
+
+```typescript
+import * as translationStore from '@/lib/form-builder/context/translation-store';
+
+// Subscribe to changes
+const unsubscribe = translationStore.subscribe(() => {
+  const state = translationStore.getSnapshot();
+  console.log('Translation data updated:', state.translationData);
+});
+
+// Set a translation value
+translationStore.setTranslationValue('heroTitle', 'es', 'Bienvenidos', 'component-123');
+
+// Get current component
+const component = translationStore.getCurrentComponent();
+```
+
+<Callout type="warn">
+Direct store access is advanced usage. Prefer the React hooks (`useTranslationData`, `useTranslation`) for most use cases.
+</Callout>
